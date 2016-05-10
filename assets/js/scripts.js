@@ -18,6 +18,7 @@ $(document).ready( function () {
       countryToClick = data[randCountryNum].name;
       $(".modal").modal('show');
       $(".modal").html("Click on " + countryToClick);
+      $(".well").html("Click on " + countryToClick);
       // console.log(data);
     }, error: function (request,error) {
       console.log(request);
