@@ -1,3 +1,11 @@
+// Things still to implement:
+//
+// 1. click limit - after 6 clicks, the map is revealed and the goal country is shown, with the previous clicks indicated
+// 2. Upon successful click, the map switches to one with country borders and country names on it
+// 3. positive and negative feedback to user varies based upon how many attempts/clicks remaining
+// 4. Keep a record of previous countries clicked/not clicked and how many clicks it took to get it
+// 5. Tell the user how far away from the desired country their last click was!!!!!
+
 $(document).ready( function () {
   "use strict";
 
