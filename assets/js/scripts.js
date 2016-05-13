@@ -10,6 +10,7 @@ $(document).ready( function () {
   "use strict";
 
   var countryToClick;
+  var nativeName;
 
   /**
   http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -22,14 +23,15 @@ $(document).ready( function () {
     url: 'https://restcountries.eu/rest/v1/all',
     success: function (data) {
       var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
-      console.log(data[randCountryNum].name);
+      console.info(data[randCountryNum].name);
       countryToClick = data[randCountryNum].name;
+      nativeName = data[randCountryNum].nativeName;
       $(".modal").modal('show');
       $(".modal").html("Click on " + countryToClick);
       $(".well").html("Click on " + countryToClick);
       // console.log(data);
     }, error: function (request,error) {
-      console.log(request);
+      console.error(request);
     }
   });
 
@@ -82,7 +84,8 @@ $(document).ready( function () {
           for (var i=0; i < results.length; i++){
             if (results[i].types[0] === "country"){
               var countryClicked = results[i].formatted_address;
-              if (countryClicked === countryToClick){
+              if (countryClicked === countryToClick || countryClicked === nativeName){
+                map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
                 $(".modal").modal('show');
                 $(".modal").html("You clicked on " + countryClicked + "<br>Good Job!");
               } else {
