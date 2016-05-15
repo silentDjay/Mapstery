@@ -24,7 +24,6 @@ $(document).ready( function () {
       var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
       countryToClickCode = data[randCountryNum].alpha2Code;
       countryToClick = data[randCountryNum].name;
-      nativeName = data[randCountryNum].nativeName;
       $(".modal").modal('show');
       $(".modal").html("Click on " + countryToClick);
       $(".well").html("Click on " + countryToClick);
