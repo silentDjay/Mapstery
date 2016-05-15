@@ -1,7 +1,6 @@
 // Things still to implement:
 //
 // 1. click limit - after 6 clicks, the map is revealed and the goal country is shown, with the previous clicks indicated
-// 2. Upon successful click, the map switches to one with country borders and country names on it
 // 3. positive and negative feedback to user varies based upon how many attempts/clicks remaining
 // 4. Keep a record of previous countries clicked/not clicked and how many clicks it took to get it
 // 5. Tell the user how far away from the desired country their last click was!!!!!
@@ -25,12 +24,12 @@ $(document).ready( function () {
       var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
       countryToClickCode = data[randCountryNum].alpha2Code;
       countryToClick = data[randCountryNum].name;
+      nativeName = data[randCountryNum].nativeName;
       $(".modal").modal('show');
       $(".modal").html("Click on " + countryToClick);
       $(".well").html("Click on " + countryToClick);
-      // console.log(data);
     }, error: function (request,error) {
-      console.log(request);
+      console.error(request);
     }
   });
 
@@ -52,8 +51,7 @@ $(document).ready( function () {
     //this gets the latitude and longitude of a user's click
     google.maps.event.addListener(map, "click", function(event) {
 
-    // put a marker where the user clickedSpot
-
+    // put a marker where the user clicked
     function placeMarker(location) {
         var marker = new google.maps.Marker({
             position: location,
@@ -76,7 +74,7 @@ $(document).ready( function () {
       var geocoder = new google.maps.Geocoder;
       var latlng = {lat: latitude, lng: longitude};
       geocoder.geocode({'location': latlng}, function(results, status) {
-        console.log(results);
+        console.info(results);
         // console.log(results[4].types[0]);
         if (status === google.maps.GeocoderStatus.OK) {
           placeMarker(event.latLng); // only put a map marker when the user clicks on a country
@@ -85,6 +83,7 @@ $(document).ready( function () {
               var countryClicked = results[i].formatted_address;
               var clickedCountryCode = results[i].address_components[0].short_name;
               if (clickedCountryCode === countryToClickCode){
+                map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
                 $(".modal").modal('show');
                 $(".modal").html("You clicked on " + countryClicked + "<br>Good Job!");
               } else {
@@ -98,7 +97,7 @@ $(document).ready( function () {
         } else {
           console.log("geolocator is not ok");
           $(".modal").modal('show');
-          $(".modal").html("You clicked on unclaimed nautical territory! Try again!");
+          $(".modal").html("Whoops! You clicked on unclaimed territory! Try again!");
         }
 
       });
