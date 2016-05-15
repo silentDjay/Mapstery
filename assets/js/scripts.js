@@ -10,6 +10,7 @@ $(document).ready( function () {
   "use strict";
 
   var countryToClick;
+  var countryToClickCode;
 
   /**
   http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -22,7 +23,7 @@ $(document).ready( function () {
     url: 'https://restcountries.eu/rest/v1/all',
     success: function (data) {
       var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
-      console.log(data[randCountryNum].name);
+      countryToClickCode = data[randCountryNum].alpha2Code;
       countryToClick = data[randCountryNum].name;
       $(".modal").modal('show');
       $(".modal").html("Click on " + countryToClick);
@@ -82,7 +83,8 @@ $(document).ready( function () {
           for (var i=0; i < results.length; i++){
             if (results[i].types[0] === "country"){
               var countryClicked = results[i].formatted_address;
-              if (countryClicked === countryToClick){
+              var clickedCountryCode = results[i].address_components[0].short_name;
+              if (clickedCountryCode === countryToClickCode){
                 $(".modal").modal('show');
                 $(".modal").html("You clicked on " + countryClicked + "<br>Good Job!");
               } else {
