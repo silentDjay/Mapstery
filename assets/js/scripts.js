@@ -75,7 +75,6 @@ $(document).ready( function () {
       var latlng = {lat: latitude, lng: longitude};
       geocoder.geocode({'location': latlng}, function(results, status) {
         console.info(results);
-        // console.log(results[4].types[0]);
         if (status === google.maps.GeocoderStatus.OK) {
           placeMarker(event.latLng); // only put a map marker when the user clicks on a country
           for (var i=0; i < results.length; i++){
