@@ -11,7 +11,8 @@ html, body {
   position: fixed;
   bottom: 40px;
   left: 40px;
-  z-index: 1; }
+  z-index: 1;
+  font-size: 2em; }
 
 .modal {
   font-size: 6em;
@@ -19,17 +20,7 @@ html, body {
   padding-top: 100px;
   color: white; }
 
-.trackArtist {
-  font-size: 1.5em;
-  color: white;
-  text-align: right; }
-
-.songList {
-  display: none;
-  position: absolute;
-  z-index: 1;
-  right: 0;
-  bottom: 0;
-  left: 700px; }
+.modalInstructions {
+  font-size: .5em; }
 
 /*# sourceMappingURL=styles.css.map */
