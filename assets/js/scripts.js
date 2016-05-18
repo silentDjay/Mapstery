@@ -25,7 +25,7 @@ $(document).ready( function () {
       countryToClickCode = data[randCountryNum].alpha2Code;
       countryToClick = data[randCountryNum].name;
       $(".modal").modal('show');
-      $(".modal").html("Click on " + countryToClick);
+      $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions'>(Click anywhere to start)</div>");
       $(".well").html("Click on " + countryToClick);
     }, error: function (request,error) {
       console.error(request);
@@ -83,10 +83,10 @@ $(document).ready( function () {
               if (clickedCountryCode === countryToClickCode){
                 map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
                 $(".modal").modal('show');
-                $(".modal").html("You clicked on " + countryClicked + "<br>Good Job!");
+                $(".modal").html("You clicked on " + countryClicked + "<br>Awesome Job!<div class='modalInstructions'>(Refresh the page to have another go!)</div>");
               } else {
                 $(".modal").modal('show');
-                $(".modal").html("You clicked on " + countryClicked + "<br>Try Again!");
+                $(".modal").html("You clicked on " + countryClicked + "<br>Try again!");
               }
             } else {
               // do nothing - this level of results[i] does not contain the country name
@@ -95,7 +95,7 @@ $(document).ready( function () {
         } else {
           console.log("geolocator is not ok");
           $(".modal").modal('show');
-          $(".modal").html("Whoops! You clicked on unclaimed territory! Try again!");
+          $(".modal").html("Whoops! You clicked on unclaimed territory! <br>Try again!");
         }
 
       });
