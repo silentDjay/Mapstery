@@ -83,7 +83,7 @@ $(document).ready( function () {
               if (clickedCountryCode === countryToClickCode){
                 map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
                 $(".modal").modal('show');
-                $(".modal").html("You clicked on " + countryClicked + "<br>Awesome Job!<div class='modalInstructions'>(Refresh the page to have another go!)</div>");
+                $(".modal").html("You clicked on " + countryToClick + "<br>Awesome Job!<div class='modalInstructions'>(Refresh the page to have another go!)</div>");
               } else {
                 $(".modal").modal('show');
                 $(".modal").html("You clicked on " + countryClicked + "<br>Try again!");
