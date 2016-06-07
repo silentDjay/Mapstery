@@ -10,6 +10,7 @@ $(document).ready( function () {
 
   var countryToClick;
   var countryToClickCode;
+  var countryList = [];
 
   /**
   http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -21,20 +22,40 @@ $(document).ready( function () {
     method: 'GET',
     url: 'https://restcountries.eu/rest/v1/all',
     success: function (data) {
-      var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
-      countryToClickCode = data[randCountryNum].alpha2Code;
-      countryToClick = data[randCountryNum].name;
-      $(".modal").modal('show');
-      $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions'>(Click anywhere to start)</div>");
-      $(".well").html("Click on " + countryToClick);
+      // var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
+      // countryToClickCode = data[randCountryNum].alpha2Code;
+      // countryToClick = data[randCountryNum].name;
+      // $(".modal").modal('show');
+      // $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions'>(Click anywhere to start)</div>");
+      // $(".well").html("Click on " + countryToClick);
+      countryList = data;
+      setupCountry(countryList);
     }, error: function (request,error) {
       console.error(request);
     }
   });
 
+  function setupCountry(data) {
+    var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
+    countryToClickCode = data[randCountryNum].alpha2Code;
+    countryToClick = data[randCountryNum].name;
+    $(".modal").modal('show');
+    $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions'>(Click anywhere to start)</div>");
+    $(".well").html("Click on " + countryToClick);
+  }
+
 // this stackoverflow helped me get my google maps call working: http://stackoverflow.com/questions/34466718/googlemaps-does-not-load-on-page-load
 
   var map;
+  var markers = [];
+  var markersLength;
+
+  function resetMarkers() {
+    for (var i=0;i<markers.length;i++) {
+      markers[i].setMap(null);
+    }
+    markers = [];
+  }
 
   window.initMap = function() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -46,17 +67,20 @@ $(document).ready( function () {
       draggableCursor: 'crosshair'
     });
 
-
     //this gets the latitude and longitude of a user's click
     google.maps.event.addListener(map, "click", function(event) {
 
-    // put a marker where the user clicked
     function placeMarker(location) {
-        var marker = new google.maps.Marker({
-            position: location,
-            map: map
-        });
+      markersLength = (markers.length + 1).toString();
+      var winMarker = new google.maps.Marker({
+          position: location,
+          map: map,
+          // animation: google.maps.Animation.BOUNCE,
+          label: markersLength
+      });
+      markers.push(winMarker);
     }
+
     //create an object with the clickevent's latlng information within it
     var clickedSpot = {position: event.latLng, map: map};
     // console.log(clickedSpot);
@@ -75,16 +99,18 @@ $(document).ready( function () {
       geocoder.geocode({'location': latlng}, function(results, status) {
         console.info(results);
         if (status === google.maps.GeocoderStatus.OK) {
-          placeMarker(event.latLng); // only put a map marker when the user clicks on a country
           for (var i=0; i < results.length; i++){
             if (results[i].types[0] === "country"){
               var countryClicked = results[i].formatted_address;
               var clickedCountryCode = results[i].address_components[0].short_name;
               if (clickedCountryCode === countryToClickCode){
-                map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-                $(".modal").modal('show');
-                $(".modal").html("You clicked on " + countryToClick + "<br>Awesome Job!<div class='modalInstructions'>(Refresh the page to have another go!)</div>");
+                placeMarker(event.latLng);
+                victoryDisplay(countryClicked);
+                // map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+                // $(".modal").modal('show');
+                // $(".modal").html("You clicked on " + countryToClick + "<br>Awesome Job!<div class='modalInstructions'>(Refresh the page to have another go!)</div>");
               } else {
+                placeMarker(event.latLng);
                 $(".modal").modal('show');
                 $(".modal").html("You clicked on " + countryClicked + "<br>Try again!");
               }
@@ -102,6 +128,30 @@ $(document).ready( function () {
 
     });
 
+  }
+
+  function victoryDisplay(countryClicked) {
+    map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+    $(".modal").modal('show');
+    var msg = "";
+    if (markers.length == 1) {
+      msg = "You got "+ countryClicked + " on the first try!"
+    } else {
+      msg = "You clicked on " + countryClicked + " after "+ markers.length +" tries!"
+    }
+    $(".modal").html(msg + "<br>Awesome Job!<div class='modalInstructions'>Refresh the page to try a new country.</div>");
+  }
+
+  // $(document).on('keydown',function(e) {
+  //   if (e.which == 78) {
+  //     startNewRound();
+  //   }
+  // });
+  //
+  function startNewRound() {
+    map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+    resetMarkers();
+    setupCountry(countryList);
   }
 
 });
