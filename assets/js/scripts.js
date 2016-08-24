@@ -139,7 +139,8 @@ $(document).ready( function () {
     } else {
       msg = "You clicked on " + countryClicked + " after "+ markers.length +" tries!"
     }
-    $(".modal").html(msg + "<br>Awesome Job!<div class='modalInstructions'>Refresh the page to try a new country.</div>");
+    $(".modal").html(msg + "<br>Awesome Job!<div class='modalInstructions'>Click anywhere to see all your clicks!</div>");
+    $(".well").html("<div class='well'><a href='javascript:window.location.reload();'>Find a new country!</a></div>");
   }
 
   // $(document).on('keydown',function(e) {
