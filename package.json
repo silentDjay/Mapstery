@@ -1,0 +1,25 @@
+{
+  "name": "mapstery",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "markerwithlabel": "^2.0.0"
+  },
+  "devDependencies": {
+    "markerwithlabel": "^2.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silentDjay/Mapstery.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/silentDjay/Mapstery/issues"
+  },
+  "homepage": "https://github.com/silentDjay/Mapstery#readme"
+}

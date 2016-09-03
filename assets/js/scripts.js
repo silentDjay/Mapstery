@@ -22,12 +22,6 @@ $(document).ready( function () {
     method: 'GET',
     url: 'https://restcountries.eu/rest/v1/all',
     success: function (data) {
-      // var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
-      // countryToClickCode = data[randCountryNum].alpha2Code;
-      // countryToClick = data[randCountryNum].name;
-      // $(".modal").modal('show');
-      // $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions'>(Click anywhere to start)</div>");
-      // $(".well").html("Click on " + countryToClick);
       countryList = data;
       setupCountry(countryList);
     }, error: function (request,error) {
@@ -70,15 +64,33 @@ $(document).ready( function () {
     //this gets the latitude and longitude of a user's click
     google.maps.event.addListener(map, "click", function(event) {
 
+    var MarkerWithLabel = require('markerwithlabel')(google.maps);
+
     function placeMarker(location) {
       markersLength = (markers.length + 1).toString();
-      var winMarker = new google.maps.Marker({
-          position: location,
-          map: map,
-          // animation: google.maps.Animation.BOUNCE,
-          label: markersLength
+
+      var clickMarker = new MarkerWithLabel({
+        position: location,
+        map: map,
+        labelContent: markersLength,
+        labelAnchor: new google.maps.Point(10, 50),
+        labelClass: "labels", // the CSS class for the label
+        labelInBackground: false,
+        icon: pinSymbol('red')
       });
-      markers.push(winMarker);
+
+      markers.push(clickMarker);
+    }
+
+    function pinSymbol(color) {
+        return {
+            path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+            fillColor: color,
+            fillOpacity: 1,
+            strokeColor: '#000',
+            strokeWeight: 2,
+            scale: 1.5
+        };
     }
 
     //create an object with the clickevent's latlng information within it
