@@ -11,6 +11,9 @@ $(document).ready( function () {
   var countryToClick;
   var countryToClickCode;
   var countryList = [];
+  var littleHint;
+  var bigHint;
+  var goalLatLng = {lat: "", lng: ""};
 
   /**
   http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -33,6 +36,12 @@ $(document).ready( function () {
     var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
     countryToClickCode = data[randCountryNum].alpha2Code;
     countryToClick = data[randCountryNum].name;
+    bigHint = data[randCountryNum].region;
+    littleHint = data[randCountryNum].subregion;
+    goalLatLng = {lat: data[randCountryNum].latlng[0], lng: data[randCountryNum].latlng[1]};
+    console.log(bigHint);
+    console.log(littleHint);
+    console.log(goalLatLng);
     $(".modal").modal('show');
     $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions'>(Click anywhere to start)</div>");
     $(".well").html("Click on " + countryToClick);
@@ -118,13 +127,15 @@ $(document).ready( function () {
               if (clickedCountryCode === countryToClickCode){
                 placeMarker(event.latLng);
                 victoryDisplay(countryClicked);
-                // map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-                // $(".modal").modal('show');
-                // $(".modal").html("You clicked on " + countryToClick + "<br>Awesome Job!<div class='modalInstructions'>(Refresh the page to have another go!)</div>");
               } else {
                 placeMarker(event.latLng);
                 $(".modal").modal('show');
-                $(".modal").html("You clicked on " + countryClicked + "<br>Try again!");
+                if (markers.length > 5) {
+                    $(".modal").html("You clicked on " + countryClicked + "<br>Try again!<p id='show-country' class='modalInstructions'>Help! I'm never gonna find " + countryToClick+ " !</p>");
+                    // better to show the give up button on the card in the bottom left of the screen
+                } else {
+                    $(".modal").html("You clicked on " + countryClicked + "<br>Try again!");
+                }
               }
             } else {
               // do nothing - this level of results[i] does not contain the country name
@@ -155,12 +166,11 @@ $(document).ready( function () {
     $(".well").html("<div class='well'><a href='javascript:window.location.reload();'>Find a new country!</a></div>");
   }
 
-  // $(document).on('keydown',function(e) {
-  //   if (e.which == 78) {
-  //     startNewRound();
-  //   }
-  // });
-  //
+  function revealCountry() {
+      map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+    //   map.setCenter();
+  }
+
   function startNewRound() {
     map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
     resetMarkers();
