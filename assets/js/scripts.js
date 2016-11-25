@@ -9,6 +9,8 @@ $(document).ready( function () {
   var goalLatLng = {lat: "", lng: ""};
   var borderCountries = {};
   var numBorderCountries;
+  var clickedCountryCode;
+  var countryClicked;
 
   /**
   http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -70,11 +72,12 @@ $(document).ready( function () {
 
     function placeMarker(location) {
       markersLength = (markers.length + 1).toString();
+      var markerLabel = markersLength + "<br>" + clickedCountryCode;
 
       var clickMarker = new MarkerWithLabel({
         position: location,
         map: map,
-        labelContent: markersLength,
+        labelContent: markerLabel,
         labelAnchor: new google.maps.Point(10, 50),
         labelClass: "labels", // the CSS class for the label
         labelInBackground: false,
@@ -112,8 +115,8 @@ $(document).ready( function () {
         if (status === google.maps.GeocoderStatus.OK) {
           for (var i=0; i < results.length; i++){
             if (results[i].types[0] === "country"){
-              var countryClicked = results[i].formatted_address;
-              var clickedCountryCode = results[i].address_components[0].short_name;
+              countryClicked = results[i].formatted_address;
+              clickedCountryCode = results[i].address_components[0].short_name;
               if (clickedCountryCode === countryToClickCode){
                 placeMarker(event.latLng);
                 victoryDisplay(countryClicked);

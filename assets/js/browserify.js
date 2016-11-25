@@ -10,6 +10,8 @@ $(document).ready( function () {
   var goalLatLng = {lat: "", lng: ""};
   var borderCountries = {};
   var numBorderCountries;
+  var clickedCountryCode;
+  var countryClicked;
 
   /**
   http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -36,8 +38,6 @@ $(document).ready( function () {
     regionHint = data[randCountryNum].subregion;
     goalLatLng = {lat: data[randCountryNum].latlng[0], lng: data[randCountryNum].latlng[1]};
     numBorderCountries = data[randCountryNum].borders.length;
-    console.log(regionHint);
-    console.log(goalLatLng);
     $(".modal").modal('show');
     $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions'>(Click anywhere to start)</div>");
     $(".well").html("Click on " + countryToClick + "<div id='reveal-country'>Or click here to reveal " + countryToClick + "</div>");
@@ -73,11 +73,12 @@ $(document).ready( function () {
 
     function placeMarker(location) {
       markersLength = (markers.length + 1).toString();
+      var markerLabel = markersLength + "<br>" + clickedCountryCode;
 
       var clickMarker = new MarkerWithLabel({
         position: location,
         map: map,
-        labelContent: markersLength,
+        labelContent: markerLabel,
         labelAnchor: new google.maps.Point(10, 50),
         labelClass: "labels", // the CSS class for the label
         labelInBackground: false,
@@ -115,8 +116,8 @@ $(document).ready( function () {
         if (status === google.maps.GeocoderStatus.OK) {
           for (var i=0; i < results.length; i++){
             if (results[i].types[0] === "country"){
-              var countryClicked = results[i].formatted_address;
-              var clickedCountryCode = results[i].address_components[0].short_name;
+              countryClicked = results[i].formatted_address;
+              clickedCountryCode = results[i].address_components[0].short_name;
               if (clickedCountryCode === countryToClickCode){
                 placeMarker(event.latLng);
                 victoryDisplay(countryClicked);
@@ -139,7 +140,6 @@ $(document).ready( function () {
             }
           }
         } else {
-          console.log("geolocator is not ok");
           $(".modal").modal('show');
           $(".modal").html("Whoops! You clicked on unclaimed territory! <br>Try again!");
         }
