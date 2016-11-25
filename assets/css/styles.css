@@ -9,11 +9,12 @@ html, body {
 
 .labels {
   color: white;
-  font-family: "Lucida Grande", "Arial", sans-serif;
   font-size: 10px;
   text-align: center;
   width: 20px;
-  white-space: nowrap; }
+  white-space: nowrap;
+  margin-bottom: 10px;
+  line-height: 1; }
 
 .well {
   position: fixed;
