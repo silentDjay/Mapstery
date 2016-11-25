@@ -7,7 +7,9 @@ $(document).ready( function () {
   var countryList = [];
   var regionHint;
   var goalLatLng = {lat: "", lng: ""};
-  var borderCountries = {};
+  var borderCountryCodes = [];
+  var borderCountryNames = [];
+  var borderCountryList;
   var numBorderCountries;
   var clickedCountryCode;
   var countryClicked;
@@ -34,9 +36,36 @@ $(document).ready( function () {
     countryToClickCode = data[randCountryNum].alpha2Code;
     countryToClick = data[randCountryNum].name;
     continentToClick = data[randCountryNum];
-    regionHint = data[randCountryNum].subregion;
+    if (data[randCountryNum].subregion === "Caribbean") {
+        regionHint = "the " + data[randCountryNum].subregion;
+    } else {
+        regionHint = data[randCountryNum].subregion;
+    }
     goalLatLng = {lat: data[randCountryNum].latlng[0], lng: data[randCountryNum].latlng[1]};
     numBorderCountries = data[randCountryNum].borders.length;
+    borderCountryCodes = data[randCountryNum].borders;
+
+    if (numBorderCountries === 0) {
+    } else {
+        borderCountryCodes.forEach( function( borderingCountryCode ) {
+            data.forEach( function (country) {
+                if (borderingCountryCode === country.alpha3Code) {
+                    borderCountryNames.push( country.name );
+                }
+            });
+        });
+        if (borderCountryNames.length === 1) {
+            borderCountryList = borderCountryNames[0];
+        } else if (borderCountryNames.length === 2) {
+            borderCountryList = borderCountryNames.join(" and ");
+        } else {
+            var lastCountry = borderCountryNames.pop();
+            lastCountry = "and " + lastCountry;
+            borderCountryNames.push(lastCountry);
+            borderCountryList = borderCountryNames.join(", ");
+        }
+    }
+
     $(".modal").modal('show');
     $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions'>(Click anywhere to start)</div>");
     $(".well").html("Click on " + countryToClick + "<div id='reveal-country'>Or click here to reveal " + countryToClick + "</div>");
@@ -111,7 +140,6 @@ $(document).ready( function () {
       var geocoder = new google.maps.Geocoder;
       var latlng = {lat: latitude, lng: longitude};
       geocoder.geocode({'location': latlng}, function(results, status) {
-        console.info(results);
         if (status === google.maps.GeocoderStatus.OK) {
           for (var i=0; i < results.length; i++){
             if (results[i].types[0] === "country"){
@@ -127,10 +155,8 @@ $(document).ready( function () {
                 if (markers.length > 5) {
                     if (numBorderCountries === 0) {
                         $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
-                    } else if (numBorderCountries === 1) {
-                        $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is in " + regionHint + " and borders " + numBorderCountries  + " country</p>");
-                    } else  {
-                        $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is in " + regionHint + " and borders " + numBorderCountries  + " countries</p>");
+                    } else {
+                        $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
                     }
                 }
               }
