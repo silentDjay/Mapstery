@@ -20,7 +20,11 @@ html, body {
   bottom: 40px;
   left: 40px;
   z-index: 1;
-  font-size: 2em; }
+  font-size: 2em;
+  cursor: pointer; }
+  .well #reveal-country {
+    font-size: 16px;
+    text-decoration: underline; }
 
 .modal {
   font-size: 6em;

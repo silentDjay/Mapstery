@@ -1,20 +1,15 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// Things still to implement:
-//
-// 1. click limit - after 6 clicks, the map is revealed and the goal country is shown, with the previous clicks indicated
-// 3. positive and negative feedback to user varies based upon how many attempts/clicks remaining
-// 4. Keep a record of previous countries clicked/not clicked and how many clicks it took to get it
-// 5. Tell the user how far away from the desired country their last click was!!!!!
-
 $(document).ready( function () {
   "use strict";
 
   var countryToClick;
   var countryToClickCode;
+  var continentToClick;
   var countryList = [];
-  var littleHint;
-  var bigHint;
+  var regionHint;
   var goalLatLng = {lat: "", lng: ""};
+  var borderCountries = {};
+  var numBorderCountries;
 
   /**
   http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -37,15 +32,15 @@ $(document).ready( function () {
     var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
     countryToClickCode = data[randCountryNum].alpha2Code;
     countryToClick = data[randCountryNum].name;
-    bigHint = data[randCountryNum].region;
-    littleHint = data[randCountryNum].subregion;
+    continentToClick = data[randCountryNum];
+    regionHint = data[randCountryNum].subregion;
     goalLatLng = {lat: data[randCountryNum].latlng[0], lng: data[randCountryNum].latlng[1]};
-    console.log(bigHint);
-    console.log(littleHint);
+    numBorderCountries = data[randCountryNum].borders.length;
+    console.log(regionHint);
     console.log(goalLatLng);
     $(".modal").modal('show');
     $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions'>(Click anywhere to start)</div>");
-    $(".well").html("Click on " + countryToClick);
+    $(".well").html("Click on " + countryToClick + "<div id='reveal-country'>Or click here to reveal " + countryToClick + "</div>");
   }
 
 // this stackoverflow helped me get my google maps call working: http://stackoverflow.com/questions/34466718/googlemaps-does-not-load-on-page-load
@@ -105,13 +100,10 @@ $(document).ready( function () {
 
     //create an object with the clickevent's latlng information within it
     var clickedSpot = {position: event.latLng, map: map};
-    // console.log(clickedSpot);
     //fetch the latitude of the click
     var latitude = clickedSpot.position.lat();
-    // console.log(latitude);
     //fetch the longitude of the click
     var longitude = clickedSpot.position.lng();
-    // console.log(longitude);
 
     //this function below gets the country name based on the latLng coordinates of the click
     // this documentation provided all of my answers: https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
@@ -131,11 +123,15 @@ $(document).ready( function () {
               } else {
                 placeMarker(event.latLng);
                 $(".modal").modal('show');
+                $(".modal").html("You clicked on " + countryClicked + "<br>Try again!");
                 if (markers.length > 5) {
-                    $(".modal").html("You clicked on " + countryClicked + "<br>Try again!<p id='show-country' class='modalInstructions'>Help! I'm never gonna find " + countryToClick+ " !</p>");
-                    // better to show the give up button on the card in the bottom left of the screen
-                } else {
-                    $(".modal").html("You clicked on " + countryClicked + "<br>Try again!");
+                    if (numBorderCountries === 0) {
+                        $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
+                    } else if (numBorderCountries === 1) {
+                        $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is in " + regionHint + " and borders " + numBorderCountries  + " country</p>");
+                    } else  {
+                        $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is in " + regionHint + " and borders " + numBorderCountries  + " countries</p>");
+                    }
                 }
               }
             } else {
@@ -158,7 +154,7 @@ $(document).ready( function () {
     map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
     $(".modal").modal('show');
     var msg = "";
-    if (markers.length == 1) {
+    if (markers.length === 1) {
       msg = "You got "+ countryClicked + " on the first try!"
     } else {
       msg = "You clicked on " + countryClicked + " after "+ markers.length +" tries!"
@@ -167,16 +163,22 @@ $(document).ready( function () {
     $(".well").html("<div class='well'><a href='javascript:window.location.reload();'>Find a new country!</a></div>");
   }
 
+  $(".well").click(function() {
+      revealCountry();
+  });
+
   function revealCountry() {
       map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-    //   map.setCenter();
+      map.setCenter(goalLatLng);
+      map.setZoom(6);
+      $(".well").html("<div class='well'><a href='javascript:window.location.reload();'>Find a new country!</a></div>");
   }
 
-  function startNewRound() {
-    map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-    resetMarkers();
-    setupCountry(countryList);
-  }
+  // function startNewRound() {
+  //   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+  //   resetMarkers();
+  //   setupCountry(countryList);
+  // }
 
 });
 
