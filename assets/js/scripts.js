@@ -3,7 +3,6 @@ $(document).ready( function () {
 
   var countryToClick;
   var countryToClickCode;
-  var continentToClick;
   var countryList = [];
   var regionHint;
   var goalLatLng = {lat: "", lng: ""};
@@ -35,35 +34,48 @@ $(document).ready( function () {
     var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
     countryToClickCode = data[randCountryNum].alpha2Code;
     countryToClick = data[randCountryNum].name;
-    continentToClick = data[randCountryNum];
-    if (data[randCountryNum].subregion === "Caribbean") {
-        regionHint = "the " + data[randCountryNum].subregion;
+
+    if (!data[randCountryNum].subregion) {
+        regionHint = "the Antarctic";
+    } else if (data[randCountryNum].subregion === "Caribbean") {
+        regionHint = "the Caribbean";
     } else {
         regionHint = data[randCountryNum].subregion;
     }
+
     goalLatLng = {lat: data[randCountryNum].latlng[0], lng: data[randCountryNum].latlng[1]};
     numBorderCountries = data[randCountryNum].borders.length;
     borderCountryCodes = data[randCountryNum].borders;
 
     if (numBorderCountries === 0) {
     } else {
-        borderCountryCodes.forEach( function( borderingCountryCode ) {
+
+        //create the list of border country names and convert the alpha3 codes to alpha2 to compare to clicked country codes
+        borderCountryCodes.forEach( function( BorderCountryAlpha3Code, index ) {
             data.forEach( function (country) {
-                if (borderingCountryCode === country.alpha3Code) {
+                if (BorderCountryAlpha3Code === country.alpha3Code) {
+                    borderCountryCodes.splice( index, 1, country.alpha2Code );
                     borderCountryNames.push( country.name );
                 }
             });
         });
+
+        // construct border country list with proper syntax
         if (borderCountryNames.length === 1) {
             borderCountryList = borderCountryNames[0];
         } else if (borderCountryNames.length === 2) {
             borderCountryList = borderCountryNames.join(" and ");
         } else {
             var lastCountry = borderCountryNames.pop();
-            lastCountry = "and " + lastCountry;
-            borderCountryNames.push(lastCountry);
+            borderCountryNames.push("and " + lastCountry);
             borderCountryList = borderCountryNames.join(", ");
         }
+    }
+
+    if (numBorderCountries === 0) {
+        console.info("Hint: " + countryToClick + " is an island nation in " + regionHint);
+    } else {
+        console.info("Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
     }
 
     $(".modal").modal('show');
@@ -152,6 +164,15 @@ $(document).ready( function () {
                 placeMarker(event.latLng);
                 $(".modal").modal('show');
                 $(".modal").html("You clicked on " + countryClicked + "<br>Try again!");
+
+                //determine if the country clicked borders the target country
+                borderCountryCodes.forEach( function(borderCountryCode) {
+                    if (clickedCountryCode === borderCountryCode) {
+                        //you clicked a bordering country!!!! tell the user!
+                        return
+                    }
+                });
+
                 if (markers.length > 5) {
                     if (numBorderCountries === 0) {
                         $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
