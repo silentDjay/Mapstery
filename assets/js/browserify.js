@@ -50,8 +50,7 @@ $(document).ready( function () {
 
     if (numBorderCountries === 0) {
     } else {
-
-        //create the list of border country names and convert the alpha3 codes to alpha2 to compare to clicked country codes
+        //create arrays of border country names alpha2 country codes for the target country
         borderCountryCodes.forEach( function( BorderCountryAlpha3Code, index ) {
             data.forEach( function (country) {
                 if (BorderCountryAlpha3Code === country.alpha3Code) {
@@ -60,23 +59,6 @@ $(document).ready( function () {
                 }
             });
         });
-
-        // construct border country list with proper syntax
-        if (borderCountryNames.length === 1) {
-            borderCountryList = borderCountryNames[0];
-        } else if (borderCountryNames.length === 2) {
-            borderCountryList = borderCountryNames.join(" and ");
-        } else {
-            var lastCountry = borderCountryNames.pop();
-            borderCountryNames.push("and " + lastCountry);
-            borderCountryList = borderCountryNames.join(", ");
-        }
-    }
-
-    if (numBorderCountries === 0) {
-        console.info("Hint: " + countryToClick + " is an island nation in " + regionHint);
-    } else {
-        console.info("Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
     }
 
     $(".modal").modal('show');
@@ -84,7 +66,7 @@ $(document).ready( function () {
     $(".well").html("Click on " + countryToClick + "<div id='reveal-country'>Or click here to reveal " + countryToClick + "</div>");
   }
 
-// this stackoverflow helped me get my google maps call working: http://stackoverflow.com/questions/34466718/googlemaps-does-not-load-on-page-load
+  // this stackoverflow helped me get my google maps call working: http://stackoverflow.com/questions/34466718/googlemaps-does-not-load-on-page-load
 
   var map;
   var markers = [];
@@ -107,95 +89,126 @@ $(document).ready( function () {
       draggableCursor: 'crosshair'
     });
 
-    //this gets the latitude and longitude of a user's click
+    //get the latitude and longitude of a user's click
     google.maps.event.addListener(map, "click", function(event) {
 
-    var MarkerWithLabel = require('markerwithlabel')(google.maps);
+        var MarkerWithLabel = require('markerwithlabel')(google.maps);
 
-    function placeMarker(location) {
-      markersLength = (markers.length + 1).toString();
-      var markerLabel = markersLength + "<br>" + clickedCountryCode;
+        function placeMarker(location) {
+          markersLength = (markers.length + 1).toString();
+          var markerLabel = markersLength + "<br>" + clickedCountryCode;
 
-      var clickMarker = new MarkerWithLabel({
-        position: location,
-        map: map,
-        labelContent: markerLabel,
-        labelAnchor: new google.maps.Point(10, 50),
-        labelClass: "labels", // the CSS class for the label
-        labelInBackground: false,
-        icon: pinSymbol('red')
-      });
+          var clickMarker = new MarkerWithLabel({
+            position: location,
+            map: map,
+            labelContent: markerLabel,
+            labelAnchor: new google.maps.Point(10, 50),
+            labelClass: "labels", // the CSS class for the label
+            labelInBackground: false,
+            icon: pinSymbol('red')
+          });
 
-      markers.push(clickMarker);
-    }
+          markers.push(clickMarker);
+        }
 
-    function pinSymbol(color) {
-        return {
-            path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
-            fillColor: color,
-            fillOpacity: 1,
-            strokeColor: '#000',
-            strokeWeight: 2,
-            scale: 1.5
-        };
-    }
+        function pinSymbol(color) {
+            return {
+                path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+                fillColor: color,
+                fillOpacity: 1,
+                strokeColor: '#000',
+                strokeWeight: 2,
+                scale: 1.5
+            };
+        }
 
-    //create an object with the clickevent's latlng information within it
-    var clickedSpot = {position: event.latLng, map: map};
-    //fetch the latitude of the click
-    var latitude = clickedSpot.position.lat();
-    //fetch the longitude of the click
-    var longitude = clickedSpot.position.lng();
+        var clickedSpot = {position: event.latLng, map: map};
+        var latitude = clickedSpot.position.lat();
+        var longitude = clickedSpot.position.lng();
 
-    //this function below gets the country name based on the latLng coordinates of the click
-    // this documentation provided all of my answers: https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
+        // documentation on geocoder: https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
 
-      var geocoder = new google.maps.Geocoder;
-      var latlng = {lat: latitude, lng: longitude};
-      geocoder.geocode({'location': latlng}, function(results, status) {
-        if (status === google.maps.GeocoderStatus.OK) {
-          for (var i=0; i < results.length; i++){
-            if (results[i].types[0] === "country"){
-              countryClicked = results[i].formatted_address;
-              clickedCountryCode = results[i].address_components[0].short_name;
-              if (clickedCountryCode === countryToClickCode){
-                placeMarker(event.latLng);
-                victoryDisplay(countryClicked);
-              } else {
-                placeMarker(event.latLng);
-                $(".modal").modal('show');
-                $(".modal").html("You clicked on " + countryClicked + "<br>Try again!");
+        var geocoder = new google.maps.Geocoder;
+        var latlng = {lat: latitude, lng: longitude};
 
-                //determine if the country clicked borders the target country
-                borderCountryCodes.forEach( function(borderCountryCode) {
-                    if (clickedCountryCode === borderCountryCode) {
-                        //you clicked a bordering country!!!! tell the user!
-                        return
-                    }
-                });
+        geocoder.geocode({'location': latlng}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+              for (var i=0; i < results.length; i++){
+                if (results[i].types[0] === "country"){
+                  countryClicked = results[i].formatted_address;
+                  clickedCountryCode = results[i].address_components[0].short_name;
+                  if (clickedCountryCode === countryToClickCode){
+                    placeMarker(event.latLng);
+                    victoryDisplay(countryClicked);
+                  } else {
+                    placeMarker(event.latLng);
+                    $(".modal").modal('show');
+                    $(".modal").html("You clicked on " + countryClicked);
 
-                if (markers.length > 5) {
+                    //determine the supplementary message to display upon click
                     if (numBorderCountries === 0) {
-                        $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
+                        constructHint(markers.length, numBorderCountries);
                     } else {
-                        $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
+                        var clickedBorderIndex = borderCountryCodes.indexOf(clickedCountryCode);
+
+                        if (clickedBorderIndex === -1) {
+                            constructHint(markers.length, numBorderCountries);
+                        } else {
+                            constructHint(markers.length, numBorderCountries, clickedBorderIndex);
+                        }
                     }
+                  }
+                } else {
+                  // do nothing - this level of results[i] does not contain the country name
                 }
               }
             } else {
-              // do nothing - this level of results[i] does not contain the country name
+              $(".modal").modal('show');
+              $(".modal").html("Whoops! You clicked on unclaimed territory! <br> <p class='modalInstructions'>Try again!</p>");
             }
-          }
-        } else {
-          $(".modal").modal('show');
-          $(".modal").html("Whoops! You clicked on unclaimed territory! <br>Try again!");
-        }
 
-      });
-
+        });
     });
-
   }
+
+  function constructHint(numClicks, borderCount, borderCountryClickedIndex) {
+      if (borderCountryClickedIndex >= 0) {
+        //create a copy of the border country codes array without affecting the original array. Explanation here: http://stackoverflow.com/questions/6612385/why-does-changing-an-array-in-javascript-affect-copies-of-the-array
+        var modifiedBorderCountryNames = borderCountryNames.slice();
+        modifiedBorderCountryNames.splice(borderCountryClickedIndex, 1);
+
+        if (modifiedBorderCountryNames.length === 0) {
+            $(".modal").append("<p class='modalInstructions'>So close! " + countryClicked + " is the only country that shares a border with " + countryToClick + "!");
+        } else if (modifiedBorderCountryNames.length === 1) {
+            constructBorderCountryList(modifiedBorderCountryNames);
+            $(".modal").append("<p class='modalInstructions'>Not too shabby! " + countryToClick + " shares a border with " + countryClicked + " and " + borderCountryList);
+        } else {
+            constructBorderCountryList(modifiedBorderCountryNames);
+            $(".modal").append("<p class='modalInstructions'>Nice try! " + countryToClick + " shares a border with " + countryClicked + ", as well as " + borderCountryList);
+        }
+      } else if (numClicks > 5) {
+          constructBorderCountryList(borderCountryNames);
+          if (borderCount === 0) {
+              $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
+          } else {
+              $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
+          }
+      } else {
+          $(".modal").append("<p class='modalInstructions'>Try again!</p>");
+      }
+  };
+
+  function constructBorderCountryList(countryNameArray) {
+      if (countryNameArray.length === 1) {
+          borderCountryList = countryNameArray[0];
+      } else if (countryNameArray.length === 2) {
+          borderCountryList = countryNameArray.join(" and ");
+      } else {
+          var lastCountry = countryNameArray.pop();
+          countryNameArray.push("and " + lastCountry);
+          borderCountryList = countryNameArray.join(", ");
+      }
+  };
 
   function victoryDisplay(countryClicked) {
     map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
@@ -206,9 +219,9 @@ $(document).ready( function () {
     } else {
       msg = "You clicked on " + countryClicked + " after "+ markers.length +" tries!"
     }
-    $(".modal").html(msg + "<br>Awesome Job!<div class='modalInstructions'>Click anywhere to see all your clicks!</div>");
+    $(".modal").html(msg + "<br>Awesome Job!<div class='modalInstructions'>Click anywhere to explore the map!</div>");
     $(".well").html("<div class='well'><a href='javascript:window.location.reload();'>Find a new country!</a></div>");
-  }
+  };
 
   $(".well").click(function() {
       revealCountry();

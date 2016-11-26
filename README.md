@@ -8,10 +8,12 @@ more information on Browserify: https://github.com/substack/browserify-handbook
 
 Improvements still to implement:
 
-* positive and negative feedback to user varies based upon how many attempts/clicks remaining
-* Keep a record of previous countries clicked/not clicked and how many clicks it took to get it
-* Tell the user how far away from the desired country their last click was!!!!!
-* If the user clicks on a country that borders the target country, tell them!
-* Otherwise, any time after 6 clicks, give them the detailed hint with region and border country names
+* Keep a record of previous countries clicked/not clicked and how many clicks it took to get it (Node backend)
+* Tell the user how far away they click from the target country (convert lat/lng averages between click and target country to relevant distance (inches on screen???))
+* Refactor the for-loop that looks for the country information upon click; it is wasting
 
 Bugs to fix:
+
+* Clicks on the Republic of Kosovo or Palestine do not return country/any results from the Google Maps API (approximate their locations with lat/lng and in the case that no data is returned within that approximate area, provide data accordingly.)
+* Vatican City/Holy See returns poorly formed country address upon successful click (I think the real problem is that the country name returned upon successful click is from Google Maps, not from the original list);
+* Disable clicks after country is found or revealed
