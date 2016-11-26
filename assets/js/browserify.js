@@ -126,22 +126,24 @@ $(document).ready( function () {
         var latitude = clickedSpot.position.lat();
         var longitude = clickedSpot.position.lng();
 
-        // documentation on geocoder: https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
-
         var geocoder = new google.maps.Geocoder;
         var latlng = {lat: latitude, lng: longitude};
 
         geocoder.geocode({'location': latlng}, function(results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
-              for (var i=0; i < results.length; i++){
-                if (results[i].types[0] === "country"){
-                  countryClicked = results[i].formatted_address;
-                  clickedCountryCode = results[i].address_components[0].short_name;
-                  if (clickedCountryCode === countryToClickCode){
-                    placeMarker(event.latLng);
+
+                function isCountryName(element) {
+                    return element.types[0] === "country";
+                };
+
+                var countryIndex = results.findIndex(isCountryName);
+                countryClicked = results[countryIndex].formatted_address;
+                clickedCountryCode = results[countryIndex].address_components[0].short_name;
+                placeMarker(event.latLng);
+
+                if (clickedCountryCode === countryToClickCode) {
                     victoryDisplay(countryClicked);
-                  } else {
-                    placeMarker(event.latLng);
+                } else {
                     $(".modal").modal('show');
                     $(".modal").html("You clicked on " + countryClicked);
 
@@ -157,14 +159,10 @@ $(document).ready( function () {
                             constructHint(markers.length, numBorderCountries, clickedBorderIndex);
                         }
                     }
-                  }
-                } else {
-                  // do nothing - this level of results[i] does not contain the country name
                 }
-              }
             } else {
-              $(".modal").modal('show');
-              $(".modal").html("Whoops! You clicked on unclaimed territory! <br> <p class='modalInstructions'>Try again!</p>");
+                $(".modal").modal('show');
+                $(".modal").html("Whoops! You clicked on unclaimed territory! <br> <p class='modalInstructions'>Try again!</p>");
             }
 
         });
@@ -173,7 +171,7 @@ $(document).ready( function () {
 
   function constructHint(numClicks, borderCount, borderCountryClickedIndex) {
       if (borderCountryClickedIndex >= 0) {
-        //create a copy of the border country codes array without affecting the original array. Explanation here: http://stackoverflow.com/questions/6612385/why-does-changing-an-array-in-javascript-affect-copies-of-the-array
+        //slice() is used here to create a copy of the border country codes array without affecting the original array. Explanation here: http://stackoverflow.com/questions/6612385/why-does-changing-an-array-in-javascript-affect-copies-of-the-array
         var modifiedBorderCountryNames = borderCountryNames.slice();
         modifiedBorderCountryNames.splice(borderCountryClickedIndex, 1);
         constructBorderCountryList(modifiedBorderCountryNames);
@@ -217,12 +215,12 @@ $(document).ready( function () {
     $(".modal").modal('show');
     var msg = "";
     if (markers.length === 1) {
-      msg = "You got "+ countryClicked + " on the first try!"
+        msg = "You found "+ countryClicked + " on the first try!"
     } else {
-      msg = "You clicked on " + countryClicked + " after "+ markers.length +" tries!"
+        msg = "You found " + countryClicked + " after " + markers.length + " tries!"
     }
     $(".modal").html(msg + "<br>Awesome Job!<div class='modalInstructions'>Click anywhere to explore the map!</div>");
-    $(".well").html("<div class='well'><a href='javascript:window.location.reload();'>Find a new country!</a></div>");
+    $(".well").html("<a href='javascript:window.location.reload()'>Find a new country!</a>");
   };
 
   $(".well").click(function() {
@@ -233,7 +231,7 @@ $(document).ready( function () {
       map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
       map.setCenter(goalLatLng);
       map.setZoom(6);
-      $(".well").html("<div class='well'><a href='javascript:window.location.reload();'>Find a new country!</a></div>");
+      $(".well").html("<a href='javascript:window.location.reload()'>Find a new country!</a>");
   }
 
   // function startNewRound() {
