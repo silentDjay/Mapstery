@@ -15,6 +15,7 @@ Improvements still to implement:
 Bugs to fix:
 
 * Clicks on the Republic of Kosovo or Palestine do not return country/any results from the Google Maps API (approximate their locations with lat/lng and in the case that no data is returned within that approximate area, provide data accordingly.)
-* Vatican City/Holy See returns poorly formed country address upon successful click (I think the real problem is that the country name returned upon successful click is from Google Maps, not from the original list);
+* Vatican City/Holy See returns poorly formed country address upon successful click (I think the real problem is that the country name returned upon successful click is from Google Maps, not from the original list)
+* US Minor Outlying Islands don't have lat/lng data for the reveal
 * Disable clicks after country is found or revealed
-* "Hint: Luxembourg is in Western Europe and shares a border with Belgium, France, and and and and and and and and and and and Germany" :)
+* Clicks on the modalInstructions class do not close the modal

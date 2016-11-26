@@ -175,21 +175,21 @@ $(document).ready( function () {
         //create a copy of the border country codes array without affecting the original array. Explanation here: http://stackoverflow.com/questions/6612385/why-does-changing-an-array-in-javascript-affect-copies-of-the-array
         var modifiedBorderCountryNames = borderCountryNames.slice();
         modifiedBorderCountryNames.splice(borderCountryClickedIndex, 1);
+        constructBorderCountryList(modifiedBorderCountryNames);
 
         if (modifiedBorderCountryNames.length === 0) {
             $(".modal").append("<p class='modalInstructions'>So close! " + countryClicked + " is the only country that shares a border with " + countryToClick + "!");
         } else if (modifiedBorderCountryNames.length === 1) {
-            constructBorderCountryList(modifiedBorderCountryNames);
             $(".modal").append("<p class='modalInstructions'>Not too shabby! " + countryToClick + " shares a border with " + countryClicked + " and " + borderCountryList);
         } else {
-            constructBorderCountryList(modifiedBorderCountryNames);
             $(".modal").append("<p class='modalInstructions'>Nice try! " + countryToClick + " shares a border with " + countryClicked + ", as well as " + borderCountryList);
         }
       } else if (numClicks > 5) {
-          constructBorderCountryList(borderCountryNames);
+
           if (borderCount === 0) {
               $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
           } else {
+              constructBorderCountryList(borderCountryNames);
               $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
           }
       } else {
@@ -203,8 +203,10 @@ $(document).ready( function () {
       } else if (countryNameArray.length === 2) {
           borderCountryList = countryNameArray.join(" and ");
       } else {
-          var lastCountry = countryNameArray.pop();
-          countryNameArray.push("and " + lastCountry);
+          if (!countryNameArray[countryNameArray.length - 1].startsWith("and ")) {
+              var lastCountry = countryNameArray.pop();
+              countryNameArray.push("and " + lastCountry);
+          }
           borderCountryList = countryNameArray.join(", ");
       }
   };
