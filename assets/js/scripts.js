@@ -3,13 +3,12 @@ $(document).ready( function () {
 
   var countryToClick;
   var countryToClickCode;
-  var countryList = [];
-  var regionHint;
   var goalLatLng = {lat: "", lng: ""};
+  var regionHint;
+  var numBorderCountries;
   var borderCountryCodes = [];
   var borderCountryNames = [];
   var borderCountryList;
-  var numBorderCountries;
   var clickedCountryCode;
   var countryClicked;
 
