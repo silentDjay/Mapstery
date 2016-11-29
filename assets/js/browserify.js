@@ -70,12 +70,12 @@ $(document).ready( function () {
   var markers = [];
   var markersLength;
 
-  function resetMarkers() {
-    for (var i=0;i<markers.length;i++) {
-      markers[i].setMap(null);
-    }
-    markers = [];
-  }
+  // function resetMarkers() {
+  //   for (var i=0;i<markers.length;i++) {
+  //     markers[i].setMap(null);
+  //   }
+  //   markers = [];
+  // }
 
   window.initMap = function() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -196,7 +196,8 @@ $(document).ready( function () {
   };
 
   function constructBorderCountryList(countryNameArray) {
-      if (countryNameArray.length === 1) {
+      if (countryNameArray.length === 0) {
+      } else if (countryNameArray.length === 1) {
           borderCountryList = countryNameArray[0];
       } else if (countryNameArray.length === 2) {
           borderCountryList = countryNameArray.join(" and ");
