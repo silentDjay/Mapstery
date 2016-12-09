@@ -59,7 +59,7 @@ $(document).ready( function () {
     }
 
     $(".modal").modal('show');
-    $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions'>(Click anywhere to start)</div>");
+    $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions' data-dismiss='modal'>(Click anywhere to start)</div>");
     $(".well").html("Click on " + countryToClick + "<div id='reveal-country'>Or click here to reveal " + countryToClick + "</div>");
   }
 
@@ -160,7 +160,7 @@ $(document).ready( function () {
                 }
             } else {
                 $(".modal").modal('show');
-                $(".modal").html("Whoops! You clicked on unclaimed territory! <br> <p class='modalInstructions'>Try again!</p>");
+                $(".modal").html("Whoops! You clicked on unclaimed territory! <br> <p class='modalInstructions' data-dismiss='modal'>Try again!</p>");
             }
 
         });
@@ -175,22 +175,22 @@ $(document).ready( function () {
         constructBorderCountryList(modifiedBorderCountryNames);
 
         if (modifiedBorderCountryNames.length === 0) {
-            $(".modal").append("<p class='modalInstructions'>So close! " + countryClicked + " is the only country that shares a border with " + countryToClick + "!");
+            $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>So close! " + countryClicked + " is the only country that shares a border with " + countryToClick + "!");
         } else if (modifiedBorderCountryNames.length === 1) {
-            $(".modal").append("<p class='modalInstructions'>Not too shabby! " + countryToClick + " shares a border with " + countryClicked + " and " + borderCountryList);
+            $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Not too shabby! " + countryToClick + " shares a border with " + countryClicked + " and " + borderCountryList);
         } else {
-            $(".modal").append("<p class='modalInstructions'>So close! " + countryToClick + " shares a border with " + countryClicked + ", as well as " + borderCountryList);
+            $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>So close! " + countryToClick + " shares a border with " + countryClicked + ", as well as " + borderCountryList);
         }
       } else if (numClicks > 5) {
 
           if (borderCount === 0) {
-              $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
+              $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
           } else {
               constructBorderCountryList(borderCountryNames);
-              $(".modal").append("<p class='modalInstructions'>Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
+              $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
           }
       } else {
-          $(".modal").append("<p class='modalInstructions'>Try again!</p>");
+          $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Try again!</p>");
       }
   };
 
@@ -218,7 +218,7 @@ $(document).ready( function () {
     } else {
         msg = "You found " + targetCountryName + " after " + markers.length + " tries!"
     }
-    $(".modal").html(msg + "<br>Awesome Job!<div class='modalInstructions'>Click anywhere to explore the map!</div>");
+    $(".modal").html(msg + "<br>Awesome Job!<div class='modalInstructions' data-dismiss='modal'>Click anywhere to explore the map!</div>");
     $(".well").html("<a href='javascript:window.location.reload()'>Find a new country!</a>");
   };
 
