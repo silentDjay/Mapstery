@@ -2,6 +2,7 @@
 $(document).ready( function () {
   "use strict";
 
+  var countriesData;
   var countryToClick;
   var countryToClickCode;
   var goalLatLng = {lat: "", lng: ""};
@@ -12,6 +13,12 @@ $(document).ready( function () {
   var borderCountryList;
   var clickedCountryCode;
   var countryClicked;
+  var bonusCountryData =
+      { population: "",
+        demonym: "",
+        capital: ""
+      };
+  var mapRevealed = false;
 
   /**
   http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -23,7 +30,8 @@ $(document).ready( function () {
     method: 'GET',
     url: 'https://restcountries.eu/rest/v1/all',
     success: function (allCountryData) {
-        setUpCountry(allCountryData);
+        countriesData = allCountryData;
+        setUpCountry(countriesData);
     }, error: function (request, error) {
         console.error(request);
     }
@@ -33,6 +41,7 @@ $(document).ready( function () {
     var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
     countryToClickCode = countriesDataArray[randCountryNum].alpha2Code;
     countryToClick = countriesDataArray[randCountryNum].name;
+    getBonusCountryData(randCountryNum);
 
     if (!countriesDataArray[randCountryNum].subregion) {
         regionHint = "the Antarctic";
@@ -138,26 +147,32 @@ $(document).ready( function () {
                 countryClicked = results[countryIndex].formatted_address;
                 clickedCountryCode = results[countryIndex].address_components[0].short_name;
 
-                if (clickedCountryCode === countryToClickCode) {
-                    placeMarker(event.latLng, 'green');
-                    victoryDisplay(countryToClick);
+                if (mapRevealed === false) {
+                    if (clickedCountryCode === countryToClickCode) {
+                        placeMarker(event.latLng, 'green');
+                        victoryDisplay(countryToClick);
+                    } else {
+                        $(".modal").modal('show');
+                        $(".modal").html("You clicked on " + countryClicked);
+                        placeMarker(event.latLng, 'red');
+
+                        //determine the supplementary message to display upon click
+                        if (numBorderCountries === 0) {
+                            constructHint(mapRevealed, markers.length, numBorderCountries);
+                        } else {
+                            var clickedBorderIndex = borderCountryCodes.indexOf(clickedCountryCode);
+
+                            if (clickedBorderIndex === -1) {
+                                constructHint(mapRevealed, markers.length, numBorderCountries);
+                            } else {
+                                constructHint(mapRevealed, markers.length, numBorderCountries, clickedBorderIndex);
+                            }
+                        }
+                    }
                 } else {
                     $(".modal").modal('show');
                     $(".modal").html("You clicked on " + countryClicked);
-                    placeMarker(event.latLng, 'red');
-
-                    //determine the supplementary message to display upon click
-                    if (numBorderCountries === 0) {
-                        constructHint(markers.length, numBorderCountries);
-                    } else {
-                        var clickedBorderIndex = borderCountryCodes.indexOf(clickedCountryCode);
-
-                        if (clickedBorderIndex === -1) {
-                            constructHint(markers.length, numBorderCountries);
-                        } else {
-                            constructHint(markers.length, numBorderCountries, clickedBorderIndex);
-                        }
-                    }
+                    constructHint(mapRevealed);
                 }
             } else {
                 $(".modal").modal('show');
@@ -168,30 +183,37 @@ $(document).ready( function () {
     });
   }
 
-  function constructHint(numClicks, borderCount, borderCountryClickedIndex) {
-      if (borderCountryClickedIndex >= 0) {
-        //slice() is used here to create a copy of the border country codes array without affecting the original array. Explanation here: http://stackoverflow.com/questions/6612385/why-does-changing-an-array-in-javascript-affect-copies-of-the-array
-        var modifiedBorderCountryNames = borderCountryNames.slice();
-        modifiedBorderCountryNames.splice(borderCountryClickedIndex, 1);
-        constructBorderCountryList(modifiedBorderCountryNames);
+  function constructHint(isMapRevealed, numClicks, borderCount, borderCountryClickedIndex) {
+      if (isMapRevealed === false) {
+          if (borderCountryClickedIndex >= 0) {
+            //slice() is used here to create a copy of the border country codes array without affecting the original array. Explanation here: http://stackoverflow.com/questions/6612385/why-does-changing-an-array-in-javascript-affect-copies-of-the-array
+            var modifiedBorderCountryNames = borderCountryNames.slice();
+            modifiedBorderCountryNames.splice(borderCountryClickedIndex, 1);
+            constructBorderCountryList(modifiedBorderCountryNames);
 
-        if (modifiedBorderCountryNames.length === 0) {
-            $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>So close! " + countryClicked + " is the only country that shares a border with " + countryToClick + "!");
-        } else if (modifiedBorderCountryNames.length === 1) {
-            $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Not too shabby! " + countryToClick + " shares a border with " + countryClicked + " and " + borderCountryList);
-        } else {
-            $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>So close! " + countryToClick + " shares a border with " + countryClicked + ", as well as " + borderCountryList);
-        }
-      } else if (numClicks > 5) {
+            if (modifiedBorderCountryNames.length === 0) {
+                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>So close! " + countryClicked + " is the only country that shares a border with " + countryToClick + "!");
+            } else if (modifiedBorderCountryNames.length === 1) {
+                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Not too shabby! " + countryToClick + " shares a border with " + countryClicked + " and " + borderCountryList);
+            } else {
+                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>So close! " + countryToClick + " shares a border with " + countryClicked + ", as well as " + borderCountryList);
+            }
+          } else if (numClicks > 5) {
 
-          if (borderCount === 0) {
-              $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
+              if (borderCount === 0) {
+                  $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
+              } else {
+                  constructBorderCountryList(borderCountryNames);
+                  $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
+              }
           } else {
-              constructBorderCountryList(borderCountryNames);
-              $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
+              $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Try again!</p>");
           }
       } else {
-          $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Try again!</p>");
+          var clickedCountryIndex = countriesData.findIndex(getClickedCountryIndex);
+          getBonusCountryData(clickedCountryIndex);
+          $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Population: " + bonusCountryData.population +
+              "<br>Demonym: " + bonusCountryData.demonym + "<br>Capital City: " + bonusCountryData.capital + "</p>");
       }
   };
 
@@ -215,24 +237,43 @@ $(document).ready( function () {
     $(".modal").modal('show');
     var msg = "";
     if (markers.length === 1) {
-        msg = "You found "+ targetCountryName + " on the first try!"
+        msg = "Fantastic! You found "+ targetCountryName + " on the first try!"
     } else {
         msg = "You found " + targetCountryName + " after " + markers.length + " tries!"
     }
-    $(".modal").html(msg + "<br>Awesome Job!<div class='modalInstructions' data-dismiss='modal'>Click anywhere to explore the map!</div>");
+
+    mapRevealed = true;
+    $(".modal").html(msg + "<div class='modalInstructions' data-dismiss='modal'>Population: " + bonusCountryData.population +
+        "<br>Demonym: " + bonusCountryData.demonym + "<br>Capital City: " + bonusCountryData.capital + "<br>Click anywhere to explore the map!</div>");
     $(".well").html("<a href='javascript:window.location.reload()'>Find a new country!</a>");
   };
-
-  $(".well").click(function() {
-      revealCountry();
-  });
 
   function revealCountry() {
       map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
       map.setCenter(goalLatLng);
       map.setZoom(6);
+      mapRevealed = true;
       $(".well").html("<a href='javascript:window.location.reload()'>Find a new country!</a>");
   }
+
+  function getBonusCountryData(countryIndex) {
+      var popNum = countriesData[countryIndex].population;
+      popNum = popNum.toString().split("").reverse();
+      for (var i = 3; i < popNum.length ;i = i+4) {
+          popNum.splice(i, 0, '.');
+      }
+      bonusCountryData.population = popNum.reverse().join("");
+      bonusCountryData.demonym = countriesData[countryIndex].demonym;
+      bonusCountryData.capital = countriesData[countryIndex].capital;
+  };
+
+  function getClickedCountryIndex(allCountries) {
+      return allCountries.alpha2Code === clickedCountryCode;
+  };
+
+  $(".well").click(function() {
+      revealCountry();
+  });
 
   // function startNewRound() {
   //   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);

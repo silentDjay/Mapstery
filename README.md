@@ -35,8 +35,6 @@ Improvements still to implement:
 
 Bugs to fix:
 
-* Clicks on the modalInstructions class do not close the modal
-* Click counter still updates for clicks past successful click/country reveal
 * Clicks on these territories do not return country/any results from the Google Maps API:
 
     * Arunachal Pradesh (far northeastern India)
@@ -55,3 +53,4 @@ To address this, choose which country you want them to belong to (or report them
 
 * Vatican City/Holy See returns poorly formed country data upon click (country name and zip code)
 * US Minor Outlying Islands doesn't have lat/lng data for the reveal
+* Clicks on Guernsey generate "Cannot read property 'formatted_address' of undefined" errors
