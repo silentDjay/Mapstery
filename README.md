@@ -1,6 +1,6 @@
 Mapstery is inspired by my long history of spending hours on end staring at maps and playing geography games on the internet.
 
-[Play the game here](http://silentdjay.github.io/Mapstery/)
+[Play Mapstery here](http://silentdjay.github.io/Mapstery/)
 
 ---
 
