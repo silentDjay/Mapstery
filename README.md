@@ -1,5 +1,7 @@
 Mapstery is inspired by my long history of spending hours on end staring at maps and playing geography games on the internet.
 
+[Play the game here](http://silentdjay.github.io/Mapstery/)
+
 ---
 
 The Google Maps JavaScript API is at the heart of the app's functionality, including reverse geocoding from a click on the map. More information on this functionality can be found here:
