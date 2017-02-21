@@ -30,8 +30,9 @@ more information on Browserify: https://github.com/substack/browserify-handbook
 
 Improvements still to implement:
 
+* Give the user reasonable numbers (without all the decimal points) when telling them how far away their click was from the target country
 * Keep a record of previous countries clicked/not clicked and how many clicks it took to find (Node backend)
-* Tell the user how far away they click from the target country (convert lat/lng averages between click and target country to relevant distance (inches on screen???))
+* Use Leaflet/D3 to create interactive maps to display collective gameplay data
 
 ---
 

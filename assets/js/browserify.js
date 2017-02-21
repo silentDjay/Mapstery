@@ -130,11 +130,12 @@ $(document).ready( function () {
         }
 
         var clickedSpot = {position: event.latLng, map: map};
-        var latitude = clickedSpot.position.lat();
-        var longitude = clickedSpot.position.lng();
+        var clickedLatitude = clickedSpot.position.lat();
+        var clickedLongitude = clickedSpot.position.lng();
+        var distFromTargetCountry = calcLatLangDistance(goalLatLng.lat, goalLatLng.lng, clickedLatitude, clickedLongitude);
 
         var geocoder = new google.maps.Geocoder;
-        var latlng = {lat: latitude, lng: longitude};
+        var latlng = {lat: clickedLatitude, lng: clickedLongitude};
 
         geocoder.geocode({'location': latlng}, function(results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
@@ -158,14 +159,14 @@ $(document).ready( function () {
 
                         //determine the supplementary message to display upon click
                         if (numBorderCountries === 0) {
-                            constructHint(mapRevealed, markers.length, numBorderCountries);
+                            constructHint(mapRevealed, distFromTargetCountry, markers.length, numBorderCountries);
                         } else {
                             var clickedBorderIndex = borderCountryCodes.indexOf(clickedCountryCode);
 
                             if (clickedBorderIndex === -1) {
-                                constructHint(mapRevealed, markers.length, numBorderCountries);
+                                constructHint(mapRevealed, distFromTargetCountry, markers.length, numBorderCountries);
                             } else {
-                                constructHint(mapRevealed, markers.length, numBorderCountries, clickedBorderIndex);
+                                constructHint(mapRevealed, distFromTargetCountry, markers.length, numBorderCountries, clickedBorderIndex);
                             }
                         }
                     }
@@ -183,8 +184,22 @@ $(document).ready( function () {
     });
   }
 
-  function constructHint(isMapRevealed, numClicks, borderCount, borderCountryClickedIndex) {
+//I got this function from here: http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+function calcLatLangDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;    // Math.PI / 180
+    var c = Math.cos;
+    var a = 0.5 - c((lat2 - lat1) * p)/2 +
+        c(lat1 * p) * c(lat2 * p) *
+        (1 - c((lon2 - lon1) * p))/2;
+
+    var km = 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+    var mi = km * 0.621371;
+    return {'miles': mi, 'kilometers': km};
+}
+
+  function constructHint(isMapRevealed, distFromTarget, numClicks, borderCount, borderCountryClickedIndex) {
       if (isMapRevealed === false) {
+          $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>your click was about " + distFromTarget.miles + " Miles (" + distFromTarget.kilometers + " Kilometers) from " + countryToClick);
           if (borderCountryClickedIndex >= 0) {
             //slice() is used here to create a copy of the border country codes array without affecting the original array. Explanation here: http://stackoverflow.com/questions/6612385/why-does-changing-an-array-in-javascript-affect-copies-of-the-array
             var modifiedBorderCountryNames = borderCountryNames.slice();
