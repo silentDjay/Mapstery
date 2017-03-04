@@ -18,11 +18,11 @@ https://restcountries.eu/
 
 Notes on Development:
 
-On my local machine, I've used Browserify as server proxy. To update the JS running on the server, run this command in the directory containing the JS files:
+On my local machine, I've used Browserify as server proxy. Once you've installed Browserify, run this command in the directory containing the JS files to update the JS running on the server:
 
 browserify scripts.js -o browserify.js
 
-Then open the index.html file in the browser and you're good to go!
+Then open the index.html file in your browser and you're good to go!
 
 more information on Browserify: https://github.com/substack/browserify-handbook
 
@@ -30,7 +30,6 @@ more information on Browserify: https://github.com/substack/browserify-handbook
 
 Improvements still to implement:
 
-* Give the user reasonable numbers (without all the decimal points) when telling them how far away their click was from the target country
 * Keep a record of previous countries clicked/not clicked and how many clicks it took to find (Node backend)
 * Use Leaflet/D3 to create interactive maps to display collective gameplay data
 
@@ -38,6 +37,7 @@ Improvements still to implement:
 
 Bugs to fix:
 
+* Fix inconsistent click distance calculations (difficult to reproduce; I should possibly use different values for click lat/lng or target country lat/lng)
 * Clicks on these territories do not return country/any results from the Google Maps API:
 
     * Arunachal Pradesh (far northeastern India)
@@ -56,4 +56,4 @@ To address this, choose which country you want them to belong to (or report them
 
 * Vatican City/Holy See returns poorly formed country data upon click (country name and zip code)
 * US Minor Outlying Islands doesn't have lat/lng data for the reveal
-* Clicks on Guernsey generate "Cannot read property 'formatted_address' of undefined" errors
+* Clicks on Guernsey, Gambier Islands, and others(?) generate "Cannot read property 'formatted_address' of undefined" errors

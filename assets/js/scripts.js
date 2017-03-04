@@ -18,6 +18,8 @@ $(document).ready( function () {
         capital: ""
       };
   var mapRevealed = false;
+  var previousMilesFromTarget;
+  var clickDistanceHint;
 
   /**
   http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -32,7 +34,7 @@ $(document).ready( function () {
         countriesData = allCountryData;
         setUpCountry(countriesData);
     }, error: function (request, error) {
-        console.error(request);
+        console.error(error);
     }
   });
 
@@ -183,22 +185,51 @@ $(document).ready( function () {
     });
   }
 
-//I got this function from here: http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
-function calcLatLangDistance(lat1, lon1, lat2, lon2) {
-    var p = 0.017453292519943295;    // Math.PI / 180
-    var c = Math.cos;
-    var a = 0.5 - c((lat2 - lat1) * p)/2 +
-        c(lat1 * p) * c(lat2 * p) *
-        (1 - c((lon2 - lon1) * p))/2;
+  //I got this function from here: http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+  function calcLatLangDistance(lat1, lon1, lat2, lon2) {
+      var p = 0.017453292519943295;    // Math.PI / 180
+      var c = Math.cos;
+      var a = 0.5 - c((lat2 - lat1) * p)/2 +
+          c(lat1 * p) * c(lat2 * p) *
+          (1 - c((lon2 - lon1) * p))/2;
 
-    var km = 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-    var mi = km * 0.621371;
-    return {'miles': mi, 'kilometers': km};
-}
+      var km = 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+      var mi = km * 0.621371;
+      var isCloser;
+
+      if (typeof previousMilesFromTarget === "number") {
+        if (previousMilesFromTarget > mi) {
+          isCloser = true;
+        } else {
+          isCloser = false;
+        }
+      }
+
+      previousMilesFromTarget = mi;
+      return {'miles': makeNumbersPretty(mi), 'kilometers': makeNumbersPretty(km), 'closerClick': isCloser};
+  }
+
+  function makeNumbersPretty(uglyNumber) {
+      uglyNumber = Math.round(uglyNumber);
+      var uglyNumberRevString = uglyNumber.toString().split("").reverse();
+      for (var i = 3; i < uglyNumberRevString.length ;i = i+4) {
+          uglyNumberRevString.splice(i, 0, ',');
+      }
+      return uglyNumberRevString.reverse().join("");
+  }
 
   function constructHint(isMapRevealed, distFromTarget, numClicks, borderCount, borderCountryClickedIndex) {
       if (isMapRevealed === false) {
-          $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>your click was about " + distFromTarget.miles + " Miles (" + distFromTarget.kilometers + " Kilometers) from " + countryToClick);
+
+          if (distFromTarget.closerClick === true) {
+            clickDistanceHint = "You're getting warmer!";
+          } else if (distFromTarget.closerClick === false) {
+            clickDistanceHint = "You're getting colder."
+          } else {
+            clickDistanceHint = "";
+          }
+
+          $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" + clickDistanceHint + " Your click was about " + distFromTarget.miles + " Miles (" + distFromTarget.kilometers + " Kilometers) from " + countryToClick);
           if (borderCountryClickedIndex >= 0) {
             //slice() is used here to create a copy of the border country codes array without affecting the original array. Explanation here: http://stackoverflow.com/questions/6612385/why-does-changing-an-array-in-javascript-affect-copies-of-the-array
             var modifiedBorderCountryNames = borderCountryNames.slice();
@@ -272,11 +303,7 @@ function calcLatLangDistance(lat1, lon1, lat2, lon2) {
 
   function getBonusCountryData(countryIndex) {
       var popNum = countriesData[countryIndex].population;
-      popNum = popNum.toString().split("").reverse();
-      for (var i = 3; i < popNum.length ;i = i+4) {
-          popNum.splice(i, 0, '.');
-      }
-      bonusCountryData.population = popNum.reverse().join("");
+      bonusCountryData.population = makeNumbersPretty(popNum);
       bonusCountryData.demonym = countriesData[countryIndex].demonym;
       bonusCountryData.capital = countriesData[countryIndex].capital;
   };
