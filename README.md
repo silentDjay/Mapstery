@@ -30,6 +30,7 @@ more information on Browserify: https://github.com/substack/browserify-handbook
 
 Improvements still to implement:
 
+* Remove 'So Close!' text from border country hints, and integrate 'landlocked' info from restcountries into border country hints (and bordering bodies of water if available!)
 * Keep a record of previous countries clicked/not clicked and how many clicks it took to find (Node backend)
 * Use Leaflet/D3 to create interactive maps to display collective gameplay data
 
