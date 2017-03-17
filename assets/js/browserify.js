@@ -238,11 +238,11 @@ $(document).ready( function () {
             constructBorderCountryList(modifiedBorderCountryNames);
 
             if (modifiedBorderCountryNames.length === 0) {
-                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>So close! " + countryClicked + " is the only country that shares a border with " + countryToClick + "!");
+                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" + countryClicked + " is the only country that shares a border with " + countryToClick + "!");
             } else if (modifiedBorderCountryNames.length === 1) {
-                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Not too shabby! " + countryToClick + " shares a border with " + countryClicked + " and " + borderCountryList);
+                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" + countryToClick + " shares a border with " + countryClicked + " and " + borderCountryList);
             } else {
-                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>So close! " + countryToClick + " shares a border with " + countryClicked + ", as well as " + borderCountryList);
+                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" + countryToClick + " shares a border with " + countryClicked + ", as well as " + borderCountryList);
             }
           } else if (numClicks > 5) {
 
