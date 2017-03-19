@@ -30,7 +30,8 @@ more information on Browserify: https://github.com/substack/browserify-handbook
 
 Improvements to implement:
 
+* instead of a click anywhere on the modal to close it, provide a button to close the modal with an explicit 'close layer' label
 * Update initial data call to use v2 of RESTcountries API
-* Show special country data when revealed without a click (give up)
+    * Incorporate flags into 'click on' card design / possibly also the informational post-reveal clicks modal
 * Keep a record of previous countries clicked/not clicked and how many clicks it took to find (Node backend)
 * Use Leaflet/D3 to create interactive maps to display collective gameplay data
