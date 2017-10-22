@@ -25,7 +25,8 @@ html, body {
   cursor: pointer; }
   .well #reveal-country {
     font-size: 16px;
-    text-decoration: underline; }
+    text-decoration: underline;
+    text-align: center; }
 
 .modal {
   font-size: 6em;
@@ -37,5 +38,17 @@ html, body {
   font-size: .5em;
   width: 80%;
   margin-left: 10%; }
+
+.targetFlag {
+  display: block;
+  width: 20%;
+  margin-left: 40%; }
+
+.targetFlagWell {
+  width: 80px;
+  margin-left: 10px; }
+
+.bonusCountryFlag {
+  width: 10%; }
 
 /*# sourceMappingURL=styles.css.map */

@@ -4,6 +4,7 @@ $(document).ready( function () {
   var countriesData;
   var countryToClick;
   var countryToClickCode;
+  var countryToClickFlag;
   var goalLatLng = {lat: "", lng: ""};
   var regionHint;
   var numBorderCountries;
@@ -13,7 +14,8 @@ $(document).ready( function () {
   var clickedCountryCode;
   var countryClicked;
   var bonusCountryData =
-      { population: "",
+      { flag: "",
+        population: "",
         demonym: "",
         capital: ""
       };
@@ -29,7 +31,7 @@ $(document).ready( function () {
 
   $.ajax({
     method: 'GET',
-    url: 'https://restcountries.eu/rest/v1/all',
+    url: 'https://restcountries.eu/rest/v2/all',
     success: function (allCountryData) {
         countriesData = allCountryData;
         setUpCountry(countriesData);
@@ -42,6 +44,7 @@ $(document).ready( function () {
     var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
     countryToClickCode = countriesDataArray[randCountryNum].alpha2Code;
     countryToClick = countriesDataArray[randCountryNum].name;
+    countryToClickFlag = countriesDataArray[randCountryNum].flag;
     getBonusCountryData(randCountryNum);
 
     if (!countriesDataArray[randCountryNum].subregion) {
@@ -52,7 +55,8 @@ $(document).ready( function () {
         regionHint = countriesDataArray[randCountryNum].subregion;
     }
 
-    goalLatLng = {lat: countriesDataArray[randCountryNum].latlng[0], lng: countriesDataArray[randCountryNum].latlng[1]};
+    goalLatLng = {lat: countriesDataArray[randCountryNum].latlng[0],
+                  lng: countriesDataArray[randCountryNum].latlng[1]};
     numBorderCountries = countriesDataArray[randCountryNum].borders.length;
     borderCountryCodes = countriesDataArray[randCountryNum].borders;
 
@@ -70,11 +74,17 @@ $(document).ready( function () {
     }
 
     $(".modal").modal('show');
-    $(".modal").html("Click on " + countryToClick + "<div class='modalInstructions' data-dismiss='modal'>(Click anywhere to start)</div>");
-    $(".well").html("Click on " + countryToClick + "<div id='reveal-country'>Or click here to reveal " + countryToClick + "</div>");
+    $(".modal").html("Click on " + countryToClick +
+        "<img class='targetFlag' src=" + countryToClickFlag + "></img>" +
+        "<div class='modalInstructions' data-dismiss='modal'>(Click anywhere to start)</div>");
+    $(".well").html("Click on " + countryToClick +
+        "<img class='targetFlagWell' src=" + countryToClickFlag + "></img>" +
+        "<div id='reveal-country'>Or click here to reveal " + countryToClick + "</div>");
   }
 
-  // this stackoverflow helped me get my google maps call working: http://stackoverflow.com/questions/34466718/googlemaps-does-not-load-on-page-load
+  /* this stackoverflow helped me get my google maps call working:
+  http://stackoverflow.com/questions/34466718/googlemaps-does-not-load-on-page-load
+  */
 
   var map;
   var markers = [];
@@ -105,6 +115,7 @@ $(document).ready( function () {
         function placeMarker(location, color) {
           markersLength = (markers.length + 1).toString();
           var markerLabel = markersLength + "<br>" + clickedCountryCode;
+          // var markerLabel =
 
           var clickMarker = new MarkerWithLabel({
             position: location,
@@ -133,7 +144,10 @@ $(document).ready( function () {
         var clickedSpot = {position: event.latLng, map: map};
         var clickedLatitude = clickedSpot.position.lat();
         var clickedLongitude = clickedSpot.position.lng();
-        var distFromTargetCountry = calcLatLangDistance(goalLatLng.lat, goalLatLng.lng, clickedLatitude, clickedLongitude);
+        var distFromTargetCountry = calcLatLangDistance(goalLatLng.lat,
+                                                        goalLatLng.lng,
+                                                        clickedLatitude,
+                                                        clickedLongitude);
 
         var geocoder = new google.maps.Geocoder;
         var latlng = {lat: clickedLatitude, lng: clickedLongitude};
@@ -160,14 +174,18 @@ $(document).ready( function () {
 
                         //determine the supplementary message to display upon click
                         if (numBorderCountries === 0) {
-                            constructHint(mapRevealed, distFromTargetCountry, markers.length, numBorderCountries);
+                            constructHint(mapRevealed, distFromTargetCountry,
+                                          markers.length, numBorderCountries);
                         } else {
                             var clickedBorderIndex = borderCountryCodes.indexOf(clickedCountryCode);
 
                             if (clickedBorderIndex === -1) {
-                                constructHint(mapRevealed, distFromTargetCountry, markers.length, numBorderCountries);
+                                constructHint(mapRevealed, distFromTargetCountry,
+                                              markers.length, numBorderCountries);
                             } else {
-                                constructHint(mapRevealed, distFromTargetCountry, markers.length, numBorderCountries, clickedBorderIndex);
+                                constructHint(mapRevealed, distFromTargetCountry,
+                                              markers.length, numBorderCountries,
+                                              clickedBorderIndex);
                             }
                         }
                     }
@@ -178,14 +196,17 @@ $(document).ready( function () {
                 }
             } else {
                 $(".modal").modal('show');
-                $(".modal").html("Whoops! You clicked on unclaimed territory! <br> <p class='modalInstructions' data-dismiss='modal'>Try again!</p>");
+                $(".modal").html("Whoops! You clicked on unclaimed territory! " +
+                    "<br> <p class='modalInstructions' data-dismiss='modal'>Try again!</p>");
             }
 
         });
     });
   }
 
-  //I got this function from here: http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+  /*I got this function from here:
+  http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+  */
   function calcLatLangDistance(lat1, lon1, lat2, lon2) {
       var p = 0.017453292519943295;    // Math.PI / 180
       var c = Math.cos;
@@ -206,7 +227,9 @@ $(document).ready( function () {
       }
 
       previousMilesFromTarget = mi;
-      return {'miles': makeNumbersPretty(mi), 'kilometers': makeNumbersPretty(km), 'closerClick': isCloser};
+      return {'miles': makeNumbersPretty(mi),
+              'kilometers': makeNumbersPretty(km),
+              'closerClick': isCloser};
   }
 
   function makeNumbersPretty(uglyNumber) {
@@ -218,7 +241,8 @@ $(document).ready( function () {
       return uglyNumberRevString.reverse().join("");
   }
 
-  function constructHint(isMapRevealed, distFromTarget, numClicks, borderCount, borderCountryClickedIndex) {
+  function constructHint(isMapRevealed, distFromTarget, numClicks,
+                         borderCount, borderCountryClickedIndex) {
       if (isMapRevealed === false) {
 
           if (distFromTarget.closerClick === true) {
@@ -229,36 +253,56 @@ $(document).ready( function () {
             clickDistanceHint = "";
           }
 
-          $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" + clickDistanceHint + " Your click was about " + distFromTarget.miles + " Miles (" + distFromTarget.kilometers + " Kilometers) from " + countryToClick);
+          $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+              clickDistanceHint + " Your click was about " + distFromTarget.miles +
+              " Miles (" + distFromTarget.kilometers + " Kilometers) from " +
+              countryToClick);
           if (borderCountryClickedIndex >= 0) {
-            //slice() is used here to create a copy of the border country codes array without affecting the original array. Explanation here: http://stackoverflow.com/questions/6612385/why-does-changing-an-array-in-javascript-affect-copies-of-the-array
+            /*slice() is used here to create a copy of the border country codes array
+            without affecting the original array.
+            Explanation here:
+            http://stackoverflow.com/questions/6612385/why-does-changing-an-array-in-javascript-affect-copies-of-the-array
+            */
             var modifiedBorderCountryNames = borderCountryNames.slice();
             modifiedBorderCountryNames.splice(borderCountryClickedIndex, 1);
             constructBorderCountryList(modifiedBorderCountryNames);
 
             if (modifiedBorderCountryNames.length === 0) {
-                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" + countryClicked + " is the only country that shares a border with " + countryToClick + "!");
+                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+                    countryClicked + " is the only country that shares a border with " +
+                    countryToClick + "!");
             } else if (modifiedBorderCountryNames.length === 1) {
-                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" + countryToClick + " shares a border with " + countryClicked + " and " + borderCountryList);
+                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+                    countryToClick + " shares a border with " + countryClicked + " and " +
+                    borderCountryList);
             } else {
-                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" + countryToClick + " shares a border with " + countryClicked + ", as well as " + borderCountryList);
+                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+                    countryToClick + " shares a border with " + countryClicked +
+                    ", as well as " + borderCountryList);
             }
           } else if (numClicks > 5) {
 
               if (borderCount === 0) {
-                  $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Hint: " + countryToClick + " is an island nation in " + regionHint + "</p>");
+                  $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+                      "Hint: " + countryToClick + " is an island nation in " +
+                      regionHint + "</p>");
               } else {
                   constructBorderCountryList(borderCountryNames);
-                  $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Hint: " + countryToClick + " is in " + regionHint + " and shares a border with " + borderCountryList);
+                  $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+                      "Hint: " + countryToClick + " is in " + regionHint +
+                      " and shares a border with " + borderCountryList);
               }
           } else {
-              $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Try again!</p>");
+              $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" + "Try again!</p>");
           }
       } else {
           var clickedCountryIndex = countriesData.findIndex(getClickedCountryIndex);
           getBonusCountryData(clickedCountryIndex);
-          $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>Population: " + bonusCountryData.population +
-              "<br>Demonym: " + bonusCountryData.demonym + "<br>Capital City: " + bonusCountryData.capital + "</p>");
+          $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+              "Flag: <img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
+              "<br>Population: " + bonusCountryData.population +
+              "<br>Demonym: " + bonusCountryData.demonym +
+              "<br>Capital City: " + bonusCountryData.capital + "</p>");
       }
   };
 
@@ -288,8 +332,12 @@ $(document).ready( function () {
     }
 
     mapRevealed = true;
-    $(".modal").html(msg + "<div class='modalInstructions' data-dismiss='modal'>Population: " + bonusCountryData.population +
-        "<br>Demonym: " + bonusCountryData.demonym + "<br>Capital City: " + bonusCountryData.capital + "<br>Click anywhere to explore the map!</div>");
+    $(".modal").html(msg + "<div class='modalInstructions' data-dismiss='modal'>" +
+        "Flag: <img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
+        "<br>Population: " + bonusCountryData.population +
+        "<br>Demonym: " + bonusCountryData.demonym +
+        "<br>Capital City: " + bonusCountryData.capital +
+        "<br>Click anywhere to explore the map!</div>");
     $(".well").html("<a href='javascript:window.location.reload()'>Find a new country!</a>");
   };
 
@@ -302,6 +350,7 @@ $(document).ready( function () {
   }
 
   function getBonusCountryData(countryIndex) {
+      bonusCountryData.flag = countriesData[countryIndex].flag;
       var popNum = countriesData[countryIndex].population;
       bonusCountryData.population = makeNumbersPretty(popNum);
       bonusCountryData.demonym = countriesData[countryIndex].demonym;

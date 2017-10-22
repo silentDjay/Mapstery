@@ -10,9 +10,9 @@ https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeo
 
 ---
 
-The initial AJAX call, to fetch a target country and its relevant data, is made to the REST Countries 'All Countries' API (v1):
+The initial AJAX GET request, to fetch a target country and its relevant data, is made to the [REST Countries](https://restcountries.eu) 'All Countries' endpoint:
 
-https://restcountries.eu/v1
+https://restcountries.eu/rest/v2/all
 
 ---
 
@@ -26,12 +26,11 @@ Then open the index.html file in your browser and you're good to go!
 
 more information on Browserify: https://github.com/substack/browserify-handbook
 
+[MarkerWithLabel](https://github.com/jesstelford/node-MarkerWithLabel) extends the Google Maps JavaScript API V3 google.maps.Marker class and Mapstery uses it to create custom click markers.
 ---
 
 Improvements to implement:
 
 * instead of a click anywhere on the modal to close it, provide a button to close the modal with an explicit 'close layer' label
-* Update initial data call to use v2 of RESTcountries API
-    * Incorporate flags into 'click on' card design / possibly also the informational post-reveal clicks modal
 * Keep a record of previous countries clicked/not clicked and how many clicks it took to find (Node backend)
 * Use Leaflet/D3 to create interactive maps to display collective gameplay data
