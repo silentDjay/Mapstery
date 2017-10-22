@@ -27,10 +27,3 @@ Then open the index.html file in your browser and you're good to go!
 more information on Browserify: https://github.com/substack/browserify-handbook
 
 [MarkerWithLabel](https://github.com/jesstelford/node-MarkerWithLabel) extends the Google Maps JavaScript API V3 google.maps.Marker class and Mapstery uses it to create custom click markers.
----
-
-Improvements to implement:
-
-* instead of a click anywhere on the modal to close it, provide a button to close the modal with an explicit 'close layer' label
-* Keep a record of previous countries clicked/not clicked and how many clicks it took to find (Node backend)
-* Use Leaflet/D3 to create interactive maps to display collective gameplay data
