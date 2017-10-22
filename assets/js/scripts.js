@@ -56,10 +56,22 @@ $(document).ready(function () {
             regionHint = countriesDataArray[randCountryNum].subregion;
         }
 
-        goalLatLng = {
-            lat: countriesDataArray[randCountryNum].latlng[0],
-            lng: countriesDataArray[randCountryNum].latlng[1]
-        };
+        /* United States Minor Outlying Islands doesn't include latlng data in restcountries,
+        so I'm just using the lat/lng data for its largest territory:
+        https://en.wikipedia.org/wiki/Wake_Island
+        */
+        if (countriesDataArray[randCountryNum].alpha2Code === 'UM') {
+            goalLatLng = {
+                lat: 19.3,
+                lng: 166.633333
+            };
+        } else {
+            goalLatLng = {
+                lat: countriesDataArray[randCountryNum].latlng[0],
+                lng: countriesDataArray[randCountryNum].latlng[1]
+            };
+        }
+
         numBorderCountries = countriesDataArray[randCountryNum].borders.length;
         borderCountryCodes = countriesDataArray[randCountryNum].borders;
 
