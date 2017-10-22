@@ -161,6 +161,14 @@ $(document).ready( function () {
                 };
 
                 var countryIndex = results.findIndex(isCountryName);
+
+                if (countryIndex === -1) {
+                  countryIndex = results.forEach(function(element, index) {
+                      countryIndex = element.address_components.findIndex(isCountryName);
+                      console.log(countryIndex);
+                  });
+                }
+
                 countryClicked = results[countryIndex].formatted_address;
                 clickedCountryCode = results[countryIndex].address_components[0].short_name;
 

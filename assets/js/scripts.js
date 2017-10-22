@@ -160,8 +160,19 @@ $(document).ready( function () {
                 };
 
                 var countryIndex = results.findIndex(isCountryName);
-                countryClicked = results[countryIndex].formatted_address;
-                clickedCountryCode = results[countryIndex].address_components[0].short_name;
+                var altCountryIndex = {};
+
+                // perhaps use a .some here? or a regular for loop and break out of it when you find the country
+                if (countryIndex === -1) {
+                  countryIndex = results.for(function(element, index) {
+                      countryIndex = element.address_components.findIndex(isCountryName);
+                  });
+                  countryClicked = results[countryIndex].formatted_address;
+                  clickedCountryCode = results[countryIndex].address_components[0].short_name;
+                } else {
+                  countryClicked = results[countryIndex].formatted_address;
+                  clickedCountryCode = results[countryIndex].address_components[0].short_name;
+                }
 
                 if (mapRevealed === false) {
                     if (clickedCountryCode === countryToClickCode) {
