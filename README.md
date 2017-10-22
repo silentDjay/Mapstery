@@ -16,7 +16,7 @@ https://restcountries.eu/rest/v2/all
 
 ---
 
-Notes on Development:
+__Notes on Development__:
 
 On my local machine, I've used Browserify as server proxy. Once you've installed Browserify, run this command in the directory containing the JS files to update the JS running on the server:
 
