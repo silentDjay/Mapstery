@@ -33,6 +33,7 @@ $(document).ready(function () {
     $.ajax({
         method: 'GET',
         url: 'https://restcountries.eu/rest/v2/all',
+        data: { fields: "flag;name;alpha2Code;alpha3Code;capital;subregion;population;latlng;demonym;borders"},
         success: function (allCountryData) {
             countriesData = allCountryData;
             setUpCountry(countriesData);
