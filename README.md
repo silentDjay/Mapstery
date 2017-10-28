@@ -22,7 +22,7 @@ https://restcountries.eu/rest/v2/all
 ## Development
 
 ### Server Proxy
-Browserify is the development server proxy for Mapstery. Once you've installed Browserify, run this command in `assets/js` to update the JS running on the server:
+[Browserify] is the development server proxy for Mapstery. Once you've installed Browserify, run this command in `assets/js` to update the JS running on the server:
 
 ```bash
 browserify scripts.js -o browserify.js
@@ -30,15 +30,13 @@ browserify scripts.js -o browserify.js
 
 Then, open `index.html` in your browser and you're good to go!
 
-[More information on Browserify]
-
 License
 =======
 [Mozilla Public License] MPL 2.0
 
+[Browserify]: https://github.com/substack/browserify-handbook
 [Google Maps JavaScript API]: https://developers.google.com/maps/documentation/javascript/
 [MarkerWithLabel]: https://github.com/jesstelford/node-MarkerWithLabel
-[More information on Browserify]: https://github.com/substack/browserify-handbook
 [Mozilla Public License]: https://www.mozilla.org/en-US/MPL/2.0/
 [Play Mapstery here]: http://silentdjay.github.io/Mapstery/
 [REST Countries]: https://restcountries.eu
