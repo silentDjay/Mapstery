@@ -23,6 +23,7 @@ $(document).ready(function () {
     var mapRevealed = false;
     var previousMilesFromTarget;
     var clickDistanceHint;
+    var countryRevealZoom;
 
     /**
      http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -33,7 +34,7 @@ $(document).ready(function () {
     $.ajax({
         method: 'GET',
         url: 'https://restcountries.eu/rest/v2/all',
-        data: { fields: "flag;name;alpha2Code;alpha3Code;capital;subregion;population;latlng;demonym;borders"},
+        data: { fields: "flag;name;alpha2Code;alpha3Code;capital;subregion;population;latlng;demonym;area;borders"},
         success: function (allCountryData) {
             countriesData = allCountryData;
             setUpCountry(countriesData);
@@ -43,10 +44,15 @@ $(document).ready(function () {
     });
 
     function setUpCountry(countriesDataArray) {
+        countriesDataArray.forEach(function(country){
+            console.info(country.name + " area: " + country.area);
+        })
+
         var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
         countryToClickCode = countriesDataArray[randCountryNum].alpha2Code;
         countryToClick = countriesDataArray[randCountryNum].name;
         countryToClickFlag = countriesDataArray[randCountryNum].flag;
+        countryRevealZoom = getZoomLevel(countriesDataArray[randCountryNum].area);
         getBonusCountryData(randCountryNum);
 
         if (!countriesDataArray[randCountryNum].subregion) {
@@ -371,12 +377,39 @@ $(document).ready(function () {
             "<br>Capital City: " + bonusCountryData.capital +
             "<br>Click anywhere to explore the map!</div>");
         $(".well").html("<a href='javascript:window.location.reload()'>Find a new country!</a>");
-    };
+    }
 
-    function revealCountry() {
+    /*
+    game starts at zoom level 3
+    default zoom reveal level is 6
+    zoom for Google Maps can go up to 20, but anything above 10 is far too zoomed in for any country
+    range of 3 for huge countries to
+    10 for tiny countries is probably good
+    examples:
+
+    Russia area: fuckin' huge ; good for zoom 3
+    Canada area: 9984670 ; also good for 3 , because it's far from the equator...
+    China area: 9640011 ; good for zoom 5
+    Honduras area: 112492 ; good for zoom 6
+    Belgium area: 30528 ; good for zoom 7
+    Bahrain area: 765 ; good for zoom 8
+
+    Area isn't the only thing we should take into account to get a great measurement
+    we should also probably check whether the country is an island nation, cuz they
+    can be spread very far apart and will probably require a different zoom level than
+    a siimilarly-sized non-island country
+     */
+
+    function getZoomLevel(countryArea) {
+        // var zoomLevel;
+        // if (countryArea > )
+        return 6;
+    }
+
+    function revealCountry(zoomLevel) {
         map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
         map.setCenter(goalLatLng);
-        map.setZoom(6);
+        map.setZoom(zoomLevel);
         mapRevealed = true;
         $(".well").html("<a href='javascript:window.location.reload()'>Find a new country!</a>");
     }
@@ -394,7 +427,7 @@ $(document).ready(function () {
     };
 
     $(".well").click(function () {
-        revealCountry();
+        revealCountry(countryRevealZoom);
     });
 
     // function startNewRound() {
