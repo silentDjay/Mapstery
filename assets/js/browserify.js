@@ -3,9 +3,11 @@ $(document).ready(function () {
     "use strict";
 
     var countriesData;
-    var countryToClick;
+    var targetCountryData;
+    var countryToClickName;
     var countryToClickCode;
     var countryToClickFlag;
+    var countryToClickArea;
     var goalLatLng = {lat: "", lng: ""};
     var regionHint;
     var numBorderCountries;
@@ -45,43 +47,49 @@ $(document).ready(function () {
     });
 
     function setUpCountry(countriesDataArray) {
-        countriesDataArray.forEach(function(country){
-            console.info(country.name + " area: " + country.area);
-        })
-
         var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
-        countryToClickCode = countriesDataArray[randCountryNum].alpha2Code;
-        countryToClick = countriesDataArray[randCountryNum].name;
-        countryToClickFlag = countriesDataArray[randCountryNum].flag;
-        countryRevealZoom = getZoomLevel(countriesDataArray[randCountryNum].area);
+        targetCountryData = countriesDataArray[randCountryNum];
+        countryToClickCode = targetCountryData.alpha2Code;
+        countryToClickName = targetCountryData.name;
+        countryToClickFlag = targetCountryData.flag;
+        countryToClickArea = targetCountryData.area;
+
+        // French Guiana and Svalbard and Jan Mayen have significant landmass, but no area data in restcountries
+        if (countryToClickCode === "GF") {
+            countryToClickArea = 83534;
+        } else if (countryToClickCode === "SJ") {
+            countryToClickArea = 61022;
+        }
+
+        countryRevealZoom = getZoomLevel(countryToClickArea, targetCountryData.latlng[0]);
         getBonusCountryData(randCountryNum);
 
-        if (!countriesDataArray[randCountryNum].subregion) {
+        if (!targetCountryData.subregion) {
             regionHint = "the Antarctic";
-        } else if (countriesDataArray[randCountryNum].subregion === "Caribbean") {
+        } else if (targetCountryData.subregion === "Caribbean") {
             regionHint = "the Caribbean";
         } else {
-            regionHint = countriesDataArray[randCountryNum].subregion;
+            regionHint = targetCountryData.subregion;
         }
 
         /* United States Minor Outlying Islands doesn't include latlng data in restcountries,
         so I'm just using the lat/lng data for its largest territory:
         https://en.wikipedia.org/wiki/Wake_Island
         */
-        if (countriesDataArray[randCountryNum].alpha2Code === 'UM') {
+        if (countryToClickCode === 'UM') {
             goalLatLng = {
                 lat: 19.3,
                 lng: 166.633333
             };
         } else {
             goalLatLng = {
-                lat: countriesDataArray[randCountryNum].latlng[0],
-                lng: countriesDataArray[randCountryNum].latlng[1]
+                lat: targetCountryData.latlng[0],
+                lng: targetCountryData.latlng[1]
             };
         }
 
-        numBorderCountries = countriesDataArray[randCountryNum].borders.length;
-        borderCountryCodes = countriesDataArray[randCountryNum].borders;
+        numBorderCountries = targetCountryData.borders.length;
+        borderCountryCodes = targetCountryData.borders;
 
         if (numBorderCountries === 0) {
         } else {
@@ -97,12 +105,12 @@ $(document).ready(function () {
         }
 
         $(".modal").modal('show');
-        $(".modal").html("Click on " + countryToClick +
+        $(".modal").html("Click on " + countryToClickName +
             "<img class='targetFlag' src=" + countryToClickFlag + "></img>" +
             "<div class='modalInstructions' data-dismiss='modal'>(Click anywhere to start)</div>");
-        $(".well").html("Click on " + countryToClick +
+        $(".well").html("Click on " + countryToClickName +
             "<img class='targetFlagWell' src=" + countryToClickFlag + "></img>" +
-            "<div id='reveal-country'>Or click here to reveal " + countryToClick + "</div>");
+            "<div id='reveal-country'>Or click here to reveal " + countryToClickName + "</div>");
     }
 
     /* this stackoverflow helped me get my google maps call working:
@@ -309,26 +317,26 @@ $(document).ready(function () {
                 if (modifiedBorderCountryNames.length === 0) {
                     $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
                         countryClicked + " is the only country that shares a border with " +
-                        countryToClick + "!");
+                        countryToClickName + "!");
                 } else if (modifiedBorderCountryNames.length === 1) {
                     $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
-                        countryToClick + " shares a border with " + countryClicked + " and " +
+                        countryToClickName + " shares a border with " + countryClicked + " and " +
                         borderCountryList);
                 } else {
                     $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
-                        countryToClick + " shares a border with " + countryClicked +
+                        countryToClickName + " shares a border with " + countryClicked +
                         ", as well as " + borderCountryList);
                 }
             } else if (numClicks > 5) {
 
                 if (borderCount === 0) {
                     $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
-                        "Hint: " + countryToClick + " is an island nation in " +
+                        "Hint: " + countryToClickName + " is an island nation in " +
                         regionHint + "</p>");
                 } else {
                     constructBorderCountryList(borderCountryNames);
                     $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
-                        "Hint: " + countryToClick + " is in " + regionHint +
+                        "Hint: " + countryToClickName + " is in " + regionHint +
                         " and shares a border with " + borderCountryList);
                 }
             } else {
@@ -380,31 +388,42 @@ $(document).ready(function () {
         $(".well").html("<a href='javascript:window.location.reload()'>Find a new country!</a>");
     }
 
-    /*
-    game starts at zoom level 3
-    default zoom reveal level is 6
-    zoom for Google Maps can go up to 20, but anything above 10 is far too zoomed in for any country
-    range of 3 for huge countries to
-    10 for tiny countries is probably good
-    examples:
+    function getZoomLevel(countryArea, countryLatitude) {
+        var zoomLevel = 0;
 
-    Russia area: fuckin' huge ; good for zoom 3
-    Canada area: 9984670 ; also good for 3 , because it's far from the equator...
-    China area: 9640011 ; good for zoom 5
-    Honduras area: 112492 ; good for zoom 6
-    Belgium area: 30528 ; good for zoom 7
-    Bahrain area: 765 ; good for zoom 8
+        switch (true) {
+            case isNaN(countryArea):
+                zoomLevel = 8;
+                break;
+            case countryArea > 9700000:
+                zoomLevel = 3;
+                break;
+            case countryArea > 7500000:
+                zoomLevel = 4;
+                break;
+            case countryArea > 250000:
+                zoomLevel = 5;
+                break;
+            case countryArea > 40000:
+                zoomLevel = 6;
+                break;
+            case countryArea > 1000:
+                zoomLevel = 7;
+                break;
+            case countryArea > 10:
+                zoomLevel = 8;
+                break;
+            case countryArea > 3:
+                zoomLevel = 9;
+                break;
+            default:
+                zoomLevel = 12;
+        }
 
-    Area isn't the only thing we should take into account to get a great measurement
-    we should also probably check whether the country is an island nation, cuz they
-    can be spread very far apart and will probably require a different zoom level than
-    a siimilarly-sized non-island country
-     */
+        // arctic countries in the northern hemisphere are much larger than they appear
+        zoomLevel -= countryLatitude > 70 ? 2 : 0;
 
-    function getZoomLevel(countryArea) {
-        // var zoomLevel;
-        // if (countryArea > )
-        return 6;
+        return zoomLevel;
     }
 
     function revealCountry(zoomLevel) {
