@@ -211,7 +211,7 @@ $(document).ready(function () {
                     if (mapRevealed === false) {
                         if (clickedCountryCode === countryToClickCode) {
                             placeMarker(event.latLng, 'green');
-                            victoryDisplay(countryToClick);
+                            victoryDisplay(countryToClickName);
                         } else {
                             $(".modal").modal('show');
                             $(".modal").html("You clicked on " + countryClicked);
@@ -303,7 +303,7 @@ $(document).ready(function () {
             $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
                 clickDistanceHint + " Your click was about " + distFromTarget.miles +
                 " Miles (" + distFromTarget.kilometers + " Kilometers) from " +
-                countryToClick);
+                countryToClickName);
             if (borderCountryClickedIndex >= 0) {
                 /*slice() is used here to create a copy of the border country codes array
                 without affecting the original array.
