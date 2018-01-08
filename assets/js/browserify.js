@@ -6,219 +6,467 @@ $(document).ready(function () {
 
     var usStateData = [
         {
+            "id": 1,
+            "country": "USA",
             "name": "Alabama",
-            "abbreviation": "AL"
+            "abbr": "AL",
+            "area": "135767SKM",
+            "largest_city": "Birmingham",
+            "capital": "Montgomery"
         },
         {
+            "id": 2,
+            "country": "USA",
             "name": "Alaska",
-            "abbreviation": "AK"
+            "abbr": "AK",
+            "area": "1723337SKM",
+            "largest_city": "Anchorage",
+            "capital": "Juneau"
         },
         {
+            "id": 3,
+            "country": "USA",
             "name": "Arizona",
-            "abbreviation": "AZ"
+            "abbr": "AZ",
+            "area": "113594SKM",
+            "largest_city": "Phoenix",
+            "capital": "Phoenix"
         },
         {
+            "id": 4,
+            "country": "USA",
             "name": "Arkansas",
-            "abbreviation": "AR"
+            "abbr": "AR",
+            "area": "52035SKM",
+            "largest_city": "Little Rock",
+            "capital": "Little Rock"
         },
         {
+            "id": 5,
+            "country": "USA",
             "name": "California",
-            "abbreviation": "CA"
+            "abbr": "CA",
+            "area": "423967SKM",
+            "largest_city": "Los Angeles",
+            "capital": "Sacramento"
         },
         {
+            "id": 6,
+            "country": "USA",
             "name": "Colorado",
-            "abbreviation": "CO"
+            "abbr": "CO",
+            "area": "103642SKM",
+            "largest_city": "Denver",
+            "capital": "Denver"
         },
         {
+            "id": 7,
+            "country": "USA",
             "name": "Connecticut",
-            "abbreviation": "CT"
+            "abbr": "CT",
+            "area": "14357SKM",
+            "largest_city": "Bridgeport",
+            "capital": "Hartford"
         },
         {
+            "id": 8,
+            "country": "USA",
             "name": "Delaware",
-            "abbreviation": "DE"
+            "abbr": "DE",
+            "area": "6446SKM",
+            "largest_city": "Wilmington",
+            "capital": "Dover"
         },
         {
-            "name": "District Of Columbia",
-            "abbreviation": "DC"
-        },
-        {
+            "id": 9,
+            "country": "USA",
             "name": "Florida",
-            "abbreviation": "FL"
+            "abbr": "FL",
+            "area": "170312SKM",
+            "largest_city": "Jacksonville",
+            "capital": "Tallahassee"
         },
         {
+            "id": 10,
+            "country": "USA",
             "name": "Georgia",
-            "abbreviation": "GA"
+            "abbr": "GA",
+            "area": "57513SKM",
+            "largest_city": "Atlanta",
+            "capital": "Atlanta"
         },
         {
+            "id": 11,
+            "country": "USA",
             "name": "Hawaii",
-            "abbreviation": "HI"
+            "abbr": "HI",
+            "area": "6423SKM",
+            "largest_city": "Honolulu",
+            "capital": "Honolulu"
         },
         {
+            "id": 12,
+            "country": "USA",
             "name": "Idaho",
-            "abbreviation": "ID"
+            "abbr": "ID",
+            "area": "82643SKM",
+            "largest_city": "Boise",
+            "capital": "Boise"
         },
         {
+            "id": 13,
+            "country": "USA",
             "name": "Illinois",
-            "abbreviation": "IL"
+            "abbr": "IL",
+            "area": "149995SKM",
+            "largest_city": "Chicago",
+            "capital": "Springfield"
         },
         {
+            "id": 14,
+            "country": "USA",
             "name": "Indiana",
-            "abbreviation": "IN"
+            "abbr": "IN",
+            "area": "35826SKM",
+            "largest_city": "Indianapolis",
+            "capital": "Indianapolis"
         },
         {
+            "id": 15,
+            "country": "USA",
             "name": "Iowa",
-            "abbreviation": "IA"
+            "abbr": "IA",
+            "area": "55857SKM",
+            "largest_city": "Des Moines",
+            "capital": "Des Moines"
         },
         {
+            "id": 16,
+            "country": "USA",
             "name": "Kansas",
-            "abbreviation": "KS"
+            "abbr": "KS",
+            "area": "213100SKM",
+            "largest_city": "Wichita",
+            "capital": "Topeka"
         },
         {
+            "id": 17,
+            "country": "USA",
             "name": "Kentucky",
-            "abbreviation": "KY"
+            "abbr": "KY",
+            "area": "104656SKM",
+            "largest_city": "Louisville",
+            "capital": "Frankfort"
         },
         {
+            "id": 18,
+            "country": "USA",
             "name": "Louisiana",
-            "abbreviation": "LA"
+            "abbr": "LA",
+            "area": "135659SKM",
+            "largest_city": "New Orleans",
+            "capital": "Baton Rouge"
         },
         {
+            "id": 19,
+            "country": "USA",
             "name": "Maine",
-            "abbreviation": "ME"
+            "abbr": "ME",
+            "area": "91633SKM",
+            "largest_city": "Portland",
+            "capital": "Augusta"
         },
         {
+            "id": 20,
+            "country": "USA",
             "name": "Maryland",
-            "abbreviation": "MD"
+            "abbr": "MD",
+            "area": "32131SKM",
+            "largest_city": "Baltimore",
+            "capital": "Annapolis"
         },
         {
+            "id": 21,
+            "country": "USA",
             "name": "Massachusetts",
-            "abbreviation": "MA"
+            "abbr": "MA",
+            "area": "7800SKM",
+            "largest_city": "Boston",
+            "capital": "Boston"
         },
         {
+            "id": 22,
+            "country": "USA",
             "name": "Michigan",
-            "abbreviation": "MI"
+            "abbr": "MI",
+            "area": "250487SKM",
+            "largest_city": "Detroit",
+            "capital": "Lansing"
         },
         {
-            "name": "Minnesota",
-            "abbreviation": "MN"
-        },
-        {
-            "name": "Mississippi",
-            "abbreviation": "MS"
-        },
-        {
-            "name": "Missouri",
-            "abbreviation": "MO"
-        },
-        {
-            "name": "Montana",
-            "abbreviation": "MT"
-        },
-        {
-            "name": "Nebraska",
-            "abbreviation": "NE"
-        },
-        {
-            "name": "Nevada",
-            "abbreviation": "NV"
-        },
-        {
-            "name": "New Hampshire",
-            "abbreviation": "NH"
-        },
-        {
-            "name": "New Jersey",
-            "abbreviation": "NJ"
-        },
-        {
-            "name": "New Mexico",
-            "abbreviation": "NM"
-        },
-        {
-            "name": "New York",
-            "abbreviation": "NY"
-        },
-        {
-            "name": "North Carolina",
-            "abbreviation": "NC"
-        },
-        {
-            "name": "North Dakota",
-            "abbreviation": "ND"
-        },
-        {
-            "name": "Ohio",
-            "abbreviation": "OH"
-        },
-        {
+            "id": 36,
+            "country": "USA",
             "name": "Oklahoma",
-            "abbreviation": "OK"
+            "abbr": "OK",
+            "area": "68595SKM",
+            "largest_city": "Oklahoma City",
+            "capital": "Oklahoma City"
         },
         {
+            "id": 37,
+            "country": "USA",
             "name": "Oregon",
-            "abbreviation": "OR"
+            "abbr": "OR",
+            "area": "254799SKM",
+            "largest_city": "Portland",
+            "capital": "Salem"
         },
         {
+            "id": 38,
+            "country": "USA",
             "name": "Pennsylvania",
-            "abbreviation": "PA"
+            "abbr": "PA",
+            "area": "119280SKM",
+            "largest_city": "Philadelphia",
+            "capital": "Harrisburg"
         },
         {
-            "name": "Puerto Rico",
-            "abbreviation": "PR"
-        },
-        {
+            "id": 39,
+            "country": "USA",
             "name": "Rhode Island",
-            "abbreviation": "RI"
+            "abbr": "RI",
+            "area": "1034SKM",
+            "largest_city": "Providence",
+            "capital": "Providence"
         },
         {
+            "id": 40,
+            "country": "USA",
             "name": "South Carolina",
-            "abbreviation": "SC"
+            "abbr": "SC",
+            "area": "82933SKM",
+            "largest_city": "Charleston",
+            "capital": "Columbia"
         },
         {
+            "id": 41,
+            "country": "USA",
             "name": "South Dakota",
-            "abbreviation": "SD"
+            "abbr": "SD",
+            "area": "199729SKM",
+            "largest_city": "Sioux Falls",
+            "capital": "Pierre"
         },
         {
+            "id": 42,
+            "country": "USA",
             "name": "Tennessee",
-            "abbreviation": "TN"
+            "abbr": "TN",
+            "area": "41235SKM",
+            "largest_city": "Nashville",
+            "capital": "Nashville"
         },
         {
+            "id": 43,
+            "country": "USA",
             "name": "Texas",
-            "abbreviation": "TX"
+            "abbr": "TX",
+            "area": "695662SKM",
+            "largest_city": "Houston",
+            "capital": "Austin"
         },
         {
+            "id": 44,
+            "country": "USA",
             "name": "Utah",
-            "abbreviation": "UT"
+            "abbr": "UT",
+            "area": "82170SKM",
+            "largest_city": "Salt Lake City",
+            "capital": "Salt Lake City"
         },
         {
+            "id": 23,
+            "country": "USA",
+            "name": "Minnesota",
+            "abbr": "MN",
+            "area": "225163SKM",
+            "largest_city": "Minneapolis",
+            "capital": "St. Paul"
+        },
+        {
+            "id": 24,
+            "country": "USA",
+            "name": "Mississippi",
+            "abbr": "MS",
+            "area": "46923SKM",
+            "largest_city": "Jackson",
+            "capital": "Jackson"
+        },
+        {
+            "id": 25,
+            "country": "USA",
+            "name": "Missouri",
+            "abbr": "MO",
+            "area": "180540SKM",
+            "largest_city": "Kansas City",
+            "capital": "Jefferson City"
+        },
+        {
+            "id": 26,
+            "country": "USA",
+            "name": "Montana",
+            "abbr": "MT",
+            "area": "380831SKM",
+            "largest_city": "Billings",
+            "capital": "Helena"
+        },
+        {
+            "id": 27,
+            "country": "USA",
+            "name": "Nebraska",
+            "abbr": "NE",
+            "area": "200330SKM",
+            "largest_city": "Omaha",
+            "capital": "Lincoln"
+        },
+        {
+            "id": 28,
+            "country": "USA",
+            "name": "Nevada",
+            "abbr": "NV",
+            "area": "286380SKM",
+            "largest_city": "Las Vegas",
+            "capital": "Carson City"
+        },
+        {
+            "id": 29,
+            "country": "USA",
+            "name": "New Hampshire",
+            "abbr": "NH",
+            "area": "24214SKM",
+            "largest_city": "Manchester",
+            "capital": "Concord"
+        },
+        {
+            "id": 30,
+            "country": "USA",
+            "name": "New Jersey",
+            "abbr": "NJ",
+            "area": "22591SKM",
+            "largest_city": "Newark",
+            "capital": "Trenton"
+        },
+        {
+            "id": 31,
+            "country": "USA",
+            "name": "New Mexico",
+            "abbr": "NM",
+            "area": "314917SKM",
+            "largest_city": "Albuquerque",
+            "capital": "Santa Fe"
+        },
+        {
+            "id": 32,
+            "country": "USA",
+            "name": "New York",
+            "abbr": "NY",
+            "area": "141297SKM",
+            "largest_city": "New York City",
+            "capital": "Albany"
+        },
+        {
+            "id": 33,
+            "country": "USA",
+            "name": "North Carolina",
+            "abbr": "NC",
+            "area": "139391SKM",
+            "largest_city": "Charlotte",
+            "capital": "Raleigh"
+        },
+        {
+            "id": 34,
+            "country": "USA",
+            "name": "North Dakota",
+            "abbr": "ND",
+            "area": "183108SKM",
+            "largest_city": "Fargo",
+            "capital": "Bismarck"
+        },
+        {
+            "id": 35,
+            "country": "USA",
+            "name": "Ohio",
+            "abbr": "OH",
+            "area": "40861SKM",
+            "largest_city": "Columbus",
+            "capital": "Columbus"
+        },
+        {
+            "id": 45,
+            "country": "USA",
             "name": "Vermont",
-            "abbreviation": "VT"
+            "abbr": "VT",
+            "area": "24906SKM",
+            "largest_city": "Burlington",
+            "capital": "Montpelier"
         },
         {
+            "id": 46,
+            "country": "USA",
             "name": "Virginia",
-            "abbreviation": "VA"
+            "abbr": "VA",
+            "area": "110787SKM",
+            "largest_city": "Virginia Beach",
+            "capital": "Richmond"
         },
         {
+            "id": 47,
+            "country": "USA",
             "name": "Washington",
-            "abbreviation": "WA"
+            "abbr": "WA",
+            "area": "184661SKM",
+            "largest_city": "Seattle",
+            "capital": "Olympia"
         },
         {
+            "id": 48,
+            "country": "USA",
             "name": "West Virginia",
-            "abbreviation": "WV"
+            "abbr": "WV",
+            "area": "24038SKM",
+            "largest_city": "Charleston",
+            "capital": "Charleston"
         },
         {
+            "id": 49,
+            "country": "USA",
             "name": "Wisconsin",
-            "abbreviation": "WI"
+            "abbr": "WI",
+            "area": "169635SKM",
+            "largest_city": "Milwaukee",
+            "capital": "Madison"
         },
         {
+            "id": 50,
+            "country": "USA",
             "name": "Wyoming",
-            "abbreviation": "WY"
+            "abbr": "WY",
+            "area": "97093SKM",
+            "largest_city": "Cheyenne",
+            "capital": "Cheyenne"
         }
     ];
-    var targetState;
-    var stateClickedNickname;
-    var stateClickedFullName;
 
-    var countriesData;
+    var potentialTargets; // formerly countriesData
+    var selectedGameType;
+
+    var targetState;
+    var stateClickedFullName;
+    var bonusStateData = {
+        capital: '',
+        largest_city: ''
+    };
+
     var targetCountryData;
     var countryToClickName;
     var countryToClickCode;
@@ -230,7 +478,7 @@ $(document).ready(function () {
     var borderCountryCodes = [];
     var borderCountryNames = [];
     var borderCountryList;
-    var clickedCountryCode;
+    var clickedTerritoryCode;
     var countryClicked;
     var bonusCountryData =
         {
@@ -245,29 +493,28 @@ $(document).ready(function () {
     var countryRevealZoom;
 
     /**
-     http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
-     * Returns a random integer between min (inclusive) and max (inclusive)
-     * Using Math.round() will give you a non-uniform distribution!
+     * ask user to select which type of game they want to play
      */
+    $("#countries_button").click(function () {
+        initiateMapsteryGameplay('worldCountries');
+    });
+    $("#states_button").click(function () {
+        initiateMapsteryGameplay('usStates');
+    });
+    // $("#proceed_button").hide();
+    // $("#proceed_button button").click(function () {
+    //     console.info('proceed button clicked');
+    // });
+    $(".well").hide();
+    $(".modal").modal('show');
 
-    // begin state setup and game initiation
-    function setUpState(statesDataArray) {
-        var randCountryNum = Math.floor(Math.random() * (52 - 0 + 1)) + 0;
-        targetState = statesDataArray[randCountryNum];
-
-        $(".modal").modal('show');
-        $(".modal").html("Click on " + targetState.name +
-            "<div class='modalInstructions' data-dismiss='modal'>(Click anywhere to start)</div>");
-        $(".well").html("Click on " + targetState.name +
-            "<div id='reveal-country'>Or click here to reveal " + targetState.name + "</div>");
-    }
-
-    setUpState(usStateData);
-
+    /**
+     * initiate the map
+     */
     window.initMap = function () {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 42.29, lng: -85.585833},
-            zoom: 4,
+            zoom: 2,
             mapTypeId: google.maps.MapTypeId.SATELLITE,
             disableDefaultUI: true,
             zoomControl: true,
@@ -281,7 +528,7 @@ $(document).ready(function () {
 
             function placeMarker(location, color) {
                 markersLength = (markers.length + 1).toString();
-                var markerLabel = markersLength + "<br>" + stateClickedNickname;
+                var markerLabel = markersLength + "<br>" + clickedTerritoryCode;
 
                 var clickMarker = new MarkerWithLabel({
                     position: location,
@@ -310,6 +557,10 @@ $(document).ready(function () {
             var clickedSpot = {position: event.latLng, map: map};
             var clickedLatitude = clickedSpot.position.lat();
             var clickedLongitude = clickedSpot.position.lng();
+            var distFromTargetCountry = calcLatLangDistance(goalLatLng.lat,
+                goalLatLng.lng,
+                clickedLatitude,
+                clickedLongitude);
 
             var geocoder = new google.maps.Geocoder;
             var latlng = {lat: clickedLatitude, lng: clickedLongitude};
@@ -318,53 +569,157 @@ $(document).ready(function () {
                 return element.types[0] === "administrative_area_level_1";
             }
 
+            function isCountryName(element) {
+                return element.types[0] === "country";
+            }
+
             geocoder.geocode({'location': latlng}, function (results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
 
-                    var stateIndex = results.findIndex(isStateName);
+                    if (selectedGameType === 'worldCountries') {
+                        var countryIndex = results.findIndex(isCountryName);
 
-                    stateClickedNickname = results[stateIndex].address_components[0].short_name;
-                    stateClickedFullName = results[stateIndex].address_components[0].long_name;
-                    console.info(stateClickedNickname + ' ' + stateClickedFullName);
+                        if (countryIndex === -1) {
+                            resultsLoop:
+                                for (var resultsIndex = (results.length - 1); resultsIndex >= 0; resultsIndex--) {
+                                    for (var addressIndex = (results[resultsIndex].address_components.length - 1);
+                                         addressIndex >= 0; addressIndex--) {
+                                        if (isCountryName(results[resultsIndex].address_components[addressIndex])) {
+                                            countryClicked = results[resultsIndex].address_components[addressIndex].long_name;
+                                            clickedTerritoryCode = results[resultsIndex].address_components[addressIndex].short_name;
+                                            break resultsLoop;
+                                        }
+                                    }
+                                }
+                        } else {
+                            countryClicked = results[countryIndex].address_components[0].long_name;
+                            clickedTerritoryCode = results[countryIndex].address_components[0].short_name;
+                        }
 
-                    if (mapRevealed === false) {
-                        if (targetState.abbreviation === stateClickedNickname) {
-                            placeMarker(event.latLng, 'green');
-                            victoryDisplay(stateClickedFullName);
+                        if (mapRevealed === false) {
+                            if (clickedTerritoryCode === countryToClickCode) {
+                                placeMarker(event.latLng, 'green');
+                                victoryDisplay(countryToClickName);
+                            } else {
+                                $(".modal").modal('show');
+                                $(".modal").html("You clicked on " + countryClicked);
+                                placeMarker(event.latLng, 'red');
+
+                                //determine the supplementary message to display upon click
+                                if (numBorderCountries === 0) {
+                                    constructHint(mapRevealed, distFromTargetCountry,
+                                        markers.length, numBorderCountries);
+                                } else {
+                                    var clickedBorderIndex = borderCountryCodes.indexOf(clickedTerritoryCode);
+
+                                    if (clickedBorderIndex === -1) {
+                                        constructHint(mapRevealed, distFromTargetCountry,
+                                            markers.length, numBorderCountries);
+                                    } else {
+                                        constructHint(mapRevealed, distFromTargetCountry,
+                                            markers.length, numBorderCountries,
+                                            clickedBorderIndex);
+                                    }
+                                }
+                            }
+                        } else {
+                            $(".modal").modal('show');
+                            $(".modal").html("You clicked on " + countryClicked);
+                            constructHint(mapRevealed);
+                        }
+                    } else if (selectedGameType === 'usStates') {
+                        var stateIndex = results.findIndex(isStateName);
+
+                        clickedTerritoryCode = results[stateIndex].address_components[0].short_name;
+                        stateClickedFullName = results[stateIndex].address_components[0].long_name;
+
+                        if (mapRevealed === false) {
+                            if (targetState.abbr === clickedTerritoryCode) {
+                                placeMarker(event.latLng, 'green');
+                                victoryDisplay(stateClickedFullName);
+                            } else {
+                                $(".modal").modal('show');
+                                $(".modal").html("You clicked on " + stateClickedFullName +
+                                    "<div id='proceed_button' class='modalInstructions'>" +
+                                    "<button type='button' class='btn btn-primary' data-dismiss='modal'>Try Again</button>" +
+                                    "</div>"
+                                );
+                                placeMarker(event.latLng, 'red');
+                            }
                         } else {
                             $(".modal").modal('show');
                             $(".modal").html("You clicked on " + stateClickedFullName);
-                            placeMarker(event.latLng, 'red');
+                            constructHint(mapRevealed);
                         }
-                    } else {
-                        $(".modal").modal('show');
-                        $(".modal").html("You clicked on " + stateClickedFullName);
                     }
                 } else {
                     $(".modal").modal('show');
                     $(".modal").html("Whoops! You clicked on unclaimed territory! " +
-                        "<br> <p class='modalInstructions' data-dismiss='modal'>Try again!</p>");
+                        "<div id='proceed_button' class='modalInstructions'>" +
+                        "<button type='button' class='btn btn-primary' data-dismiss='modal'>Try Again</button>" +
+                        "</div>"
+                    );
                 }
 
             });
         });
-    }
-    // end state setup and gameplay
+    };
 
-    $.ajax({
-        method: 'GET',
-        url: 'https://restcountries.eu/rest/v2/all',
-        data: { fields: "flag;name;alpha2Code;alpha3Code;capital;subregion;population;latlng;demonym;area;borders"},
-        success: function (allCountryData) {
-            countriesData = allCountryData;
-            // setUpCountry(countriesData);
-        }, error: function (request, error) {
-            console.error(error);
+    /**
+     http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+     * Returns a random integer between min (inclusive) and max (inclusive)
+     * Using Math.round() will give you a non-uniform distribution!
+     */
+
+    function initiateMapsteryGameplay(gameType) {
+        selectedGameType = gameType;
+        if (gameType === 'worldCountries') {
+            $.ajax({
+                method: 'GET',
+                url: 'https://restcountries.eu/rest/v2/all',
+                data: {fields: "flag;name;alpha2Code;alpha3Code;capital;subregion;population;latlng;demonym;area;borders"},
+                success: function (allCountryData) {
+                    potentialTargets = allCountryData;
+                    setUpCountry(potentialTargets);
+                }, error: function (request, error) {
+                    console.error(error);
+                }
+            });
+            console.info(potentialTargets);
+            // setUpCountry(potentialTargets);
+        } else if (gameType === 'usStates') {
+            // this endpoint has the data I need, but it throws CORS errors ...
+            // dataEndpoint = 'http://services.groupkt.com/state/get/USA/all';
+
+            potentialTargets = usStateData;
+            map.setZoom(4);
+            map.setCenter({
+                lat: 39.810556,
+                lng: -98.556111
+            });
+            setUpState(potentialTargets);
+        } else {
+            alert("uh oh! Mapstery can't do that yet");
         }
-    });
+    }
+
+    function setUpState(statesDataArray) {
+        var randCountryNum = Math.floor(Math.random() * statesDataArray.length);
+        targetState = statesDataArray[randCountryNum];
+        getBonusStateData(randCountryNum);
+
+        $(".modal").modal('show');
+        $(".modal").html("Click on " + targetState.name +
+            "<div id='proceed_button' class='modalInstructions'>" +
+            "<button type='button' class='btn btn-primary' data-dismiss='modal'>Click to start playing</button></div>"
+        );
+        $("#proceed_button").modal('show');
+        $(".well").show();
+        $(".well").html("Click on " + targetState.name);
+    }
 
     function setUpCountry(countriesDataArray) {
-        var randCountryNum = Math.floor(Math.random() * (246 - 0 + 1)) + 0;
+        var randCountryNum = Math.floor(Math.random() * countriesDataArray.length);
         targetCountryData = countriesDataArray[randCountryNum];
         countryToClickCode = targetCountryData.alpha2Code;
         countryToClickName = targetCountryData.name;
@@ -424,7 +779,10 @@ $(document).ready(function () {
         $(".modal").modal('show');
         $(".modal").html("Click on " + countryToClickName +
             "<img class='targetFlag' src=" + countryToClickFlag + "></img>" +
-            "<div class='modalInstructions' data-dismiss='modal'>(Click anywhere to start)</div>");
+            "<div id='proceed_button' class='modalInstructions'>" +
+            "<button type='button' class='btn btn-primary' data-dismiss='modal'>Click to start playing</button></div>"
+        );
+        $(".well").show();
         $(".well").html("Click on " + countryToClickName +
             "<img class='targetFlagWell' src=" + countryToClickFlag + "></img>" +
             "<div id='reveal-country'>Or click here to reveal " + countryToClickName + "</div>");
@@ -437,134 +795,6 @@ $(document).ready(function () {
     var map;
     var markers = [];
     var markersLength;
-
-    // function resetMarkers() {
-    //   for (var i=0;i<markers.length;i++) {
-    //     markers[i].setMap(null);
-    //   }
-    //   markers = [];
-    // }
-
-    // window.initMap = function () {
-    //     map = new google.maps.Map(document.getElementById('map'), {
-    //         center: {lat: 42.29, lng: -85.585833},
-    //         zoom: 3,
-    //         mapTypeId: google.maps.MapTypeId.SATELLITE,
-    //         disableDefaultUI: true,
-    //         zoomControl: true,
-    //         draggableCursor: 'crosshair'
-    //     });
-    //
-    //     //get the latitude and longitude of a user's click
-    //     google.maps.event.addListener(map, "click", function (event) {
-    //
-    //         var MarkerWithLabel = require('markerwithlabel')(google.maps);
-    //
-    //         function placeMarker(location, color) {
-    //             markersLength = (markers.length + 1).toString();
-    //             var markerLabel = markersLength + "<br>" + clickedCountryCode;
-    //
-    //             var clickMarker = new MarkerWithLabel({
-    //                 position: location,
-    //                 map: map,
-    //                 labelContent: markerLabel,
-    //                 labelAnchor: new google.maps.Point(10, 50),
-    //                 labelClass: "labels", // the CSS class for the label
-    //                 labelInBackground: false,
-    //                 icon: pinSymbol(color)
-    //             });
-    //
-    //             markers.push(clickMarker);
-    //         }
-    //
-    //         function pinSymbol(color) {
-    //             return {
-    //                 path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
-    //                 fillColor: color,
-    //                 fillOpacity: 1,
-    //                 strokeColor: '#000',
-    //                 strokeWeight: 2,
-    //                 scale: 1.5
-    //             };
-    //         }
-    //
-    //         var clickedSpot = {position: event.latLng, map: map};
-    //         var clickedLatitude = clickedSpot.position.lat();
-    //         var clickedLongitude = clickedSpot.position.lng();
-    //         var distFromTargetCountry = calcLatLangDistance(goalLatLng.lat,
-    //             goalLatLng.lng,
-    //             clickedLatitude,
-    //             clickedLongitude);
-    //
-    //         var geocoder = new google.maps.Geocoder;
-    //         var latlng = {lat: clickedLatitude, lng: clickedLongitude};
-    //
-    //         function isCountryName(element) {
-    //             return element.types[0] === "country";
-    //         }
-    //
-    //         geocoder.geocode({'location': latlng}, function (results, status) {
-    //             if (status === google.maps.GeocoderStatus.OK) {
-    //
-    //                 var countryIndex = results.findIndex(isCountryName);
-    //
-    //                 if (countryIndex === -1) {
-    //                     resultsLoop:
-    //                         for (var resultsIndex = (results.length - 1); resultsIndex >= 0; resultsIndex--) {
-    //                             for (var addressIndex = (results[resultsIndex].address_components.length - 1);
-    //                                  addressIndex >= 0; addressIndex--) {
-    //                                 if (isCountryName(results[resultsIndex].address_components[addressIndex])) {
-    //                                     countryClicked = results[resultsIndex].address_components[addressIndex].long_name;
-    //                                     clickedCountryCode = results[resultsIndex].address_components[addressIndex].short_name;
-    //                                     break resultsLoop;
-    //                                 }
-    //                             }
-    //                         }
-    //                 } else {
-    //                     countryClicked = results[countryIndex].address_components[0].long_name;
-    //                     clickedCountryCode = results[countryIndex].address_components[0].short_name;
-    //                 }
-    //
-    //                 if (mapRevealed === false) {
-    //                     if (clickedCountryCode === countryToClickCode) {
-    //                         placeMarker(event.latLng, 'green');
-    //                         victoryDisplay(countryToClickName);
-    //                     } else {
-    //                         $(".modal").modal('show');
-    //                         $(".modal").html("You clicked on " + countryClicked);
-    //                         placeMarker(event.latLng, 'red');
-    //
-    //                         //determine the supplementary message to display upon click
-    //                         if (numBorderCountries === 0) {
-    //                             constructHint(mapRevealed, distFromTargetCountry,
-    //                                 markers.length, numBorderCountries);
-    //                         } else {
-    //                             var clickedBorderIndex = borderCountryCodes.indexOf(clickedCountryCode);
-    //
-    //                             if (clickedBorderIndex === -1) {
-    //                                 constructHint(mapRevealed, distFromTargetCountry,
-    //                                     markers.length, numBorderCountries);
-    //                             } else {
-    //                                 constructHint(mapRevealed, distFromTargetCountry,
-    //                                     markers.length, numBorderCountries,
-    //                                     clickedBorderIndex);
-    //                             }
-    //                         }
-    //                     }
-    //                 } else {
-    //                     $(".modal").modal('show');
-    //                     $(".modal").html("You clicked on " + countryClicked);
-    //                     constructHint(mapRevealed);
-    //                 }
-    //             } else {
-    //                 $(".modal").modal('show');
-    //                 $(".modal").html("Whoops! You clicked on unclaimed territory! " +
-    //                     "<br> <p class='modalInstructions' data-dismiss='modal'>Try again!</p>");
-    //             }
-    //
-    //         });
-    //     });
-    // }
 
     /*I got this function from here:
     http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
@@ -581,11 +811,7 @@ $(document).ready(function () {
         var isCloser;
 
         if (typeof previousMilesFromTarget === "number") {
-            if (previousMilesFromTarget > mi) {
-                isCloser = true;
-            } else {
-                isCloser = false;
-            }
+            isCloser = previousMilesFromTarget > mi;
         }
 
         previousMilesFromTarget = mi;
@@ -617,10 +843,13 @@ $(document).ready(function () {
                 clickDistanceHint = "";
             }
 
-            $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+            $(".modal").append("<p class='modalInstructions'>" +
                 clickDistanceHint + " Your click was about " + distFromTarget.miles +
                 " Miles (" + distFromTarget.kilometers + " Kilometers) from " +
-                countryToClickName);
+                countryToClickName + "<div id='proceed_button' class='modalInstructions'>" +
+                "<button type='button' class='btn btn-primary' data-dismiss='modal'>Try Again</button>" +
+                "</div>"
+            );
             if (borderCountryClickedIndex >= 0) {
                 /*slice() is used here to create a copy of the border country codes array
                 without affecting the original array.
@@ -632,43 +861,64 @@ $(document).ready(function () {
                 constructBorderCountryList(modifiedBorderCountryNames);
 
                 if (modifiedBorderCountryNames.length === 0) {
-                    $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+                    $(".modal").append("<p class='modalInstructions'>" +
                         countryClicked + " is the only country that shares a border with " +
                         countryToClickName + "!");
                 } else if (modifiedBorderCountryNames.length === 1) {
-                    $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+                    $(".modal").append("<p class='modalInstructions'>" +
                         countryToClickName + " shares a border with " + countryClicked + " and " +
                         borderCountryList);
                 } else {
-                    $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+                    $(".modal").append("<p class='modalInstructions'>" +
                         countryToClickName + " shares a border with " + countryClicked +
                         ", as well as " + borderCountryList);
                 }
             } else if (numClicks > 5) {
 
                 if (borderCount === 0) {
-                    $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+                    $(".modal").append("<p class='modalInstructions'>" +
                         "Hint: " + countryToClickName + " is an island nation in " +
                         regionHint + "</p>");
                 } else {
                     constructBorderCountryList(borderCountryNames);
-                    $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
+                    $(".modal").append("<p class='modalInstructions'>" +
                         "Hint: " + countryToClickName + " is in " + regionHint +
                         " and shares a border with " + borderCountryList);
                 }
-            } else {
-                $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" + "Try again!</p>");
             }
         } else {
-            var clickedCountryIndex = countriesData.findIndex(getClickedCountryIndex);
-            getBonusCountryData(clickedCountryIndex);
-            $(".modal").append("<p class='modalInstructions' data-dismiss='modal'>" +
-                "Flag: <img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
-                "<br>Population: " + bonusCountryData.population +
-                "<br>Demonym: " + bonusCountryData.demonym +
-                "<br>Capital City: " + bonusCountryData.capital + "</p>");
+            if (selectedGameType === 'worldCountries'){
+                var clickedCountryIndex = potentialTargets.findIndex(getClickedCountryIndex);
+                getBonusCountryData(clickedCountryIndex);
+                $(".modal").append("<p class='modalInstructions'>" +
+                    "Flag: <img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
+                    "<br>Population: " + bonusCountryData.population +
+                    "<br>Demonym: " + bonusCountryData.demonym +
+                    "<br>Capital City: " + bonusCountryData.capital +
+                    "<br><button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the map</button>" +
+                    "</p>"
+                );
+            } else if (selectedGameType === 'usStates') {
+                var clickedStateIndex = potentialTargets.findIndex(getClickedStateIndex);
+                if (clickedStateIndex != -1) {
+                    getBonusStateData(clickedStateIndex);
+                    $(".modal").append("<p class='modalInstructions'>" +
+                        "Capital City: " + bonusStateData.capital +
+                        "<br>Largest City: " + bonusStateData.largest_city +
+                        "<br><button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the map</button>" +
+                        "</p>"
+                    );
+                } else {
+                    $(".modal").append("<p class='modalInstructions'>" +
+                        "<button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the map</button>" +
+                        "</p>"
+                    );
+                }
+
+            }
+
         }
-    };
+    }
 
     function constructBorderCountryList(countryNameArray) {
         if (countryNameArray.length === 0) {
@@ -683,7 +933,7 @@ $(document).ready(function () {
             }
             borderCountryList = countryNameArray.join(", ");
         }
-    };
+    }
 
     function victoryDisplay(targetCountryName) {
         map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
@@ -696,13 +946,28 @@ $(document).ready(function () {
         }
 
         mapRevealed = true;
-        $(".modal").html(msg + "<div class='modalInstructions' data-dismiss='modal'>");
-            // "Flag: <img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
-            // "<br>Population: " + bonusCountryData.population +
-            // "<br>Demonym: " + bonusCountryData.demonym +
-            // "<br>Capital City: " + bonusCountryData.capital +
-            // "<br>Click anywhere to explore the map!</div>");
-        $(".well").html("<a href='javascript:window.location.reload()'>Find a new state!</a>");
+
+        if (selectedGameType === 'worldCountries') {
+            $(".modal").html(msg + "<div class='modalInstructions'>" +
+                "Flag: <img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
+                "<br>Population: " + bonusCountryData.population +
+                "<br>Demonym: " + bonusCountryData.demonym +
+                "<br>Capital City: " + bonusCountryData.capital + "</div>" +
+                "<div id='proceed_button' class='modalInstructions'>" +
+                "<button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the map</button>" +
+                "</div>"
+            );
+            $(".well").html("<a href='javascript:window.location.reload()'>Play Mapstery Again</a>");
+        } else if (selectedGameType === 'usStates') {
+            $(".modal").html(msg + "<div class='modalInstructions'>" +
+                "Capital City: " + bonusStateData.capital +
+                "<br>Largest City: " + bonusStateData.largest_city + "</div>" +
+                "<div id='proceed_button' class='modalInstructions'>" +
+                "<button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the map</button>" +
+                "</div>"
+            );
+            $(".well").html("<a href='javascript:window.location.reload()'>Play Mapstery Again</a>");
+        }
     }
 
     function getZoomLevel(countryArea, countryLatitude) {
@@ -748,30 +1013,35 @@ $(document).ready(function () {
         map.setCenter(goalLatLng);
         map.setZoom(zoomLevel);
         mapRevealed = true;
-        $(".well").html("<a href='javascript:window.location.reload()'>Find a new country!</a>");
+        $(".well").html("<a href='javascript:window.location.reload()'>Play Mapstery Again!</a>");
     }
 
     function getBonusCountryData(countryIndex) {
-        bonusCountryData.flag = countriesData[countryIndex].flag;
-        var popNum = countriesData[countryIndex].population;
+        bonusCountryData.flag = potentialTargets[countryIndex].flag;
+        var popNum = potentialTargets[countryIndex].population;
         bonusCountryData.population = makeNumbersPretty(popNum);
-        bonusCountryData.demonym = countriesData[countryIndex].demonym;
-        bonusCountryData.capital = countriesData[countryIndex].capital;
-    };
+        bonusCountryData.demonym = potentialTargets[countryIndex].demonym;
+        bonusCountryData.capital = potentialTargets[countryIndex].capital;
+    }
+
+    function getBonusStateData(stateIndex) {
+        bonusStateData.largest_city = potentialTargets[stateIndex].largest_city;
+        bonusStateData.capital = potentialTargets[stateIndex].capital;
+    }
 
     function getClickedCountryIndex(allCountries) {
-        return allCountries.alpha2Code === clickedCountryCode;
-    };
+        return allCountries.alpha2Code === clickedTerritoryCode;
+    }
+
+    function getClickedStateIndex(allStates) {
+        return allStates.abbr === clickedTerritoryCode;
+    }
 
     $(".well").click(function () {
-        revealCountry(countryRevealZoom);
+        if (selectedGameType === 'worldCountries') {
+            revealCountry(countryRevealZoom);
+        }
     });
-
-    // function startNewRound() {
-    //   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-    //   resetMarkers();
-    //   setUpCountry(countryList);
-    // }
 
 });
 

@@ -11,11 +11,16 @@
   <body>
     <div class="well"></div>
 
-    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-        <div class="modal-dialog modal-sm">
-          <div class="modal-content">
-          </div>
+    <div class="modal fade bs-example-modal-sm" data-backdrop="static" data-keyboard="false"
+         tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="game-instructions">
+        Welcome to Mapstery!
+        <div class="modalInstructions">Choose a game type</div>
+        <div class="modalInstructions">
+          <button type="button" id="countries_button" class="btn btn-primary">Countries of the World</button>
+          <button type="button" id="states_button" class="btn btn-primary">US States</button>
         </div>
+      </div>
     </div>
 
     <div id="map"></div>

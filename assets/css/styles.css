@@ -34,6 +34,10 @@ html, body {
   padding-top: 100px;
   color: white; }
 
+.btn {
+  margin: 0 5px;
+  font-size: .6em; }
+
 .modalInstructions {
   font-size: .5em;
   width: 80%;
