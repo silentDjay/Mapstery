@@ -18,8 +18,8 @@ html, body {
 
 .well {
   position: fixed;
-  bottom: 40px;
-  left: 40px;
+  bottom: 8px;
+  left: 10px;
   z-index: 1;
   font-size: 2em;
   cursor: pointer; }
