@@ -680,17 +680,17 @@ $(document).ready(function () {
                     console.error(error);
                 }
             });
-            console.info(potentialTargets);
-            // setUpCountry(potentialTargets);
         } else if (gameType === 'usStates') {
             // this endpoint has the data I need, but it throws CORS errors ...
             // dataEndpoint = 'http://services.groupkt.com/state/get/USA/all';
 
             potentialTargets = usStateData;
-            map.setZoom(4);
-            map.setCenter({
-                lat: 39.810556,
-                lng: -98.556111
+            map.setOptions({
+                zoom: 4,
+                center: {
+                    lat: 39.810556,
+                    lng: -98.556111
+                }
             });
             setUpState(potentialTargets);
         } else {
@@ -931,7 +931,11 @@ $(document).ready(function () {
     }
 
     function victoryDisplay(targetCountryName) {
-        map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+        map.setOptions({
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            disableDefaultUI: false,
+            streetViewControl: false
+        });
         $(".modal").modal('show');
         var msg = "";
         if (markers.length === 1) {
@@ -1004,9 +1008,13 @@ $(document).ready(function () {
     }
 
     function revealCountry(zoomLevel) {
-        map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-        map.setCenter(goalLatLng);
-        map.setZoom(zoomLevel);
+        map.setOptions({
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            disableDefaultUI: false,
+            streetViewControl: false,
+            zoom: zoomLevel,
+            center: goalLatLng
+        });
         mapRevealed = true;
         $(".well").html("<a href='javascript:window.location.reload()'>Play Mapstery Again!</a>");
     }
