@@ -23,6 +23,9 @@ html, body {
   z-index: 1;
   font-size: 2em;
   cursor: pointer; }
+  @media (max-width: 500px) {
+    .well {
+      font-size: 1.3em; } }
   .well #reveal-country {
     font-size: 16px;
     text-decoration: underline;
@@ -31,17 +34,26 @@ html, body {
 .modal {
   font-size: 6em;
   text-align: center;
-  padding-top: 100px;
+  padding-top: 50px;
   color: white; }
+  @media (max-width: 500px) {
+    .modal {
+      font-size: 4.5em;
+      line-height: 1.2;
+      padding-top: 20px; } }
 
 .btn {
   margin: 0 5px;
   font-size: .6em; }
+  @media (max-width: 500px) {
+    .btn {
+      margin-top: 20px;
+      font-size: 1em; } }
 
 .modalInstructions {
   font-size: .5em;
-  width: 80%;
-  margin-left: 10%; }
+  width: 96%;
+  margin-left: 2%; }
 
 .targetFlag {
   display: block;
@@ -54,5 +66,8 @@ html, body {
 
 .bonusCountryFlag {
   width: 10%; }
+  @media (max-width: 500px) {
+    .bonusCountryFlag {
+      width: 20%; } }
 
 /*# sourceMappingURL=styles.css.map */

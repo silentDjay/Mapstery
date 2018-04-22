@@ -22,10 +22,14 @@ https://restcountries.eu/rest/v2/all
 ## Development
 
 ### Server Proxy
-[Browserify] is the development server proxy for Mapstery. Once you've installed Browserify, run this command in `assets/js` to update the JS running on the server:
+[Browserify]/[Watchify] serves as the development server proxy for Mapstery. Once installed, run these in `assets/js` to update the JS running on the server:
 
 ```bash
 browserify scripts.js -o browserify.js
+
+//or 
+
+watchify scripts.js -o browserify.js -v
 ```
 
 Then, open `index.html` in your browser and you're good to go!
@@ -41,3 +45,4 @@ License
 [Play Mapstery here]: http://silentdjay.github.io/Mapstery/
 [REST Countries]: https://restcountries.eu
 [reverse geocoding]: https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
+[Watchify]: https://github.com/browserify/watchify

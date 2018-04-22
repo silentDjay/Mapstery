@@ -1,7 +1,3 @@
-
-
-// Styling for the map in the background
-
 html, body {
   height: 100%;
   margin: 0;
@@ -31,6 +27,10 @@ html, body {
   font-size: 2em;
   cursor: pointer;
 
+  @media (max-width: 500px) {
+    font-size: 1.3em;
+  }
+
   #reveal-country {
       font-size: 16px;
       text-decoration: underline;
@@ -41,19 +41,30 @@ html, body {
 .modal {
   font-size: 6em;
   text-align: center;
-  padding-top: 100px;
+  padding-top: 50px;
   color: white;
+
+  @media (max-width: 500px) {
+    font-size: 4.5em;
+    line-height: 1.2;
+    padding-top: 20px;
+  }
 }
 
 .btn {
   margin: 0 5px;
   font-size: .6em;
+
+  @media (max-width: 500px) {
+    margin-top: 20px;
+    font-size: 1em;
+  }
 }
 
 .modalInstructions {
   font-size: .5em;
-  width: 80%;
-  margin-left: 10%;
+  width: 96%;
+  margin-left: 2%;
 }
 
 .targetFlag {
@@ -69,4 +80,8 @@ html, body {
 
 .bonusCountryFlag {
   width: 10%;
+
+  @media (max-width: 500px) {
+    width: 20%;
+  }
 }

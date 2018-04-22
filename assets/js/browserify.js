@@ -2,8 +2,6 @@
 $(document).ready(function () {
     "use strict";
 
-    // todo: before a call is made, ask the player if they want to play a states version or the countries version of the game!
-
     var usStateData = [
         {
             "id": 1,
@@ -457,8 +455,9 @@ $(document).ready(function () {
         }
     ];
 
-    var potentialTargets; // formerly countriesData
+    var potentialTargets;
     var selectedGameType;
+    var windowWidth = $(window).width();
 
     var targetState;
     var stateClickedFullName;
@@ -513,7 +512,7 @@ $(document).ready(function () {
             zoom: 2,
             mapTypeId: google.maps.MapTypeId.SATELLITE,
             disableDefaultUI: true,
-            zoomControl: true,
+            zoomControl: (windowWidth > 500 ? true : false),
             draggableCursor: 'crosshair'
         });
 
@@ -677,6 +676,12 @@ $(document).ready(function () {
                 success: function (allCountryData) {
                     potentialTargets = allCountryData;
                     setUpCountry(potentialTargets);
+                    map.setOptions({
+                        center: {
+                            lat: 0,
+                            lng: 0
+                        }
+                    });
                 }, error: function (request, error) {
                     console.error(error);
                 }
@@ -687,7 +692,7 @@ $(document).ready(function () {
 
             potentialTargets = usStateData;
             map.setOptions({
-                zoom: 4,
+                zoom: (windowWidth > 500 ? 4 : 3),
                 center: {
                     lat: 39.810556,
                     lng: -98.556111
@@ -887,7 +892,7 @@ $(document).ready(function () {
                 var clickedCountryIndex = potentialTargets.findIndex(getClickedCountryIndex);
                 getBonusCountryData(clickedCountryIndex);
                 $(".modal").append("<p class='modalInstructions'>" +
-                    "Flag: <img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
+                    "<img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
                     "<br>Population: " + bonusCountryData.population +
                     "<br>Demonym: " + bonusCountryData.demonym +
                     "<br>Capital City: " + bonusCountryData.capital +
@@ -935,7 +940,9 @@ $(document).ready(function () {
         map.setOptions({
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: false,
-            streetViewControl: false
+            zoomControl: (windowWidth > 500 ? true : false),
+            streetViewControl: false,
+            fullscreenControl: false
         });
         $(".modal").modal('show');
         var msg = "";
@@ -949,7 +956,7 @@ $(document).ready(function () {
 
         if (selectedGameType === 'worldCountries') {
             $(".modal").html(msg + "<div class='modalInstructions'>" +
-                "Flag: <img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
+                "<img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
                 "<br>Population: " + bonusCountryData.population +
                 "<br>Demonym: " + bonusCountryData.demonym +
                 "<br>Capital City: " + bonusCountryData.capital + "</div>" +
@@ -1012,7 +1019,9 @@ $(document).ready(function () {
         map.setOptions({
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: false,
+            zoomControl: (windowWidth > 500 ? true : false),
             streetViewControl: false,
+            fullscreenControl: false,
             zoom: zoomLevel,
             center: goalLatLng
         });
