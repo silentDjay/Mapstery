@@ -41,4 +41,3 @@ License
 [Play Mapstery here]: http://silentdjay.github.io/Mapstery/
 [REST Countries]: https://restcountries.eu
 [reverse geocoding]: https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
-[Watchify]: https://github.com/browserify/watchify
