@@ -4,7 +4,10 @@ module.exports = {
   entry: './src/js/scripts.js',
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'assets', 'js')
+    path: path.join(__dirname, 'assets', 'js'),
+  },
+  devServer: {
+    publicPath: '/assets/js/'
   },
   mode: 'production'
 };
