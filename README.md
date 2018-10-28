@@ -22,27 +22,22 @@ https://restcountries.eu/rest/v2/all
 ## Development
 
 ### Server Proxy
-[Browserify]/[Watchify] serves as the development server proxy for Mapstery. Once installed, run these in `assets/js` to update the JS running on the server:
+[webpack] serves as the development server proxy for Mapstery. To start the server, use:
 
 ```bash
-browserify scripts.js -o browserify.js
-
-//or 
-
-watchify scripts.js -o browserify.js -v
+npm run dev
 ```
 
-Then, open `index.html` in your browser and you're good to go!
+Then, open `localhost:8080` in your browser and you're good to go!
 
 License
 =======
 [Mozilla Public License] MPL 2.0
 
-[Browserify]: https://github.com/substack/browserify-handbook
+[webpack]: https://webpack.js.org/
 [Google Maps JavaScript API]: https://developers.google.com/maps/documentation/javascript/
 [MarkerWithLabel]: https://github.com/jesstelford/node-MarkerWithLabel
 [Mozilla Public License]: https://www.mozilla.org/en-US/MPL/2.0/
 [Play Mapstery here]: http://silentdjay.github.io/Mapstery/
 [REST Countries]: https://restcountries.eu
 [reverse geocoding]: https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
-[Watchify]: https://github.com/browserify/watchify
