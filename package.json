@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "markerwithlabel": "^2.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "markerwithlabel": "^2.0.0",
     "webpack": "^4.20.2",
