@@ -262,7 +262,6 @@ $(document).ready(function () {
             "<div id='proceed_button' class='modalInstructions'>" +
             "<button type='button' class='btn btn-primary' data-dismiss='modal'>Click to start playing</button></div>"
         );
-        $("#proceed_button").modal('show');
         $(".well").show();
         $(".well").html("Click on " + targetState.name);
     }
