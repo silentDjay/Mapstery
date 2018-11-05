@@ -448,6 +448,15 @@ var usStateData = [
     area: '97093SKM',
     largest_city: 'Cheyenne',
     capital: 'Cheyenne'
+  },
+  {
+    id: 51,
+    country: "USA",
+    name: "District of Columbia",
+    abbr: "DC",
+    area: "177SKM",
+    largest_city: "N/A",
+    capital: "N/A"
   }
 ];
 

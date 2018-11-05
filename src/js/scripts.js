@@ -61,7 +61,8 @@ $(document).ready(function () {
             mapTypeId: google.maps.MapTypeId.SATELLITE,
             disableDefaultUI: true,
             zoomControl: (windowWidth > 500 ? true : false),
-            draggableCursor: 'crosshair'
+            draggableCursor: 'crosshair',
+            scaleControl: true,
         });
 
         //get the latitude and longitude of a user's click
@@ -235,8 +236,8 @@ $(document).ready(function () {
                 }
             });
         } else if (gameType === 'usStates') {
-            // this endpoint has the data I need, but it throws CORS errors ...
-            // dataEndpoint = 'http://services.groupkt.com/state/get/USA/all';
+            // one potential alternative to storing US state data on the frontend
+            // dataEndpoint = 'https://cors-anywhere.herokuapp.com/http://services.groupkt.com/state/get/USA/all';
 
             potentialTargets = usStateData;
             map.setOptions({
@@ -253,9 +254,9 @@ $(document).ready(function () {
     }
 
     function setUpState(statesDataArray) {
-        var randCountryNum = Math.floor(Math.random() * statesDataArray.length);
-        targetState = statesDataArray[randCountryNum];
-        getBonusStateData(randCountryNum);
+        var randStateNum = Math.floor(Math.random() * statesDataArray.length);
+        targetState = statesDataArray[randStateNum];
+        getBonusStateData(randStateNum);
 
         $(".modal").modal('show');
         $(".modal").html("Click on " + targetState.name +
