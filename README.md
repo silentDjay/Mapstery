@@ -30,6 +30,13 @@ npm run dev
 
 Then, open `localhost:8080` in your browser and you're good to go!
 
+When you've made your desired changes to `src/js/scripts.js` and are ready to commit, 
+you can build the project with webpack with
+
+```bash
+npm run build
+```
+
 License
 =======
 [Mozilla Public License] MPL 2.0
