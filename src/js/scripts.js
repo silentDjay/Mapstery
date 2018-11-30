@@ -567,7 +567,7 @@ $(document).ready(function () {
         map.setOptions({
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: false,
-            zoomControl: (windowWidth > 500 ? true : false),
+            zoomControl: (windowWidth > 500),
             streetViewControl: false,
             fullscreenControl: false,
             zoom: zoomLevel,
