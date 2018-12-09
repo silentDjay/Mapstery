@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     var targetState;
     var stateClickedFullName;
-    var bonusStateData = {
+    var stateMetadata = {
         capital: '',
         largest_city: ''
     };
@@ -19,7 +19,7 @@ $(document).ready(function () {
     var countryToClickCode;
     var countryToClickFlag;
     var countryToClickArea;
-    var goalLatLng = {lat: "", lng: ""};
+    var goalLatLng = {lat: '', lng: ''};
     var regionHint;
     var numBorderCountries;
     var borderCountryCodes = [];
@@ -27,17 +27,26 @@ $(document).ready(function () {
     var borderCountryList;
     var clickedTerritoryCode;
     var countryClicked;
-    var bonusCountryData =
+    var countryMetadata =
         {
-            flag: "",
-            population: "",
-            demonym: "",
-            capital: ""
+            flag: '',
+            population: '',
+            demonym: '',
+            capital: '',
+            multiple_currencies: false,
+            currencies: [],
+            multiple_languages: false,
+            languages: []
+
         };
     var mapRevealed = false;
     var previousMilesFromTarget;
     var clickDistanceHint;
     var countryRevealZoom;
+    const exploreButtonMarkup =
+      "<button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the Map</button>";
+    const playAgainLinkMarkup =
+      "<a href='javascript:window.location.reload()'>Play Mapstery Again</a>";
 
     /**
      * ask user to select which type of game they want to play
@@ -221,7 +230,7 @@ $(document).ready(function () {
             $.ajax({
                 method: 'GET',
                 url: 'https://restcountries.eu/rest/v2/all',
-                data: {fields: "flag;name;alpha2Code;alpha3Code;capital;subregion;population;latlng;demonym;area;borders"},
+                data: {fields: "flag;name;alpha2Code;alpha3Code;capital;subregion;population;latlng;demonym;area;borders;languages;currencies"},
                 success: function (allCountryData) {
                     potentialTargets = allCountryData;
                     setUpCountry(potentialTargets);
@@ -256,7 +265,7 @@ $(document).ready(function () {
     function setUpState(statesDataArray) {
         var randStateNum = Math.floor(Math.random() * statesDataArray.length);
         targetState = statesDataArray[randStateNum];
-        getBonusStateData(randStateNum);
+        prepareStateMetadata(randStateNum);
 
         $(".modal").modal('show');
         $(".modal").html("Click on " + targetState.name +
@@ -283,7 +292,7 @@ $(document).ready(function () {
         }
 
         countryRevealZoom = getZoomLevel(countryToClickArea, targetCountryData.latlng[0]);
-        getBonusCountryData(randCountryNum);
+        prepareCountryMetadata(randCountryNum);
 
         if (!targetCountryData.subregion) {
             regionHint = "the Antarctic";
@@ -438,30 +447,15 @@ $(document).ready(function () {
         } else {
             if (selectedGameType === 'worldCountries'){
                 var clickedCountryIndex = potentialTargets.findIndex(getClickedCountryIndex);
-                getBonusCountryData(clickedCountryIndex);
-                $(".modal").append("<p class='modalInstructions'>" +
-                    "<img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
-                    "<br>Population: " + bonusCountryData.population +
-                    "<br>Demonym: " + bonusCountryData.demonym +
-                    "<br>Capital City: " + bonusCountryData.capital +
-                    "<br><button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the map</button>" +
-                    "</p>"
-                );
+                prepareCountryMetadata(clickedCountryIndex);
+                $(".modal").append(countryMetadataMarkup());
             } else if (selectedGameType === 'usStates') {
                 var clickedStateIndex = potentialTargets.findIndex(getClickedStateIndex);
                 if (clickedStateIndex != -1) {
-                    getBonusStateData(clickedStateIndex);
-                    $(".modal").append("<p class='modalInstructions'>" +
-                        "Capital City: " + bonusStateData.capital +
-                        "<br>Largest City: " + bonusStateData.largest_city +
-                        "<br><button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the map</button>" +
-                        "</p>"
-                    );
+                    prepareStateMetadata(clickedStateIndex);
+                    $(".modal").append(stateMetadataMarkup());
                 } else {
-                    $(".modal").append("<p class='modalInstructions'>" +
-                        "<button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the map</button>" +
-                        "</p>"
-                    );
+                    $(".modal").append("<p class='modalInstructions'>" + exploreButtonMarkup + "</p>");
                 }
 
             }
@@ -484,11 +478,29 @@ $(document).ready(function () {
         }
     }
 
+    function constructLanguagesList(rawLanguages) {
+      const languagesList = [];
+      rawLanguages.forEach(function (language) {
+        if (language.name) languagesList.push(language.name);
+      });
+      return languagesList.join(', ');
+    }
+
+    function constructCurrenciesList(rawCurrencies) {
+      const currenciesList = [];
+      rawCurrencies.forEach(function (currency) {
+        if (currency.name) {
+          currenciesList.push(currency.name + (currency.symbol ? ' (' + currency.symbol + ')' : ''));
+        }
+      });
+      return currenciesList.join(', ');
+    }
+
     function victoryDisplay(targetCountryName) {
         map.setOptions({
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: false,
-            zoomControl: (windowWidth > 500 ? true : false),
+            zoomControl: windowWidth > 500,
             streetViewControl: false,
             fullscreenControl: false
         });
@@ -503,25 +515,11 @@ $(document).ready(function () {
         mapRevealed = true;
 
         if (selectedGameType === 'worldCountries') {
-            $(".modal").html(msg + "<div class='modalInstructions'>" +
-                "<img class='bonusCountryFlag' src=" + bonusCountryData.flag + "></img>" +
-                "<br>Population: " + bonusCountryData.population +
-                "<br>Demonym: " + bonusCountryData.demonym +
-                "<br>Capital City: " + bonusCountryData.capital + "</div>" +
-                "<div id='proceed_button' class='modalInstructions'>" +
-                "<button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the map</button>" +
-                "</div>"
-            );
-            $(".well").html("<a href='javascript:window.location.reload()'>Play Mapstery Again</a>");
+            $(".modal").html(msg + countryMetadataMarkup());
+            $(".well").html(playAgainLinkMarkup);
         } else if (selectedGameType === 'usStates') {
-            $(".modal").html(msg + "<div class='modalInstructions'>" +
-                "Capital City: " + bonusStateData.capital +
-                "<br>Largest City: " + bonusStateData.largest_city + "</div>" +
-                "<div id='proceed_button' class='modalInstructions'>" +
-                "<button type='button' class='btn btn-primary' data-dismiss='modal'>Explore the map</button>" +
-                "</div>"
-            );
-            $(".well").html("<a href='javascript:window.location.reload()'>Play Mapstery Again</a>");
+            $(".modal").html(msg + stateMetadataMarkup());
+            $(".well").html(playAgainLinkMarkup);
         }
     }
 
@@ -574,20 +572,49 @@ $(document).ready(function () {
             center: goalLatLng
         });
         mapRevealed = true;
-        $(".well").html("<a href='javascript:window.location.reload()'>Play Mapstery Again!</a>");
+        $(".well").html(playAgainLinkMarkup);
     }
 
-    function getBonusCountryData(countryIndex) {
-        bonusCountryData.flag = potentialTargets[countryIndex].flag;
-        var popNum = potentialTargets[countryIndex].population;
-        bonusCountryData.population = makeNumbersPretty(popNum);
-        bonusCountryData.demonym = potentialTargets[countryIndex].demonym;
-        bonusCountryData.capital = potentialTargets[countryIndex].capital;
+    function prepareCountryMetadata(countryIndex) {
+        const country = potentialTargets[countryIndex];
+        countryMetadata = {
+            flag: country.flag,
+            population: makeNumbersPretty(country.population),
+            demonym: country.demonym,
+            capital: country.capital,
+            multiple_currencies: country.currencies.length > 1,
+            currencies: constructCurrenciesList(country.currencies),
+            multiple_languages: country.languages.length > 1,
+            languages: constructLanguagesList(country.languages)
+        }
     }
 
-    function getBonusStateData(stateIndex) {
-        bonusStateData.largest_city = potentialTargets[stateIndex].largest_city;
-        bonusStateData.capital = potentialTargets[stateIndex].capital;
+    function countryMetadataMarkup() {
+      return "<p class='modalInstructions'>" +
+      "<img class='bonusCountryFlag' src=" + countryMetadata.flag + "></img>" +
+      "<br>Population: " + countryMetadata.population +
+      "<br>Demonym: " + countryMetadata.demonym +
+      "<br>Capital City: " + countryMetadata.capital +
+      "<br>" + (countryMetadata.multiple_currencies ? 'Currencies: ' : 'Currency: ') +
+      countryMetadata.currencies +
+      "<br>" + (countryMetadata.multiple_languages ? 'Languages: ' : 'Language: ') +
+      countryMetadata.languages +
+      "<br>" + exploreButtonMarkup + "</p>"
+    }
+
+    function prepareStateMetadata(stateIndex) {
+        const state = potentialTargets[stateIndex];
+        stateMetadata = {
+          largest_city: state.largest_city,
+          capital: state.capital
+        }
+    }
+
+    function stateMetadataMarkup() {
+      return "<div class='modalInstructions'>" +
+      "Capital City: " + stateMetadata.capital +
+      "<br>Largest City: " + stateMetadata.largest_city +
+      "<br>" + exploreButtonMarkup + "</div>"
     }
 
     function getClickedCountryIndex(allCountries) {
