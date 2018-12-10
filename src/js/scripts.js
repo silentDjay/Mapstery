@@ -591,15 +591,15 @@ $(document).ready(function () {
 
     function countryMetadataMarkup() {
       return "<p class='modalInstructions'>" +
-      "<img class='bonusCountryFlag' src=" + countryMetadata.flag + "></img>" +
-      "<br>Population: " + countryMetadata.population +
-      "<br>Demonym: " + countryMetadata.demonym +
-      "<br>Capital City: " + countryMetadata.capital +
-      "<br>" + (countryMetadata.multiple_currencies ? 'Currencies: ' : 'Currency: ') +
-      countryMetadata.currencies +
-      "<br>" + (countryMetadata.multiple_languages ? 'Languages: ' : 'Language: ') +
-      countryMetadata.languages +
-      "<br>" + exploreButtonMarkup + "</p>"
+      "<img class='bonusCountryFlag' src=" + countryMetadata.flag + "></img><br>" +
+      "Population: " + countryMetadata.population + "<br>" +
+      (countryMetadata.capital ? "Capital City: " + countryMetadata.capital + "<br>" : "") +
+      (countryMetadata.demonym ? "Demonym: " + countryMetadata.demonym + "<br>" : "") +
+      (countryMetadata.multiple_currencies ? 'Currencies: ' : 'Currency: ') +
+      countryMetadata.currencies + "<br>" +
+      (countryMetadata.multiple_languages ? 'Languages: ' : 'Language: ') +
+      countryMetadata.languages + "<br>" +
+      exploreButtonMarkup + "</p>"
     }
 
     function prepareStateMetadata(stateIndex) {
@@ -614,11 +614,11 @@ $(document).ready(function () {
 
     function stateMetadataMarkup() {
       return "<div class='modalInstructions'>" +
+      "Population: " + stateMetadata.population + "<br>" +
       (stateMetadata.capital ? "Capital City: " + stateMetadata.capital + "<br>" : "") +
-      "Largest City: " + stateMetadata.largest_city +
-      "<br>Population: " + stateMetadata.population +
-      "<br>Nickname: " + stateMetadata.nickname +
-      "<br>" + exploreButtonMarkup + "</div>"
+      "Largest City: " + stateMetadata.largest_city + "<br>" +
+      "Nickname: " + stateMetadata.nickname + "<br>" +
+      exploreButtonMarkup + "</div>"
     }
 
     function getClickedCountryIndex(allCountries) {
