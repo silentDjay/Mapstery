@@ -1,462 +1,462 @@
-var usStateData = [
+const usStateData = [
   {
-    id: 1,
-    country: 'USA',
     name: 'Alabama',
     abbr: 'AL',
     area: '135767SKM',
     largest_city: 'Birmingham',
-    capital: 'Montgomery'
+    capital: 'Montgomery',
+    nickname: 'Yellowhammer State',
+    population: 4888949
   },
   {
-    id: 2,
-    country: 'USA',
     name: 'Alaska',
     abbr: 'AK',
     area: '1723337SKM',
     largest_city: 'Anchorage',
-    capital: 'Juneau'
+    capital: 'Juneau',
+    nickname: 'Last Frontier',
+    population: 738068
   },
   {
-    id: 3,
-    country: 'USA',
     name: 'Arizona',
     abbr: 'AZ',
     area: '113594SKM',
     largest_city: 'Phoenix',
-    capital: 'Phoenix'
+    capital: 'Phoenix',
+    nickname: 'Grand Canyon State',
+    population: 7123898
   },
   {
-    id: 4,
-    country: 'USA',
     name: 'Arkansas',
     abbr: 'AR',
     area: '52035SKM',
     largest_city: 'Little Rock',
-    capital: 'Little Rock'
+    capital: 'Little Rock',
+    nickname: 'Natural State',
+    population: 3020327
   },
   {
-    id: 5,
-    country: 'USA',
     name: 'California',
     abbr: 'CA',
     area: '423967SKM',
     largest_city: 'Los Angeles',
-    capital: 'Sacramento'
+    capital: 'Sacramento',
+    nickname: 'Golden State',
+    population: 39776830
   },
   {
-    id: 6,
-    country: 'USA',
     name: 'Colorado',
     abbr: 'CO',
     area: '103642SKM',
     largest_city: 'Denver',
-    capital: 'Denver'
+    capital: 'Denver',
+    nickname: 'Centennial State',
+    population: 5684203
   },
   {
-    id: 7,
-    country: 'USA',
     name: 'Connecticut',
     abbr: 'CT',
     area: '14357SKM',
     largest_city: 'Bridgeport',
-    capital: 'Hartford'
+    capital: 'Hartford',
+    nickname: 'Constitution State',
+    population: 3588683
   },
   {
-    id: 8,
-    country: 'USA',
     name: 'Delaware',
     abbr: 'DE',
     area: '6446SKM',
     largest_city: 'Wilmington',
-    capital: 'Dover'
+    capital: 'Dover',
+    nickname: 'First State',
+    population: 971180
   },
   {
-    id: 9,
-    country: 'USA',
     name: 'Florida',
     abbr: 'FL',
     area: '170312SKM',
     largest_city: 'Jacksonville',
-    capital: 'Tallahassee'
+    capital: 'Tallahassee',
+    nickname: 'Sunshine State',
+    population: 21312211
   },
   {
-    id: 10,
-    country: 'USA',
     name: 'Georgia',
     abbr: 'GA',
     area: '57513SKM',
     largest_city: 'Atlanta',
-    capital: 'Atlanta'
+    capital: 'Atlanta',
+    nickname: 'Peach State',
+    population: 10545138
   },
   {
-    id: 11,
-    country: 'USA',
     name: 'Hawaii',
     abbr: 'HI',
     area: '6423SKM',
     largest_city: 'Honolulu',
-    capital: 'Honolulu'
+    capital: 'Honolulu',
+    nickname: 'Aloha State',
+    population: 1426393
   },
   {
-    id: 12,
-    country: 'USA',
     name: 'Idaho',
     abbr: 'ID',
     area: '82643SKM',
     largest_city: 'Boise',
-    capital: 'Boise'
+    capital: 'Boise',
+    nickname: 'Gem State',
+    population: 1753860
   },
   {
-    id: 13,
-    country: 'USA',
     name: 'Illinois',
     abbr: 'IL',
     area: '149995SKM',
     largest_city: 'Chicago',
-    capital: 'Springfield'
+    capital: 'Springfield',
+    nickname: 'Prairie State',
+    population: 12768320
   },
   {
-    id: 14,
-    country: 'USA',
     name: 'Indiana',
     abbr: 'IN',
     area: '35826SKM',
     largest_city: 'Indianapolis',
-    capital: 'Indianapolis'
+    capital: 'Indianapolis',
+    nickname: 'Hoosier State',
+    population: 6699629
   },
   {
-    id: 15,
-    country: 'USA',
     name: 'Iowa',
     abbr: 'IA',
     area: '55857SKM',
     largest_city: 'Des Moines',
-    capital: 'Des Moines'
+    capital: 'Des Moines',
+    nickname: 'Hawkeye State',
+    population: 3160553
   },
   {
-    id: 16,
-    country: 'USA',
     name: 'Kansas',
     abbr: 'KS',
     area: '213100SKM',
     largest_city: 'Wichita',
-    capital: 'Topeka'
+    capital: 'Topeka',
+    nickname: 'Sunflower State',
+    population: 2918515
   },
   {
-    id: 17,
-    country: 'USA',
     name: 'Kentucky',
     abbr: 'KY',
     area: '104656SKM',
     largest_city: 'Louisville',
-    capital: 'Frankfort'
+    capital: 'Frankfort',
+    nickname: 'Bluegrass State',
+    population: 4472265
   },
   {
-    id: 18,
-    country: 'USA',
     name: 'Louisiana',
     abbr: 'LA',
     area: '135659SKM',
     largest_city: 'New Orleans',
-    capital: 'Baton Rouge'
+    capital: 'Baton Rouge',
+    nickname: 'Pelican State',
+    population: 4682509
   },
   {
-    id: 19,
-    country: 'USA',
     name: 'Maine',
     abbr: 'ME',
     area: '91633SKM',
     largest_city: 'Portland',
-    capital: 'Augusta'
+    capital: 'Augusta',
+    nickname: 'Pine Tree State',
+    population: 1341582
   },
   {
-    id: 20,
-    country: 'USA',
     name: 'Maryland',
     abbr: 'MD',
     area: '32131SKM',
     largest_city: 'Baltimore',
-    capital: 'Annapolis'
+    capital: 'Annapolis',
+    nickname: 'Old Line State',
+    population: 6079602
   },
   {
-    id: 21,
-    country: 'USA',
     name: 'Massachusetts',
     abbr: 'MA',
     area: '7800SKM',
     largest_city: 'Boston',
-    capital: 'Boston'
+    capital: 'Boston',
+    nickname: 'Bay State',
+    population: 6895917
   },
   {
-    id: 22,
-    country: 'USA',
     name: 'Michigan',
     abbr: 'MI',
     area: '250487SKM',
     largest_city: 'Detroit',
-    capital: 'Lansing'
+    capital: 'Lansing',
+    nickname: 'Great Lakes State',
+    population: 9991177
   },
   {
-    id: 36,
-    country: 'USA',
     name: 'Oklahoma',
     abbr: 'OK',
     area: '68595SKM',
     largest_city: 'Oklahoma City',
-    capital: 'Oklahoma City'
+    capital: 'Oklahoma City',
+    nickname: 'Sooner State',
+    population: 3940521
   },
   {
-    id: 37,
-    country: 'USA',
     name: 'Oregon',
     abbr: 'OR',
     area: '254799SKM',
     largest_city: 'Portland',
-    capital: 'Salem'
+    capital: 'Salem',
+    nickname: 'Beaver State',
+    population: 4199563
   },
   {
-    id: 38,
-    country: 'USA',
     name: 'Pennsylvania',
     abbr: 'PA',
     area: '119280SKM',
     largest_city: 'Philadelphia',
-    capital: 'Harrisburg'
+    capital: 'Harrisburg',
+    nickname: 'Keystone State',
+    population: 12823989
   },
   {
-    id: 39,
-    country: 'USA',
     name: 'Rhode Island',
     abbr: 'RI',
     area: '1034SKM',
     largest_city: 'Providence',
-    capital: 'Providence'
+    capital: 'Providence',
+    nickname: 'Ocean State',
+    population: 1061712
   },
   {
-    id: 40,
-    country: 'USA',
     name: 'South Carolina',
     abbr: 'SC',
     area: '82933SKM',
     largest_city: 'Charleston',
-    capital: 'Columbia'
+    capital: 'Columbia',
+    nickname: 'Palmetto State',
+    population: 5088916
   },
   {
-    id: 41,
-    country: 'USA',
     name: 'South Dakota',
     abbr: 'SD',
     area: '199729SKM',
     largest_city: 'Sioux Falls',
-    capital: 'Pierre'
+    capital: 'Pierre',
+    nickname: 'Mount Rushmore State',
+    population: 877790
   },
   {
-    id: 42,
-    country: 'USA',
     name: 'Tennessee',
     abbr: 'TN',
     area: '41235SKM',
     largest_city: 'Nashville',
-    capital: 'Nashville'
+    capital: 'Nashville',
+    nickname: 'Volunteer State',
+    population: 6782564
   },
   {
-    id: 43,
-    country: 'USA',
     name: 'Texas',
     abbr: 'TX',
     area: '695662SKM',
     largest_city: 'Houston',
-    capital: 'Austin'
+    capital: 'Austin',
+    nickname: 'Lone Star State',
+    population: 28704330
   },
   {
-    id: 44,
-    country: 'USA',
     name: 'Utah',
     abbr: 'UT',
     area: '82170SKM',
     largest_city: 'Salt Lake City',
-    capital: 'Salt Lake City'
+    capital: 'Salt Lake City',
+    nickname: 'Beehive State',
+    population: 3159345
   },
   {
-    id: 23,
-    country: 'USA',
     name: 'Minnesota',
     abbr: 'MN',
     area: '225163SKM',
     largest_city: 'Minneapolis',
-    capital: 'St. Paul'
+    capital: 'St. Paul',
+    nickname: 'North Star State',
+    population: 5628162
   },
   {
-    id: 24,
-    country: 'USA',
     name: 'Mississippi',
     abbr: 'MS',
     area: '46923SKM',
     largest_city: 'Jackson',
-    capital: 'Jackson'
+    capital: 'Jackson',
+    nickname: 'Magnolia State',
+    population: 2982785
   },
   {
-    id: 25,
-    country: 'USA',
     name: 'Missouri',
     abbr: 'MO',
     area: '180540SKM',
     largest_city: 'Kansas City',
-    capital: 'Jefferson City'
+    capital: 'Jefferson City',
+    nickname: 'Show-Me State',
+    population: 6135888
   },
   {
-    id: 26,
-    country: 'USA',
     name: 'Montana',
     abbr: 'MT',
     area: '380831SKM',
     largest_city: 'Billings',
-    capital: 'Helena'
+    capital: 'Helena',
+    nickname: 'Treasure State',
+    population: 1062330
   },
   {
-    id: 27,
-    country: 'USA',
     name: 'Nebraska',
     abbr: 'NE',
     area: '200330SKM',
     largest_city: 'Omaha',
-    capital: 'Lincoln'
+    capital: 'Lincoln',
+    nickname: 'Cornhusker State',
+    population: 1932549
   },
   {
-    id: 28,
-    country: 'USA',
     name: 'Nevada',
     abbr: 'NV',
     area: '286380SKM',
     largest_city: 'Las Vegas',
-    capital: 'Carson City'
+    capital: 'Carson City',
+    nickname: 'Silver State',
+    population: 3056824
   },
   {
-    id: 29,
-    country: 'USA',
     name: 'New Hampshire',
     abbr: 'NH',
     area: '24214SKM',
     largest_city: 'Manchester',
-    capital: 'Concord'
+    capital: 'Concord',
+    nickname: 'Granite State',
+    population: 1350575
   },
   {
-    id: 30,
-    country: 'USA',
     name: 'New Jersey',
     abbr: 'NJ',
     area: '22591SKM',
     largest_city: 'Newark',
-    capital: 'Trenton'
+    capital: 'Trenton',
+    nickname: 'Garden State',
+    population: 9032872
   },
   {
-    id: 31,
-    country: 'USA',
     name: 'New Mexico',
     abbr: 'NM',
     area: '314917SKM',
     largest_city: 'Albuquerque',
-    capital: 'Santa Fe'
+    capital: 'Santa Fe',
+    nickname: 'Land of Enchantment',
+    population: 2090708
   },
   {
-    id: 32,
-    country: 'USA',
     name: 'New York',
     abbr: 'NY',
     area: '141297SKM',
     largest_city: 'New York City',
-    capital: 'Albany'
+    capital: 'Albany',
+    nickname: 'Empire State',
+    population: 19862512
   },
   {
-    id: 33,
-    country: 'USA',
     name: 'North Carolina',
     abbr: 'NC',
     area: '139391SKM',
     largest_city: 'Charlotte',
-    capital: 'Raleigh'
+    capital: 'Raleigh',
+    nickname: 'Old North State',
+    population: 10390149
   },
   {
-    id: 34,
-    country: 'USA',
     name: 'North Dakota',
     abbr: 'ND',
     area: '183108SKM',
     largest_city: 'Fargo',
-    capital: 'Bismarck'
+    capital: 'Bismarck',
+    nickname: 'Peace Garden State',
+    population: 755238
   },
   {
-    id: 35,
-    country: 'USA',
     name: 'Ohio',
     abbr: 'OH',
     area: '40861SKM',
     largest_city: 'Columbus',
-    capital: 'Columbus'
+    capital: 'Columbus',
+    nickname: 'Buckeye State',
+    population: 11694664
   },
   {
-    id: 45,
-    country: 'USA',
     name: 'Vermont',
     abbr: 'VT',
     area: '24906SKM',
     largest_city: 'Burlington',
-    capital: 'Montpelier'
+    capital: 'Montpelier',
+    nickname: 'Green Mountain State',
+    population: 623960
   },
   {
-    id: 46,
-    country: 'USA',
     name: 'Virginia',
     abbr: 'VA',
     area: '110787SKM',
     largest_city: 'Virginia Beach',
-    capital: 'Richmond'
+    capital: 'Richmond',
+    nickname: 'Old Dominion State',
+    population: 8525660
   },
   {
-    id: 47,
-    country: 'USA',
     name: 'Washington',
     abbr: 'WA',
     area: '184661SKM',
     largest_city: 'Seattle',
-    capital: 'Olympia'
+    capital: 'Olympia',
+    nickname: 'Evergreen State',
+    population: 7530552
   },
   {
-    id: 48,
-    country: 'USA',
     name: 'West Virginia',
     abbr: 'WV',
     area: '24038SKM',
     largest_city: 'Charleston',
-    capital: 'Charleston'
+    capital: 'Charleston',
+    nickname: 'Mountain State',
+    population: 1803077
   },
   {
-    id: 49,
-    country: 'USA',
     name: 'Wisconsin',
     abbr: 'WI',
     area: '169635SKM',
     largest_city: 'Milwaukee',
-    capital: 'Madison'
+    capital: 'Madison',
+    nickname: 'Badger State',
+    population: 5818049
   },
   {
-    id: 50,
-    country: 'USA',
     name: 'Wyoming',
     abbr: 'WY',
     area: '97093SKM',
     largest_city: 'Cheyenne',
-    capital: 'Cheyenne'
+    capital: 'Cheyenne',
+    nickname: 'Equality State',
+    population: 573720
   },
   {
-    id: 51,
-    country: "USA",
-    name: "District of Columbia",
-    abbr: "DC",
-    area: "177SKM",
-    largest_city: "N/A",
-    capital: "N/A"
+    name: 'District of Columbia',
+    abbr: 'DC',
+    area: '177SKM',
+    largest_city: 'Washington',
+    capital: undefined,
+    nickname: 'Nation\'s Capital',
+    population: 703608
   }
 ];
 

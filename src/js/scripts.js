@@ -11,7 +11,9 @@ $(document).ready(function () {
     var stateClickedFullName;
     var stateMetadata = {
         capital: '',
-        largest_city: ''
+        largest_city: '',
+        population: null,
+        nickname: ''
     };
 
     var targetCountryData;
@@ -27,18 +29,16 @@ $(document).ready(function () {
     var borderCountryList;
     var clickedTerritoryCode;
     var countryClicked;
-    var countryMetadata =
-        {
-            flag: '',
-            population: '',
-            demonym: '',
-            capital: '',
-            multiple_currencies: false,
-            currencies: [],
-            multiple_languages: false,
-            languages: []
-
-        };
+    var countryMetadata = {
+        flag: '',
+        population: null,
+        demonym: '',
+        capital: '',
+        multiple_currencies: false,
+        currencies: [],
+        multiple_languages: false,
+        languages: []
+    };
     var mapRevealed = false;
     var previousMilesFromTarget;
     var clickDistanceHint;
@@ -606,14 +606,18 @@ $(document).ready(function () {
         const state = potentialTargets[stateIndex];
         stateMetadata = {
           largest_city: state.largest_city,
-          capital: state.capital
+          capital: state.capital,
+          population: makeNumbersPretty(state.population),
+          nickname: state.nickname
         }
     }
 
     function stateMetadataMarkup() {
       return "<div class='modalInstructions'>" +
-      "Capital City: " + stateMetadata.capital +
-      "<br>Largest City: " + stateMetadata.largest_city +
+      (stateMetadata.capital ? "Capital City: " + stateMetadata.capital + "<br>" : "") +
+      "Largest City: " + stateMetadata.largest_city +
+      "<br>Population: " + stateMetadata.population +
+      "<br>Nickname: " + stateMetadata.nickname +
       "<br>" + exploreButtonMarkup + "</div>"
     }
 
