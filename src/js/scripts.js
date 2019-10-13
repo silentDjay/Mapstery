@@ -126,10 +126,23 @@ $(document).ready(function () {
                 return element.types[0] === "country";
             }
 
+            function isGeographicFeature(element) {
+                return element.types.includes("natural_feature")
+            }
+
             geocoder.geocode({'location': latlng}, function (results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
+                    if (results.find((element) => isGeographicFeature(element))) {
+                        const feature = results.find((element) => isGeographicFeature(element));
 
-                    if (selectedGameType === 'worldCountries') {
+                        $(".modal").modal('show');
+                        $(".modal").html(`You clicked on ${feature.formatted_address.startsWith("Lake") ? `` : `the`} ` + feature.formatted_address +
+                        "<div id='proceed_button' class='modalInstructions'>" +
+                        "<button type='button' class='btn btn-primary' data-dismiss='modal'>Try Again</button>" +
+                        "</div>"
+                        );
+
+                    } else if (selectedGameType === 'worldCountries') {
                         var countryIndex = results.findIndex(isCountryName);
 
                         if (countryIndex === -1) {
@@ -207,7 +220,7 @@ $(document).ready(function () {
                     }
                 } else {
                     $(".modal").modal('show');
-                    $(".modal").html("Whoops! You clicked on unclaimed territory! " +
+                    $(".modal").html("You clicked on unknown territory! " +
                         "<div id='proceed_button' class='modalInstructions'>" +
                         "<button type='button' class='btn btn-primary' data-dismiss='modal'>Try Again</button>" +
                         "</div>"
