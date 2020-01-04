@@ -8,7 +8,6 @@ $(document).ready(function () {
     var windowWidth = $(window).width();
 
     var targetState;
-    var stateClickedFullName;
     var stateMetadata = {
         capital: '',
         largest_city: '',
@@ -27,7 +26,8 @@ $(document).ready(function () {
     var borderCountryCodes = [];
     var borderCountryNames = [];
     var borderCountryList;
-    var clickedTerritoryCode;
+    var clickedCountryIndex;
+    var clickedStateIndex;
     var countryClicked;
     var countryMetadata = {
         flag: '',
@@ -79,9 +79,9 @@ $(document).ready(function () {
 
             var MarkerWithLabel = require('markerwithlabel')(google.maps);
 
-            function placeMarker(location, color) {
+            function placeMarker(location, color, labelText) {
                 markersLength = (markers.length + 1).toString();
-                var markerLabel = markersLength + "<br>" + clickedTerritoryCode;
+                var markerLabel = markersLength + "<br>" + labelText;
 
                 var clickMarker = new MarkerWithLabel({
                     position: location,
@@ -115,68 +115,53 @@ $(document).ready(function () {
                 clickedLatitude,
                 clickedLongitude);
 
-            var geocoder = new google.maps.Geocoder;
+            var geocoder = new google.maps.Geocoder();
             var latlng = {lat: clickedLatitude, lng: clickedLongitude};
 
-            function isStateName(element) {
-                return element.types[0] === "administrative_area_level_1";
-            }
-
-            function isCountryName(element) {
-                return element.types[0] === "country";
-            }
-
-            function isGeographicFeature(element) {
-                return element.types.includes("natural_feature")
-            }
-
             geocoder.geocode({'location': latlng}, function (results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    if (results.find((element) => isGeographicFeature(element))) {
-                        const feature = results.find((element) => isGeographicFeature(element));
-
-                        $(".modal").modal('show');
-                        $(".modal").html(`You clicked on ${feature.formatted_address.startsWith("Lake") ? `` : `the`} ` + feature.formatted_address +
+                if (status !== google.maps.GeocoderStatus.OK) {
+                    $(".modal").modal('show');
+                    $(".modal").html("You clicked on unknown territory! " +
                         "<div id='proceed_button' class='modalInstructions'>" +
                         "<button type='button' class='btn btn-primary' data-dismiss='modal'>Try Again</button>" +
                         "</div>"
-                        );
-
-                    } else if (selectedGameType === 'worldCountries') {
-                        var countryIndex = results.findIndex(isCountryName);
-
-                        if (countryIndex === -1) {
-                            resultsLoop:
-                                for (var resultsIndex = (results.length - 1); resultsIndex >= 0; resultsIndex--) {
-                                    for (var addressIndex = (results[resultsIndex].address_components.length - 1);
-                                         addressIndex >= 0; addressIndex--) {
-                                        if (isCountryName(results[resultsIndex].address_components[addressIndex])) {
-                                            countryClicked = results[resultsIndex].address_components[addressIndex].long_name;
-                                            clickedTerritoryCode = results[resultsIndex].address_components[addressIndex].short_name;
-                                            break resultsLoop;
-                                        }
-                                    }
-                                }
-                        } else {
-                            countryClicked = results[countryIndex].address_components[0].long_name;
-                            clickedTerritoryCode = results[countryIndex].address_components[0].short_name;
+                    );
+                } else {
+                    const clickLocationData = {};
+                    results.forEach(result => {
+                        if (result.types.includes("natural_feature")) {
+                            clickLocationData.natural_feature = result.address_components[0].long_name;
+                        } else if (result.types.includes("administrative_area_level_1")) {
+                            clickLocationData.state = {
+                                name: result.address_components[0].long_name,
+                                code: result.address_components[0].short_name.substring(0, 2)
+                            };
+                            if (selectedGameType === 'usStates') clickedStateIndex = getClickedTerritoryIndex(selectedGameType, clickLocationData.state.code);
+                        } else if (result.types.includes("country")) {
+                            clickLocationData.country = {
+                                name: result.address_components[0].long_name,
+                                code: result.address_components[0].short_name
+                            };
+                            if (selectedGameType === 'worldCountries') clickedCountryIndex = getClickedTerritoryIndex(selectedGameType, clickLocationData.country.code);
                         }
-
+                    });
+                    
+                    if (selectedGameType === 'worldCountries' && clickLocationData.country) {
                         if (mapRevealed === false) {
-                            if (clickedTerritoryCode === countryToClickCode) {
-                                placeMarker(event.latLng, 'green');
+                            if (clickLocationData.country.code === countryToClickCode) {
+                                placeMarker(event.latLng, 'green', clickLocationData.country.code);
                                 victoryDisplay(countryToClickName);
                             } else {
                                 $(".modal").modal('show');
-                                $(".modal").html("You clicked on " + countryClicked);
-                                placeMarker(event.latLng, 'red');
+                                $(".modal").html("You clicked on " + clickLocationData.country.name);
+                                placeMarker(event.latLng, 'red', clickLocationData.country.code);
 
                                 //determine the supplementary message to display upon click
                                 if (numBorderCountries === 0) {
                                     constructHint(mapRevealed, distFromTargetCountry,
                                         markers.length, numBorderCountries);
                                 } else {
-                                    var clickedBorderIndex = borderCountryCodes.indexOf(clickedTerritoryCode);
+                                    var clickedBorderIndex = borderCountryCodes.indexOf(clickLocationData.country.code);
 
                                     if (clickedBorderIndex === -1) {
                                         constructHint(mapRevealed, distFromTargetCountry,
@@ -190,41 +175,40 @@ $(document).ready(function () {
                             }
                         } else {
                             $(".modal").modal('show');
-                            $(".modal").html("You clicked on " + countryClicked);
+                            $(".modal").html("You clicked on " + clickLocationData.country.name);
                             constructHint(mapRevealed);
                         }
-                    } else if (selectedGameType === 'usStates') {
-                        var stateIndex = results.findIndex(isStateName);
-
-                        clickedTerritoryCode = results[stateIndex].address_components[0].short_name;
-                        stateClickedFullName = results[stateIndex].address_components[0].long_name;
-
+                    } else if (selectedGameType === 'usStates' && clickLocationData.state) {
                         if (mapRevealed === false) {
-                            if (targetState.abbr === clickedTerritoryCode) {
-                                placeMarker(event.latLng, 'green');
-                                victoryDisplay(stateClickedFullName);
+                            if (targetState.abbr === clickLocationData.state.code && clickLocationData.country.code === "US") {
+                                placeMarker(event.latLng, 'green', clickLocationData.state.code);
+                                victoryDisplay(clickLocationData.state.name);
                             } else {
                                 $(".modal").modal('show');
-                                $(".modal").html("You clicked on " + stateClickedFullName +
+                                $(".modal").html("You clicked on " + 
+                                    `${clickLocationData.state.name ? `${clickLocationData.state.name}` : ''}` + 
+                                    `${clickLocationData.country.code !== "US" ? `, ${clickLocationData.country.name}` : ''}` +
                                     "<div id='proceed_button' class='modalInstructions'>" +
                                     "<button type='button' class='btn btn-primary' data-dismiss='modal'>Try Again</button>" +
                                     "</div>"
                                 );
-                                placeMarker(event.latLng, 'red');
+                                placeMarker(event.latLng, 'red', clickLocationData.state.code);
                             }
                         } else {
                             $(".modal").modal('show');
-                            $(".modal").html("You clicked on " + stateClickedFullName);
+                            $(".modal").html("You clicked on " + 
+                                `${clickLocationData.state.name ? `${clickLocationData.state.name},` : ''} ${clickLocationData.country.name}` 
+                            );
                             constructHint(mapRevealed);
                         }
+                    } else if (clickLocationData.natural_feature) {
+                        $(".modal").modal('show');
+                        $(".modal").html(`You clicked on ${clickLocationData.natural_feature.startsWith("Lake") ? `` : `the`} ${clickLocationData.natural_feature}` +
+                            "<div id='proceed_button' class='modalInstructions'>" +
+                            `<button type='button' class='btn btn-primary' data-dismiss='modal'>${mapRevealed ? 'Continue' : 'Try Again'}</button>` +
+                            "</div>"
+                        );
                     }
-                } else {
-                    $(".modal").modal('show');
-                    $(".modal").html("You clicked on unknown territory! " +
-                        "<div id='proceed_button' class='modalInstructions'>" +
-                        "<button type='button' class='btn btn-primary' data-dismiss='modal'>Try Again</button>" +
-                        "</div>"
-                    );
                 }
 
             });
@@ -459,11 +443,9 @@ $(document).ready(function () {
             }
         } else {
             if (selectedGameType === 'worldCountries'){
-                var clickedCountryIndex = potentialTargets.findIndex(getClickedCountryIndex);
                 prepareCountryMetadata(clickedCountryIndex);
                 $(".modal").append(countryMetadataMarkup());
             } else if (selectedGameType === 'usStates') {
-                var clickedStateIndex = potentialTargets.findIndex(getClickedStateIndex);
                 if (clickedStateIndex != -1) {
                     prepareStateMetadata(clickedStateIndex);
                     $(".modal").append(stateMetadataMarkup());
@@ -634,12 +616,10 @@ $(document).ready(function () {
       exploreButtonMarkup + "</div>"
     }
 
-    function getClickedCountryIndex(allCountries) {
-        return allCountries.alpha2Code === clickedTerritoryCode;
-    }
-
-    function getClickedStateIndex(allStates) {
-        return allStates.abbr === clickedTerritoryCode;
+    function getClickedTerritoryIndex(gameType, clickedTerritoryCode) {
+        return potentialTargets.findIndex(target => {
+            return clickedTerritoryCode === (gameType === 'worldCountries' ? target.alpha2Code : target.abbr);
+        });
     }
 
     $(".well").click(function () {
