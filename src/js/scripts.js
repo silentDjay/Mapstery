@@ -28,7 +28,6 @@ $(document).ready(function () {
     var borderCountryList;
     var clickedCountryIndex;
     var clickedStateIndex;
-    var countryClicked;
     var countryMetadata = {
         flag: '',
         population: null,
@@ -66,7 +65,7 @@ $(document).ready(function () {
     window.initMap = function () {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 42.29, lng: -85.585833},
-            zoom: 2,
+            zoom: 3,
             mapTypeId: google.maps.MapTypeId.SATELLITE,
             disableDefaultUI: true,
             zoomControl: (windowWidth > 500 ? true : false),
@@ -169,7 +168,7 @@ $(document).ready(function () {
                                     } else {
                                         constructHint(mapRevealed, distFromTargetCountry,
                                             markers.length, numBorderCountries,
-                                            clickedBorderIndex);
+                                            clickedBorderIndex, clickLocationData.country.name);
                                     }
                                 }
                             }
@@ -387,7 +386,7 @@ $(document).ready(function () {
     }
 
     function constructHint(isMapRevealed, distFromTarget, numClicks,
-                           borderCount, borderCountryClickedIndex) {
+                           borderCount, borderCountryClickedIndex, clickedCountryName) {
         if (isMapRevealed === false) {
 
             if (distFromTarget.closerClick === true) {
@@ -417,15 +416,15 @@ $(document).ready(function () {
 
                 if (modifiedBorderCountryNames.length === 0) {
                     $(".modal").append("<p class='modalInstructions'>" +
-                        countryClicked + " is the only country that shares a border with " +
+                        clickedCountryName + " is the only country that shares a border with " +
                         countryToClickName + "!");
                 } else if (modifiedBorderCountryNames.length === 1) {
                     $(".modal").append("<p class='modalInstructions'>" +
-                        countryToClickName + " shares a border with " + countryClicked + " and " +
+                        countryToClickName + " shares a border with " + clickedCountryName + " and " +
                         borderCountryList);
                 } else {
                     $(".modal").append("<p class='modalInstructions'>" +
-                        countryToClickName + " shares a border with " + countryClicked +
+                        countryToClickName + " shares a border with " + clickedCountryName +
                         ", as well as " + borderCountryList);
                 }
             } else if (numClicks > 5) {
@@ -623,7 +622,7 @@ $(document).ready(function () {
     }
 
     $(".well").click(function () {
-        if (selectedGameType === 'worldCountries') {
+        if (selectedGameType === 'worldCountries' && !mapRevealed) {
             revealCountry(countryRevealZoom);
         }
     });
