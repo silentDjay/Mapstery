@@ -1,12 +1,19 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Dosis', sans-serif;
+  font-family: "Dosis", sans-serif;
 }
 
 #map {
   height: 100%;
+  bottom: 54px; /* BLM */
+
+  @media (max-width: 577px) {
+    /* BLM */
+    bottom: 76px;
+  }
 }
 
 .gameTitle {
@@ -26,19 +33,25 @@ html, body {
 .well {
   position: fixed;
   bottom: 8px;
+  margin-bottom: 74px; /* BLM */
   left: 10px;
   z-index: 1;
   font-size: 2em;
   cursor: pointer;
+
+  @media (max-width: 577px) {
+    /* BLM */
+    margin-bottom: 102px;
+  }
 
   @media (max-width: 500px) {
     font-size: 1.3em;
   }
 
   #reveal-country {
-      font-size: 16px;
-      text-decoration: underline;
-      text-align: center;
+    font-size: 16px;
+    text-decoration: underline;
+    text-align: center;
   }
 }
 
@@ -57,7 +70,7 @@ html, body {
 
 .btn {
   margin: 0 5px;
-  font-size: .6em;
+  font-size: 0.6em;
 
   @media (max-width: 500px) {
     margin-top: 20px;
@@ -66,7 +79,7 @@ html, body {
 }
 
 .modalInstructions {
-  font-size: .5em;
+  font-size: 0.5em;
   width: 96%;
   margin-left: 2%;
 }
@@ -92,4 +105,21 @@ html, body {
   @media (max-width: 500px) {
     width: 20%;
   }
+}
+
+.BLM {
+  background-color: black;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  text-align: center;
+  padding: 1em;
+  font-size: 16px;
+  z-index: 1051;
+}
+
+.BLM a {
+  white-space: nowrap;
+  color: red;
 }
