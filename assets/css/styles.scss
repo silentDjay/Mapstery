@@ -8,15 +8,18 @@ body {
 
 #map {
   height: 100%;
-  bottom: 54px; /* BLM */
+  bottom: 54px;
+  /* BLM */
+}
 
-  @media (max-width: 577px) {
+@media (max-width: 577px) {
+  #map {
     /* BLM */
     bottom: 76px;
   }
 }
-
 .gameTitle {
+  font-size: 100%;
   font-style: italic;
 }
 
@@ -33,26 +36,29 @@ body {
 .well {
   position: fixed;
   bottom: 8px;
-  margin-bottom: 74px; /* BLM */
+  margin-bottom: 74px;
+  /* BLM */
   left: 10px;
   z-index: 1;
   font-size: 2em;
   cursor: pointer;
+}
 
-  @media (max-width: 577px) {
+@media (max-width: 577px) {
+  .well {
     /* BLM */
     margin-bottom: 102px;
   }
-
-  @media (max-width: 500px) {
+}
+@media (max-width: 500px) {
+  .well {
     font-size: 1.3em;
   }
-
-  #reveal-country {
-    font-size: 16px;
-    text-decoration: underline;
-    text-align: center;
-  }
+}
+.well #reveal-country {
+  font-size: 16px;
+  text-decoration: underline;
+  text-align: center;
 }
 
 .modal {
@@ -60,24 +66,26 @@ body {
   text-align: center;
   padding-top: 50px;
   color: white;
+}
 
-  @media (max-width: 500px) {
+@media (max-width: 500px) {
+  .modal {
     font-size: 3.5em;
     line-height: 1.2;
     padding-top: 20px;
   }
 }
-
 .btn {
   margin: 0 5px;
   font-size: 0.6em;
+}
 
-  @media (max-width: 500px) {
+@media (max-width: 500px) {
+  .btn {
     margin-top: 20px;
     font-size: 1em;
   }
 }
-
 .modalInstructions {
   font-size: 0.5em;
   width: 96%;
@@ -93,20 +101,22 @@ body {
 .targetFlagWell {
   width: 80px;
   margin-left: 10px;
+}
 
-  @media (max-width: 500px) {
+@media (max-width: 500px) {
+  .targetFlagWell {
     width: 55px;
   }
 }
-
 .bonusCountryFlag {
   width: 10%;
+}
 
-  @media (max-width: 500px) {
+@media (max-width: 500px) {
+  .bonusCountryFlag {
     width: 20%;
   }
 }
-
 .BLM {
   background-color: black;
   color: white;
@@ -123,3 +133,7 @@ body {
   white-space: nowrap;
   color: red;
 }
+
+/*# sourceMappingURL=styles.css.map */
+
+/*# sourceMappingURL=styles.scss.map */
