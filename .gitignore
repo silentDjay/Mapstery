@@ -3,3 +3,5 @@ bower_components/
 assets/css/styles.css.map
 .sass-cache/
 .idea/
+.DS_Store
+assets/.DS_Store
