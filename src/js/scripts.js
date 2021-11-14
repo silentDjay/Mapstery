@@ -374,9 +374,7 @@ $(document).ready(function () {
     function constructHint(isMapRevealed, distFromTarget, numClicks,
                            borderCount, borderCountryClickedIndex, clickedCountryName) {
         if (isMapRevealed === false) {
-
-            clickDistanceHint = `You're getting ${!!distFromTarget.closerClick ? `warmer!` : `colder.`}`;
-
+            clickDistanceHint = typeof distFromTarget.closerClick === 'boolean' ? `You're getting ${distFromTarget.closerClick ? `warmer!` : `colder.`}` : "";
             $(".modal").append("<p class='modalInstructions'>" +
                 clickDistanceHint + " Your click was about " + distFromTarget.miles +
                 " Miles (" + distFromTarget.kilometers + " Kilometers) from " +
