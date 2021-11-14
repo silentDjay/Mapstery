@@ -29,14 +29,13 @@ $(document).ready(function () {
     var clickedCountryIndex;
     var clickedStateIndex;
     var countryMetadata = {
-        flag: '',
+        flags: {},
         population: null,
-        demonym: '',
-        capital: '',
-        multiple_currencies: false,
-        currencies: [],
-        multiple_languages: false,
-        languages: []
+        demonym: {},
+        capitals: [],
+        currencies: {},
+        languages: {},
+        drivingSide: null
     };
     var mapRevealed = false;
     var previousMilesFromTarget;
@@ -225,8 +224,8 @@ $(document).ready(function () {
         if (gameType === 'worldCountries') {
             $.ajax({
                 method: 'GET',
-                url: 'https://restcountries.eu/rest/v2/all',
-                data: {fields: "flag;name;alpha2Code;alpha3Code;capital;subregion;population;latlng;demonym;area;borders;languages;currencies"},
+                url: 'https://restcountries.com/v3.1/all',
+                data: {fields: "flags,name,cca2,cca3,capital,subregion,population,latlng,demonyms,area,borders,landlocked,languages,currencies,car"},
                 success: function (allCountryData) {
                     potentialTargets = allCountryData;
                     setUpCountry(potentialTargets);
@@ -275,15 +274,13 @@ $(document).ready(function () {
     function setUpCountry(countriesDataArray) {
         var randCountryNum = Math.floor(Math.random() * countriesDataArray.length);
         targetCountryData = countriesDataArray[randCountryNum];
-        countryToClickCode = targetCountryData.alpha2Code;
-        countryToClickName = targetCountryData.name;
-        countryToClickFlag = targetCountryData.flag;
+        countryToClickCode = targetCountryData.cca2;
+        countryToClickName = targetCountryData.name.common;
+        countryToClickFlag = targetCountryData.flags.svg;
         countryToClickArea = targetCountryData.area;
 
-        // French Guiana and Svalbard and Jan Mayen have significant landmass, but no area data in restcountries
-        if (countryToClickCode === "GF") {
-            countryToClickArea = 83534;
-        } else if (countryToClickCode === "SJ") {
+        // Svalbard and Jan Mayen has significant landmass, but no area data in the API
+        if (countryToClickCode === "SJ") {
             countryToClickArea = 61022;
         }
 
@@ -298,33 +295,22 @@ $(document).ready(function () {
             regionHint = targetCountryData.subregion;
         }
 
-        /* United States Minor Outlying Islands doesn't include latlng data in restcountries,
-        so I'm just using the lat/lng data for its largest territory:
-        https://en.wikipedia.org/wiki/Wake_Island
-        */
-        if (countryToClickCode === 'UM') {
-            goalLatLng = {
-                lat: 19.3,
-                lng: 166.633333
-            };
-        } else {
-            goalLatLng = {
-                lat: targetCountryData.latlng[0],
-                lng: targetCountryData.latlng[1]
-            };
-        }
+        goalLatLng = {
+            lat: targetCountryData.latlng[0],
+            lng: targetCountryData.latlng[1]
+        };
 
         numBorderCountries = targetCountryData.borders.length;
         borderCountryCodes = targetCountryData.borders;
 
         if (numBorderCountries === 0) {
         } else {
-            //create arrays of border country names alpha2 country codes for the target country
+            //create arrays of border country names by alpha2 country codes for the target country
             borderCountryCodes.forEach(function (BorderCountryAlpha3Code, index) {
                 countriesDataArray.forEach(function (country) {
-                    if (BorderCountryAlpha3Code === country.alpha3Code) {
-                        borderCountryCodes.splice(index, 1, country.alpha2Code);
-                        borderCountryNames.push(country.name);
+                    if (BorderCountryAlpha3Code === country.cca3) {
+                        borderCountryCodes.splice(index, 1, country.cca2);
+                        borderCountryNames.push(country.name.common);
                     }
                 });
             });
@@ -389,13 +375,7 @@ $(document).ready(function () {
                            borderCount, borderCountryClickedIndex, clickedCountryName) {
         if (isMapRevealed === false) {
 
-            if (distFromTarget.closerClick === true) {
-                clickDistanceHint = "You're getting warmer!";
-            } else if (distFromTarget.closerClick === false) {
-                clickDistanceHint = "You're getting colder."
-            } else {
-                clickDistanceHint = "";
-            }
+            clickDistanceHint = `You're getting ${!!distFromTarget.closerClick ? `warmer!` : `colder.`}`;
 
             $(".modal").append("<p class='modalInstructions'>" +
                 clickDistanceHint + " Your click was about " + distFromTarget.miles +
@@ -436,8 +416,10 @@ $(document).ready(function () {
                 } else {
                     constructBorderCountryList(borderCountryNames);
                     $(".modal").append("<p class='modalInstructions'>" +
-                        "Hint: " + countryToClickName + " is in " + regionHint +
-                        " and shares a border with " + borderCountryList);
+                        "Hint: " + countryToClickName + " is " +
+                        (targetCountryData.landlocked ? "a landlocked country " : "") +
+                        "in " + regionHint +
+                        " and shares a border with " + borderCountryList + "</p>");
                 }
             }
         } else {
@@ -474,19 +456,17 @@ $(document).ready(function () {
 
     function constructLanguagesList(rawLanguages) {
       const languagesList = [];
-      rawLanguages.forEach(function (language) {
-        if (language.name) languagesList.push(language.name);
-      });
+      for( const language of Object.values(rawLanguages)) {
+        languagesList.push(language);
+      };
       return languagesList.join(', ');
     }
 
     function constructCurrenciesList(rawCurrencies) {
       const currenciesList = [];
-      rawCurrencies.forEach(function (currency) {
-        if (currency.name) {
-          currenciesList.push(currency.name + (currency.symbol ? ' (' + currency.symbol + ')' : ''));
-        }
-      });
+      for( const currency of Object.values(rawCurrencies)) {
+          currenciesList.push(`${currency.name} (${currency.symbol})`);
+      };
       return currenciesList.join(', ');
     }
 
@@ -572,14 +552,13 @@ $(document).ready(function () {
     function prepareCountryMetadata(countryIndex) {
         const country = potentialTargets[countryIndex];
         countryMetadata = {
-            flag: country.flag,
+            flag: country.flags.svg,
             population: makeNumbersPretty(country.population),
-            demonym: country.demonym,
-            capital: country.capital,
-            multiple_currencies: country.currencies.length > 1,
+            demonym: country.demonyms.eng.f,
+            capitals: country.capital,
             currencies: constructCurrenciesList(country.currencies),
-            multiple_languages: country.languages.length > 1,
-            languages: constructLanguagesList(country.languages)
+            languages: constructLanguagesList(country.languages),
+            drivingSide: `${country.car.side[0].toUpperCase()}${country.car.side.slice(1)}`
         }
     }
 
@@ -587,12 +566,11 @@ $(document).ready(function () {
       return "<p class='modalInstructions'>" +
       "<img class='bonusCountryFlag' src=" + countryMetadata.flag + "></img><br>" +
       "Population: " + countryMetadata.population + "<br>" +
-      (countryMetadata.capital ? "Capital City: " + countryMetadata.capital + "<br>" : "") +
+      (countryMetadata.capitals.length > 0 ? "Capital City: " + countryMetadata.capitals.join(', ') + "<br>" : "") +
       (countryMetadata.demonym ? "Demonym: " + countryMetadata.demonym + "<br>" : "") +
-      (countryMetadata.multiple_currencies ? 'Currencies: ' : 'Currency: ') +
-      countryMetadata.currencies + "<br>" +
-      (countryMetadata.multiple_languages ? 'Languages: ' : 'Language: ') +
-      countryMetadata.languages + "<br>" +
+      (countryMetadata.currencies.length > 0 ? ('Currencies: ' + countryMetadata.currencies + "<br>") : "") +
+      (countryMetadata.languages.length > 0 ? ('Languages: ' + countryMetadata.languages + "<br>") : "") +
+      (countryMetadata.drivingSide ? 'Drives on the: ' + countryMetadata.drivingSide + "<br>" : "") +
       exploreButtonMarkup + "</p>"
     }
 
@@ -617,7 +595,7 @@ $(document).ready(function () {
 
     function getClickedTerritoryIndex(gameType, clickedTerritoryCode) {
         return potentialTargets.findIndex(target => {
-            return clickedTerritoryCode === (gameType === 'worldCountries' ? target.alpha2Code : target.abbr);
+            return clickedTerritoryCode === (gameType === 'worldCountries' ? target.cca2 : target.abbr);
         });
     }
 

@@ -13,7 +13,7 @@ The [Google Maps JavaScript API] is at the heart of the app's functionality, ena
 The initial AJAX GET request to fetch all relevant country data is made to the [REST Countries] 'All Countries' endpoint:
 
 ```html
-https://restcountries.eu/rest/v2/all
+https://restcountries.com/v3.1/all
 ```
 
 ### Custom click markers
@@ -46,5 +46,5 @@ License
 [MarkerWithLabel]: https://github.com/jesstelford/node-MarkerWithLabel
 [Mozilla Public License]: https://www.mozilla.org/en-US/MPL/2.0/
 [Play Mapstery here]: http://silentdjay.github.io/Mapstery/
-[REST Countries]: https://restcountries.eu
+[REST Countries]: https://restcountries.com
 [reverse geocoding]: https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
