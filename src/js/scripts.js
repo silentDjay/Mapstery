@@ -153,7 +153,6 @@ $(document).ready(function () {
                                 $(".modal").modal('show');
                                 $(".modal").html("You clicked on " + clickLocationData.country.name);
                                 placeMarker(event.latLng, 'red', clickLocationData.country.code);
-
                                 //determine the supplementary message to display upon click
                                 if (numBorderCountries === 0) {
                                     constructHint(mapRevealed, distFromTargetCountry,
@@ -363,6 +362,7 @@ $(document).ready(function () {
     }
 
     function makeNumbersPretty(uglyNumber) {
+        if (uglyNumber < 10 && Number(uglyNumber.toFixed(1)) % 1 != 0) return uglyNumber.toFixed(1);
         uglyNumber = Math.round(uglyNumber);
         var uglyNumberRevString = uglyNumber.toString().split("").reverse();
         for (var i = 3; i < uglyNumberRevString.length; i = i + 4) {
@@ -371,13 +371,19 @@ $(document).ready(function () {
         return uglyNumberRevString.reverse().join("");
     }
 
+    function distanceDisplay(distance, baseUnit) {
+        baseUnit = Number(distance.replace(",","")) > 1 ? `${baseUnit}s` : baseUnit;
+        return `${Number(distance) < 1 ? "less than a" : distance} ${baseUnit}`;
+    }
+
     function constructHint(isMapRevealed, distFromTarget, numClicks,
                            borderCount, borderCountryClickedIndex, clickedCountryName) {
         if (isMapRevealed === false) {
             clickDistanceHint = typeof distFromTarget.closerClick === 'boolean' ? `You're getting ${distFromTarget.closerClick ? `warmer!` : `colder.`}` : "";
             $(".modal").append("<p class='modalInstructions'>" +
-                clickDistanceHint + " Your click was about " + distFromTarget.miles +
-                " Miles (" + distFromTarget.kilometers + " Kilometers) from " +
+                clickDistanceHint + " Your click was " +
+                distanceDisplay(distFromTarget.miles, "Mile") + ` (${distanceDisplay(distFromTarget.kilometers, "Kilometer")}) ` +
+                "from the geographic center of " +
                 countryToClickName + "<div id='proceed_button' class='modalInstructions'>" +
                 "<button type='button' class='btn btn-primary' data-dismiss='modal'>Try Again</button>" +
                 "</div>"
