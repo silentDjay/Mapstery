@@ -1,0 +1,32 @@
+name: build-and-deploy
+run-name: build and deploy Mapstery
+on: [push, pull_request]
+  branches:
+    - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/fermium
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: mapstery-production-build
+          path: ./build
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: mapstery-production-build
+          path: ./build
+      - uses: peaceiris/actions-gh-pages@v3
+          with:
+            github_token: ${{ secrets.GH_PAGES_DEPLOYMENT }}
+            publish_dir: ./build
+      
