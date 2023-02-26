@@ -1,6 +1,6 @@
 name: build-and-deploy
 run-name: build and deploy Mapstery
-on: [push, pull_request]
+on: push
   branches:
     - main
 jobs:
