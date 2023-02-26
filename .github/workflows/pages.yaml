@@ -30,7 +30,7 @@ jobs:
           name: mapstery-production-build
           path: ./build
       - uses: peaceiris/actions-gh-pages@v3
-          with:
-            github_token: ${{ secrets.GH_PAGES_DEPLOYMENT }}
-            publish_dir: ./build
+        with:
+          github_token: ${{ secrets.GH_PAGES_DEPLOYMENT }}
+          publish_dir: ./build
       
