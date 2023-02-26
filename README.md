@@ -7,44 +7,36 @@ Mapstery is inspired by my long history of spending hours on end staring at maps
 ## Built with
 
 ### Map Data
-The [Google Maps JavaScript API] is at the heart of the app's functionality, enabling [reverse geocoding] from a click on the map.
 
-### Country Data
-The initial AJAX GET request to fetch all relevant country data is made to the [REST Countries] 'All Countries' endpoint:
+The [Google Maps JavaScript API] is at the heart of the app's functionality.
 
-```html
-https://restcountries.com/v3.1/all
-```
+### Reverse Geocoding
 
-### Custom click markers
-[MarkerWithLabel] extends the Google Maps JavaScript API V3 `google.maps.Marker` class and Mapstery uses it to create custom click markers.
+The [reverse geocoding] logic and placename are provided by the [GeoNames `CountryCode` API].
 
 ## Development
 
-### Server Proxy
-[webpack] serves as the development server proxy for Mapstery. To start the server, use:
+To start a local Mapstery dev server, use:
 
 ```bash
-npm run dev
+npm start
 ```
 
-Then, open `localhost:8080` in your browser and you're good to go!
+Then, open `localhost:3000` in your browser and you're good to go!
 
-When you've made your desired changes to `src/js/scripts.js` and are ready to commit, 
-you can build the project with webpack with
+When you've made your desired changes to the app and are ready to commit,
+you can create a production build with
 
 ```bash
 npm run build
 ```
 
-License
-=======
+# License
+
 [Mozilla Public License] MPL 2.0
 
-[webpack]: https://webpack.js.org/
-[Google Maps JavaScript API]: https://developers.google.com/maps/documentation/javascript/
-[MarkerWithLabel]: https://github.com/jesstelford/node-MarkerWithLabel
-[Mozilla Public License]: https://www.mozilla.org/en-US/MPL/2.0/
-[Play Mapstery here]: http://silentdjay.github.io/Mapstery/
-[REST Countries]: https://restcountries.com
-[reverse geocoding]: https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
+[geonames `countrycode` api]: https://www.geonames.org/export/web-services.html#countrycode
+[google maps javascript api]: https://developers.google.com/maps/documentation/javascript/
+[mozilla public license]: https://www.mozilla.org/en-US/MPL/2.0/
+[play mapstery here]: https://mapstery.world
+[reverse geocoding]: https://en.wikipedia.org/wiki/Reverse_geocoding
