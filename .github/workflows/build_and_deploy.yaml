@@ -1,6 +1,6 @@
 name: build-and-deploy
 run-name: build and deploy Mapstery
-on: 
+on:
   push:
     branches:
       - main
@@ -17,6 +17,10 @@ jobs:
           node-version: lts/fermium
       - run: npm ci
       - run: npm run build
+        env:
+          REACT_APP_GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          REACT_APP_GOOGLE_TAG_ID: ${{ secrets.GOOGLE_TAG_ID }}
+          REACT_APP_GEONAMES_USERNAME: ${{ secrets.GEONAMES_USERNAME }}
       - uses: actions/upload-artifact@v3
         with:
           name: mapstery-production-build
@@ -33,4 +37,3 @@ jobs:
         with:
           github_token: ${{ secrets.GH_PAGES_DEPLOYMENT }}
           publish_dir: ./build
-      

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import Geonames from "geonames.js";
+import TagManager from "react-gtm-module";
 
+import { GEONAMES_USERNAME, GOOGLE_API_KEY, GOOGLE_TAG_ID } from "./config";
 import {
   GameplayMap,
   ClickMarker,
@@ -18,6 +20,12 @@ import {
 } from "./types";
 import { generateMarkerContent, getRandomCountryData } from "./utils";
 
+const tagManagerArgs = {
+  gtmId: GOOGLE_TAG_ID,
+};
+
+TagManager.initialize(tagManagerArgs);
+
 const render = (status: Status) => {
   return (
     <h1 className="header-title" style={{ textAlign: "center" }}>
@@ -27,8 +35,7 @@ const render = (status: Status) => {
 };
 
 const geonames = Geonames({
-  // TODO: use an env variable for this username - it is stored in a github secret called "GEONAMES_USERNAME"
-  username: "silentdjay",
+  username: GEONAMES_USERNAME,
   lan: "en",
   encoding: "JSON",
 });
@@ -183,8 +190,7 @@ export const App: React.FC = () => {
       )}
 
       <Wrapper
-        // TODO: handle the API key in an env file - this is stored in a secret called "GOOGLE_API_KEY" - https://docs.github.com/en/actions/security-guides/encrypted-secrets
-        apiKey={"AIzaSyBlb3QDmYH1avpO4mpbPo6BvGze36l1YyM"}
+        apiKey={GOOGLE_API_KEY as string}
         render={render}
         libraries={["marker"]}
         version="beta"
