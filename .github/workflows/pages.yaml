@@ -1,8 +1,12 @@
 name: build-and-deploy
 run-name: build and deploy Mapstery
-on: push
-  branches:
-    - main
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
