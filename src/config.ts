@@ -1,3 +1,3 @@
-export const GEONAMES_USERNAME = process.env.REACT_APP_GEONAMES_USERNAME;
-export const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
-export const GOOGLE_TAG_ID = process.env.REACT_APP_GOOGLE_TAG_ID || "";
+export const GEONAMES_USERNAME = import.meta.env.VITE_GEONAMES_USERNAME;
+export const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+export const GOOGLE_TAG_ID = import.meta.env.VITE_GOOGLE_TAG_ID || "";
