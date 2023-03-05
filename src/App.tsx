@@ -89,10 +89,7 @@ export const App: React.FC = () => {
     }
 
     if (code !== targetCountryData?.cca2) {
-      setClicks([
-        ...clicks,
-        { countryCode: code, countryName: name, coordinates },
-      ]);
+      setClicks([...clicks, { countryName: name, coordinates }]);
       return;
     }
 
@@ -100,10 +97,7 @@ export const App: React.FC = () => {
       setGameplayOverlayActive(true);
       setClickStatus("CORRECT");
       setGameStatus("SUCCESS");
-      setClicks([
-        ...clicks,
-        { countryCode: code, countryName: name, coordinates, winner: true },
-      ]);
+      setClicks([...clicks, { countryName: name, coordinates, winner: true }]);
       return;
     }
 
@@ -207,7 +201,7 @@ export const App: React.FC = () => {
               position={click.coordinates}
               title={click.countryName}
               content={generateMarkerContent(
-                click.countryCode,
+                click.countryName,
                 i,
                 !!click.winner
               )}

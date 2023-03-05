@@ -45,7 +45,6 @@ export const Header: React.FC<HeaderProps> = ({
             <div style={{ display: "flex" }}>
               <div>
                 <b>
-                  Last Guess: {lastClickData.countryName}{" "}
                   {!!distanceFromTarget && (
                     <span
                       style={{
@@ -57,13 +56,12 @@ export const Header: React.FC<HeaderProps> = ({
                             : undefined,
                       }}
                     >
-                      (
                       {distanceFromTarget < 1
                         ? "<1"
                         : Intl.NumberFormat().format(
                             Math.round(distanceFromTarget)
                           )}{" "}
-                      km away)
+                      km away
                     </span>
                   )}
                 </b>

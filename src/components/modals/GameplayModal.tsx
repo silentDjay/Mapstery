@@ -77,10 +77,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         isOpen={!!props.isOpen}
         title={`About ${targetCountryData.name.common}`}
       >
-        <div
-          className="country-spec-list"
-          style={{ fontSize: "2rem", margin: "1rem" }}
-        >
+        <div className="country-spec-list">
           <div>
             &#10147;{" "}
             {targetCountryData.landlocked ? "landlocked" : "not landlocked"}

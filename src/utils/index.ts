@@ -99,13 +99,13 @@ export const getMapOptions = (
 };
 
 export const generateMarkerContent = (
-  countryCode: string,
+  countryName: string,
   index: number,
   winner: boolean
 ) => {
   const element = document.createElement("div");
   element.className = `click-marker ${winner ? "click-marker-success" : ""}`;
-  element.innerHTML = `<b>${index + 1}</b> | <b>${countryCode}</b>`;
+  element.innerHTML = `<b>${index + 1}</b> | <b>${countryName}</b>`;
 
   return element;
 };

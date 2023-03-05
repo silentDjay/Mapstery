@@ -22,7 +22,6 @@ code {
 }
 
 /* Header */
-
 .home-menu {
   cursor: crosshair;
   font-size: 1.2rem;
@@ -38,6 +37,16 @@ code {
   letter-spacing: 2px;
   padding: 0.5rem;
   font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .home-menu {
+    justify-content: center;
+  }
+
+  .header-title {
+    display: none;
+  }
 }
 
 .header-gameplay-info {
@@ -71,7 +80,8 @@ code {
 
 @media (max-width: 600px) {
   .modal-title {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
+    margin-top: 0.5rem;
   }
 }
 
@@ -86,8 +96,19 @@ code {
   margin-left: 40%;
 }
 
+.country-spec-list {
+  font-size: 1.75rem;
+  margin: 1rem;
+}
+
 .country-spec-list div {
   margin-top: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .country-spec-list {
+    font-size: 1.25rem;
+  }
 }
 
 .gameplay-button {

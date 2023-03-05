@@ -8,7 +8,6 @@ export type ClickStatus =
   | "EXPLORE";
 
 export interface Click {
-  countryCode: string;
   countryName: string;
   coordinates: google.maps.LatLng;
   winner?: boolean;

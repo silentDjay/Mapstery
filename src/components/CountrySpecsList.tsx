@@ -7,10 +7,7 @@ import { Country } from "../types";
 export const CountrySpecsList: React.FC<{ countryMetadata: Country }> = ({
   countryMetadata,
 }) => (
-  <div
-    className="country-spec-list"
-    style={{ fontSize: "1.75rem", margin: "1rem" }}
-  >
+  <div className="country-spec-list">
     <img
       className="target-flag"
       alt={`flag of ${countryMetadata.name.common}`}
