@@ -7,6 +7,7 @@ Mapstery is inspired by my long history of spending hours on end staring at maps
 ## Built with
 
 - [React]
+- [Vite]
 - [Google Maps JavaScript API]
 - [@googlemaps/react-wrapper]
 - [GeoNames `CountryCode` API] provides the [reverse geocoding] logic
@@ -41,10 +42,10 @@ Install all dependencies with
 npm install
 ```
 
-Start a Mapstery dev server using the configuration in `.env.local` with
+Start a Mapstery dev server - the variables configured in `.env.local` will be applied automatically:
 
 ```bash
-npm start:local
+npm start
 ```
 
 Mapstery will run at `localhost:3000`. You're good to go!
@@ -64,3 +65,4 @@ Mapstery will run at `localhost:3000`. You're good to go!
 [play mapstery here]: https://mapstery.world
 [react]: https://reactjs.org/
 [reverse geocoding]: https://en.wikipedia.org/wiki/Reverse_geocoding
+[vite]: https://vitejs.dev/

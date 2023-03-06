@@ -7,8 +7,11 @@ import {
   getCountryDataFromCca2Code,
   getBorderCountryList,
   getCountryHemispheres,
+  getFlagEmoji,
+  getShareText,
 } from "../../utils";
 import { ClickStatus, Country } from "../../types";
+import { shareGameResult } from "../../utils";
 
 interface GameplayModalProps extends BaseModalProps {
   clickCount: number;
@@ -79,6 +82,15 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         isOpen={!!props.isOpen}
         title={`About ${targetCountryData.name.common}`}
       >
+        {revealedHintCount < 5 && (
+          <button
+            style={{ fontSize: "125%" }}
+            onClick={onRevealHint}
+            className="pure-button pure-button-primary"
+          >
+            Show Another Hint
+          </button>
+        )}
         <div className="country-spec-list">
           <div>
             &#10147;{" "}
@@ -110,30 +122,18 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
             </div>
           )}
         </div>
-        <button
-          style={{ fontSize: "125%", marginTop: "16px" }}
-          onClick={props.onClose}
-          className="pure-button button-secondary"
-        >
-          Keep Looking
-        </button>
-        {revealedHintCount < 5 && (
+        <div className="modal-actions">
           <button
-            style={{ fontSize: "125%", marginTop: "16px", marginLeft: "2rem" }}
-            onClick={onRevealHint}
-            className="pure-button pure-button-primary"
+            onClick={props.onClose}
+            className="pure-button button-secondary"
           >
-            Show Another Hint
+            Keep Looking
           </button>
-        )}
-        <div>
-          <button
-            style={{ fontSize: "125%", marginTop: "16px" }} //, marginLeft: "2rem" }}
-            onClick={onForfeit}
-            className="pure-button"
-          >
-            Give Up
-          </button>
+          <div>
+            <button onClick={onForfeit} className="pure-button">
+              Give Up
+            </button>
+          </div>
         </div>
       </BaseModal>
     );
@@ -149,20 +149,20 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
             getCountryDataFromCca2Code(clickedCountryCode) as Country
           }
         />
-        <button
-          style={{ fontSize: "125%", marginTop: "16px" }}
-          onClick={props.onClose}
-          className="pure-button button-secondary"
-        >
-          Keep Exploring
-        </button>
-        <button
-          style={{ fontSize: "125%", marginTop: "16px", marginLeft: "2rem" }}
-          onClick={onReplay}
-          className="pure-button pure-button-primary"
-        >
-          Play Again
-        </button>
+        <div className="modal-actions">
+          <button
+            onClick={props.onClose}
+            className="pure-button button-secondary"
+          >
+            Keep Exploring
+          </button>
+          <button
+            onClick={onReplay}
+            className="pure-button pure-button-primary"
+          >
+            Play Again
+          </button>
+        </div>
       </BaseModal>
     );
 
@@ -174,20 +174,34 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
       }`}
     >
       <CountrySpecsList countryMetadata={targetCountryData} />
-      <button
-        style={{ fontSize: "125%", marginTop: "16px" }}
-        onClick={props.onClose}
-        className="pure-button button-secondary"
-      >
-        Explore the Map
-      </button>
-      <button
-        style={{ fontSize: "125%", marginTop: "16px", marginLeft: "2rem" }}
-        onClick={onReplay}
-        className="pure-button pure-button-primary"
-      >
-        Play Again
-      </button>
+      <div className="modal-actions">
+        {!!navigator.share && !!clickStatus && (
+          <button
+            onClick={() =>
+              shareGameResult(
+                getShareText(
+                  clickStatus,
+                  targetCountryData.name?.common,
+                  getFlagEmoji(targetCountryData.cca2),
+                  clickCount
+                )
+              )
+            }
+            className="pure-button"
+          >
+            Share
+          </button>
+        )}
+        <button
+          onClick={props.onClose}
+          className="pure-button button-secondary"
+        >
+          Explore the Map
+        </button>
+        <button onClick={onReplay} className="pure-button pure-button-primary">
+          Play Again
+        </button>
+      </div>
     </BaseModal>
   );
 };

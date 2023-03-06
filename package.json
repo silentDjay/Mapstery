@@ -27,7 +27,6 @@
   },
   "scripts": {
     "start": "vite",
-    "start:local": "set -a; source .env.local;set +a && npm start",
     "build": "tsc && vite build",
     "test": "vitest run",
     "test:watch": "vitest watch"
