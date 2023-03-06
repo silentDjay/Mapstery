@@ -40,11 +40,13 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         title={`Find ${targetCountryData.name.common}`}
         isOpen={!!props.isOpen}
       >
-        <img
-          className="target-flag"
-          alt={`flag of ${targetCountryData.name.common}`}
-          src={targetCountryData.flags.svg}
-        />
+        <div>
+          <img
+            className="target-flag start-game"
+            alt={`flag of ${targetCountryData.name.common}`}
+            src={targetCountryData.flags.svg}
+          />
+        </div>
         <button
           style={{ fontSize: "125%", marginTop: "16px" }}
           onClick={onStartGame}

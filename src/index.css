@@ -75,6 +75,7 @@ code {
 .modal-title {
   font-size: 70px;
   font-style: italic;
+  margin-top: 0.5rem;
   margin-bottom: 1rem;
 }
 
@@ -91,9 +92,11 @@ code {
 }
 
 .target-flag {
-  display: block;
-  width: 20%;
-  margin-left: 40%;
+  max-width: 150px;
+}
+
+.target-flag.start-game {
+  max-width: 40%;
 }
 
 .country-spec-list {
