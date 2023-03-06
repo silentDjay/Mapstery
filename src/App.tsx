@@ -148,7 +148,7 @@ export const App: React.FC = () => {
             setTimeout(() => {
               setGameplayOverlayActive(true);
               setClickStatus("GIVE_UP");
-            }, 2500);
+            }, 2000);
           }}
           onReplay={resetGame}
           onRevealHint={() => setRevealedHintCount(revealedHintCount + 1)}

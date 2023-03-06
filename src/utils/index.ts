@@ -1,5 +1,5 @@
 import { countryData } from "../data/countryData";
-import { GameStatus, Coordinates, Country } from "../types";
+import { ClickStatus, Coordinates, Country, GameStatus } from "../types";
 
 export const getRandomCountryData = () => {
   var randCountryNum = Math.floor(Math.random() * countryData.length);
@@ -152,4 +152,35 @@ export const getCountryHemispheres = (latlng: Coordinates) => {
   return `${latlng[0] > 0 ? "Northern" : "Southern"} and ${
     latlng[1] > 0 ? "Eastern" : "Western"
   }`;
+};
+
+export const getShareText = (
+  clickStatus: ClickStatus,
+  targetCountryName: string,
+  targetCountryFlagEmoji: string,
+  clickCount: number
+) =>
+  clickStatus === "CORRECT"
+    ? `Rad! I found ${targetCountryName} ${targetCountryFlagEmoji} in ${clickCount} ${
+        clickCount === 1 ? "try" : "tries"
+      }. Play Mapstery!`
+    : `Welp. I couldn't find ${targetCountryName} ${targetCountryFlagEmoji}. Play Mapstery!`;
+
+// credit to https://dev.to/jorik/country-code-to-flag-emoji-a21
+export const getFlagEmoji = (countryCode: string) => {
+  const codePoints = countryCode
+    .split("")
+    .map((char) => 127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+};
+
+export const shareGameResult = async (shareText: string) => {
+  try {
+    await navigator.share({
+      text: shareText,
+      url: `https://mapstery.world`,
+    });
+  } catch (e) {
+    return console.info(e);
+  }
 };
