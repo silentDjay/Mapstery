@@ -13,6 +13,7 @@ import {
 } from "./components";
 import {
   GameStatus,
+  GameCategory,
   ClickStatus,
   Click,
   Country,
@@ -42,6 +43,7 @@ const geonames = Geonames({
 
 export const App: React.FC = () => {
   const [welcomeOverlayActive, setWelcomeOverlayActive] = useState(true);
+  const [gameCategory, setGameCategory] = useState<GameCategory>();
   const [gameplayOverlayActive, setGameplayOverlayActive] = useState(false);
   const [clickStatus, setClickStatus] = useState<ClickStatus | null>(null);
   const [targetCountryData, setTargetCountryData] = useState<Country>();
@@ -104,14 +106,26 @@ export const App: React.FC = () => {
     return;
   };
 
-  const resetGame = () => {
-    setGameStatus("INIT");
+  const endGame = () => {
     setGameUnderway(false);
-    setTargetCountryData(getRandomCountryData());
     setRevealedHintCount(1);
-    setGameplayOverlayActive(true);
     setClickStatus(null);
     setClicks([]);
+  };
+
+  const replayGame = (category: GameCategory) => {
+    endGame();
+    setGameplayOverlayActive(true);
+    setGameStatus("INIT");
+    setTargetCountryData(getRandomCountryData(category));
+  };
+
+  const resetGame = () => {
+    endGame();
+    setGameStatus("PENDING");
+    setWelcomeOverlayActive(true);
+    setGameplayOverlayActive(false);
+    setTargetCountryData(undefined);
   };
 
   return (
@@ -125,13 +139,14 @@ export const App: React.FC = () => {
       )}
       <WelcomeModal
         isOpen={!!welcomeOverlayActive}
-        onClose={() => {
-          setTargetCountryData(getRandomCountryData());
+        initializeGame={(category) => {
+          setGameCategory(category);
+          setTargetCountryData(getRandomCountryData(category));
           setWelcomeOverlayActive(false);
           setGameplayOverlayActive(true);
         }}
       />
-      {gameplayOverlayActive && (
+      {gameplayOverlayActive && !!gameCategory && (
         <GameplayModal
           isOpen={!!gameplayOverlayActive}
           onClose={() => {
@@ -150,7 +165,8 @@ export const App: React.FC = () => {
               setClickStatus("GIVE_UP");
             }, 2000);
           }}
-          onReplay={resetGame}
+          onReplay={() => replayGame(gameCategory)}
+          onReset={() => resetGame()}
           onRevealHint={() => setRevealedHintCount(revealedHintCount + 1)}
           revealedHintCount={revealedHintCount}
           clickCount={clicks.length || 0}
@@ -160,7 +176,7 @@ export const App: React.FC = () => {
         />
       )}
 
-      {gameUnderway && (
+      {gameUnderway && !!gameCategory && (
         <div className="gameplay-button">
           {!["FORFEIT", "SUCCESS"].includes(gameStatus) ? (
             <button
@@ -174,7 +190,7 @@ export const App: React.FC = () => {
             </button>
           ) : (
             <button
-              onClick={resetGame}
+              onClick={() => replayGame(gameCategory)}
               className="pure-button pure-button-primary"
             >
               Play Again

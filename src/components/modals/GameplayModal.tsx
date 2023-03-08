@@ -23,6 +23,7 @@ interface GameplayModalProps extends BaseModalProps {
   onForfeit: () => void;
   onReplay: () => void;
   onRevealHint: () => void;
+  onReset: () => void;
 }
 
 export const GameplayModal: React.FC<GameplayModalProps> = ({
@@ -35,6 +36,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
   onForfeit,
   onReplay,
   onRevealHint,
+  onReset,
   ...props
 }) => {
   if (!clickStatus)
@@ -162,6 +164,9 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
           >
             Play Again
           </button>
+          <button onClick={onReset} className="pure-button">
+            Change Game
+          </button>
         </div>
       </BaseModal>
     );
@@ -200,6 +205,9 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         </button>
         <button onClick={onReplay} className="pure-button pure-button-primary">
           Play Again
+        </button>
+        <button onClick={onReset} className="pure-button">
+          Change Game
         </button>
       </div>
     </BaseModal>

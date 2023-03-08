@@ -1,9 +1,65 @@
 import { countryData } from "../data/countryData";
-import { ClickStatus, Coordinates, Country, GameStatus } from "../types";
+import {
+  ClickStatus,
+  Coordinates,
+  Country,
+  GameStatus,
+  GameCategory,
+} from "../types";
 
-export const getRandomCountryData = () => {
-  var randCountryNum = Math.floor(Math.random() * countryData.length);
-  return countryData[randCountryNum];
+export const getRandomCountryData = (category: GameCategory) => {
+  const filteredCountryList = countryData.filter((country) => {
+    switch (category) {
+      case "PLANET_EARTH":
+        return true;
+      case "AFRICA":
+        return country.subregion.includes("Africa");
+      case "ANTARCTIC":
+        return country.subregion === "The Antarctic";
+      case "ASIA":
+        return country.subregion.includes("Asia");
+      case "EUROPE":
+        return country.subregion.includes("Europe");
+      case "NORTH_AMERICA":
+        return country.subregion === "North America";
+      case "CARIBBEAN":
+        return country.subregion === "The Caribbean";
+      case "SOUTH_AMERICA":
+        return country.subregion === "South America";
+      case "OCEANIA":
+        return [
+          "Polynesia",
+          "Melanesia",
+          "Micronesia",
+          "Australia and New Zealand",
+        ].includes(country.subregion);
+      case "ISLAND_COUNTRIES":
+        return country.borders.length === 0;
+      case "LANDLOCKED_COUNTRIES":
+        return country.landlocked;
+      case "LARGE_COUNTRIES":
+        return country.area > 250000;
+      case "SMALL_COUNTRIES":
+        return country.area < 10000;
+      case "POPULOUS_COUNTRIES":
+        return country.population > 30000000;
+      case "NON_POPULOUS_COUNTRIES":
+        return country.population < 50000;
+      default:
+        return true;
+    }
+  });
+
+  // console.info(
+  //   filteredCountryList.length,
+  //   " countries of ",
+  //   countryData.length,
+  //   " in category ",
+  //   category
+  // );
+
+  const randCountryNum = Math.floor(Math.random() * filteredCountryList.length);
+  return filteredCountryList[randCountryNum];
 };
 
 export const getCountryDataFromCca2Code = (code: string) =>
