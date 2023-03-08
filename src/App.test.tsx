@@ -13,7 +13,10 @@ test("renders Mapstery heading", () => {
 test("initiate countries game ", () => {
   render(<App />);
 
-  const countriesGameButton = screen.getByText("Countries of the World");
+  const categorySelect = screen.getByText("Select a Game");
+  expect(categorySelect).toBeInTheDocument;
+
+  const countriesGameButton = screen.getByText("Play Countries of the World");
   userEvent.click(countriesGameButton);
 
   const letsGoButton = screen.getByText("Let's Go!");
