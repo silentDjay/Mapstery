@@ -21,7 +21,9 @@ export const getRandomCountryData = (category: GameCategory) => {
       case "EUROPE":
         return country.subregion.includes("Europe");
       case "NORTH_AMERICA":
-        return country.subregion === "North America";
+        return ["North America", "Central America", "The Caribbean"].includes(
+          country.subregion
+        );
       case "CARIBBEAN":
         return country.subregion === "The Caribbean";
       case "SOUTH_AMERICA":
