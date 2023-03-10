@@ -174,7 +174,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
   return (
     <BaseModal
       isOpen={!!props.isOpen}
-      title={`${clickStatus === "CORRECT" ? `Great! You found ` : ""}${
+      title={`${clickStatus === "CORRECT" ? `Nice! You found ` : ""}${
         targetCountryData.name?.common
       }`}
     >

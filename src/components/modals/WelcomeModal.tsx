@@ -43,7 +43,9 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({
               Select a Game
             </option>
             {GameCategoryList.map((category) => (
-              <option value={category.value}>{category.displayValue}</option>
+              <option key={category.value} value={category.value}>
+                {category.displayValue}
+              </option>
             ))}
           </select>
         </form>

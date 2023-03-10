@@ -63,11 +63,11 @@ code {
 .backdrop {
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  height: 100%;
-  left: 0;
   position: fixed;
+  left: 0;
   top: 0;
-  width: 100%;
+  bottom: 0;
+  right: 0;
   z-index: 12;
   text-align: center;
   padding: 0 4px;

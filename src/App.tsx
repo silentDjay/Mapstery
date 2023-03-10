@@ -166,7 +166,7 @@ export const App: React.FC = () => {
             }, 2000);
           }}
           onReplay={() => replayGame(gameCategory)}
-          onReset={() => resetGame()}
+          onReset={resetGame}
           onRevealHint={() => setRevealedHintCount(revealedHintCount + 1)}
           revealedHintCount={revealedHintCount}
           clickCount={clicks.length || 0}
