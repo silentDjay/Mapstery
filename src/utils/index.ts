@@ -123,8 +123,81 @@ export const initialMapProps: google.maps.MapOptions = {
   minZoom: 2,
 };
 
+const getMapPropsByGameCategory = (category: GameCategory | undefined) => {
+  switch (category) {
+    case "AFRICA":
+      return {
+        center: {
+          lat: 2.37,
+          lng: 16.06,
+        },
+      };
+    case "ANTARCTIC":
+      return {
+        zoom: 2,
+        center: {
+          lat: -30,
+          lng: 180,
+        },
+      };
+    case "ASIA":
+      return {
+        center: {
+          lat: 51.72,
+          lng: 94.44,
+        },
+      };
+    case "EUROPE":
+      return {
+        zoom: 4,
+        center: {
+          lat: 58.416667,
+          lng: 22.5,
+        },
+      };
+    case "NORTH_AMERICA":
+      return {
+        center: {
+          lat: 48.37,
+          lng: -100,
+        },
+      };
+    case "CARIBBEAN":
+      return {
+        zoom: 6,
+        center: {
+          lat: 18,
+          lng: -72,
+        },
+      };
+    case "SOUTH_AMERICA":
+      return {
+        center: {
+          lat: -17.154835,
+          lng: -58.850156,
+        },
+      };
+    case "OCEANIA":
+      return {
+        center: {
+          lat: -5.848531,
+          lng: 162.860786,
+        },
+      };
+    default:
+      return {
+        zoom: 2,
+        center: {
+          lat: 0,
+          lng: 0,
+        },
+      };
+  }
+};
+
 export const getMapOptions = (
   gameStatus: GameStatus,
+  gameCategory?: GameCategory,
   targetCountryData?: Country
 ): google.maps.MapOptions => {
   return gameStatus === "PENDING"
@@ -132,11 +205,7 @@ export const getMapOptions = (
     : gameStatus === "INIT"
     ? {
         ...initialMapProps,
-        zoom: 2,
-        center: {
-          lat: 0,
-          lng: 0,
-        },
+        ...getMapPropsByGameCategory(gameCategory),
       }
     : // TODO: for SUCCESS or FORFEIT, enable the satellite/roadmap controls again (or make a custom one)
     gameStatus === "SUCCESS"

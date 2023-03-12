@@ -209,6 +209,7 @@ export const App: React.FC = () => {
           style={{ height: "100%" }}
           onClick={onMapClick}
           gameStatus={gameStatus}
+          gameCategory={gameCategory}
           targetCountryData={targetCountryData}
         >
           {clicks.map((click, i) => (

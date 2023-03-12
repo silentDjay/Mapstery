@@ -1,10 +1,11 @@
 import React from "react";
 
 import { getMapOptions, initialMapProps } from "../utils";
-import { GameStatus, Country } from "../types";
+import { GameStatus, Country, GameCategory } from "../types";
 
 interface GameplayMapProps extends google.maps.MapOptions {
   gameStatus: GameStatus;
+  gameCategory?: GameCategory;
   targetCountryData?: Country;
   style: { [key: string]: string };
   onClick: (e: google.maps.MapMouseEvent) => void;
@@ -13,6 +14,7 @@ interface GameplayMapProps extends google.maps.MapOptions {
 
 export const GameplayMap: React.FC<GameplayMapProps> = ({
   gameStatus,
+  gameCategory,
   targetCountryData,
   onClick,
   children,
@@ -35,7 +37,6 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
 
   React.useEffect(() => {
     if (!!map) {
-      // TODO: DO i need this?
       ["click"].forEach((eventName) =>
         google.maps.event.clearListeners(map, eventName)
       );
@@ -48,7 +49,9 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
 
   React.useEffect(() => {
     if (!!map && !!targetCountryData)
-      map.setOptions(getMapOptions(gameStatus, targetCountryData));
+      map.setOptions(
+        getMapOptions(gameStatus, gameCategory, targetCountryData)
+      );
   }, [map, targetCountryData, gameStatus]);
 
   return (
