@@ -21,9 +21,7 @@ export const getRandomCountryData = (category: GameCategory) => {
       case "EUROPE":
         return country.subregion.includes("Europe");
       case "NORTH_AMERICA":
-        return ["North America", "Central America", "The Caribbean"].includes(
-          country.subregion
-        );
+        return ["North America", "Central America"].includes(country.subregion);
       case "CARIBBEAN":
         return country.subregion === "The Caribbean";
       case "SOUTH_AMERICA":
@@ -116,14 +114,17 @@ export const initialMapProps: google.maps.MapOptions = {
   zoom: 3,
   mapTypeId: "satellite",
   fullscreenControl: false,
-  disableDefaultUI: true,
+  mapTypeControl: false,
+  streetViewControl: false,
   zoomControl: window.innerWidth > 500 ? true : false,
   draggableCursor: "crosshair",
   scaleControl: true,
   minZoom: 2,
 };
 
-const getMapPropsByGameCategory = (category: GameCategory | undefined) => {
+const getInitialMapPropsByGameCategory = (
+  category: GameCategory | undefined
+) => {
   switch (category) {
     case "AFRICA":
       return {
@@ -137,19 +138,19 @@ const getMapPropsByGameCategory = (category: GameCategory | undefined) => {
         zoom: 2,
         center: {
           lat: -30,
-          lng: 180,
+          lng: -40,
         },
       };
     case "ASIA":
       return {
+        zoom: 2,
         center: {
-          lat: 51.72,
-          lng: 94.44,
+          lat: 40,
+          lng: 95,
         },
       };
     case "EUROPE":
       return {
-        zoom: 4,
         center: {
           lat: 58.416667,
           lng: 22.5,
@@ -157,14 +158,15 @@ const getMapPropsByGameCategory = (category: GameCategory | undefined) => {
       };
     case "NORTH_AMERICA":
       return {
+        zoom: 2,
         center: {
           lat: 48.37,
-          lng: -100,
+          lng: -110,
         },
       };
     case "CARIBBEAN":
       return {
-        zoom: 6,
+        zoom: 4,
         center: {
           lat: 18,
           lng: -72,
@@ -195,6 +197,15 @@ const getMapPropsByGameCategory = (category: GameCategory | undefined) => {
   }
 };
 
+const revealedMapOptions: google.maps.MapOptions = {
+  mapTypeId: "terrain",
+  mapTypeControl: true,
+  mapTypeControlOptions: {
+    style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+    position: google.maps.ControlPosition.LEFT_CENTER,
+  },
+};
+
 export const getMapOptions = (
   gameStatus: GameStatus,
   gameCategory?: GameCategory,
@@ -205,14 +216,13 @@ export const getMapOptions = (
     : gameStatus === "INIT"
     ? {
         ...initialMapProps,
-        ...getMapPropsByGameCategory(gameCategory),
+        ...getInitialMapPropsByGameCategory(gameCategory),
       }
-    : // TODO: for SUCCESS or FORFEIT, enable the satellite/roadmap controls again (or make a custom one)
-    gameStatus === "SUCCESS"
-    ? { mapTypeId: "roadmap" }
+    : gameStatus === "SUCCESS"
+    ? revealedMapOptions
     : gameStatus === "FORFEIT" && !!targetCountryData
     ? {
-        mapTypeId: "roadmap",
+        ...revealedMapOptions,
         center: {
           lat: targetCountryData.latlng[0],
           lng: targetCountryData.latlng[1],
