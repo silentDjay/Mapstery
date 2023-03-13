@@ -197,42 +197,47 @@ const getInitialMapPropsByGameCategory = (
   }
 };
 
-const revealedMapOptions: google.maps.MapOptions = {
-  mapTypeId: "terrain",
-  mapTypeControl: true,
-  mapTypeControlOptions: {
-    style: 1 as google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-    position: 4 as google.maps.ControlPosition.LEFT_CENTER,
-  },
-};
-
 export const getMapOptions = (
   gameStatus: GameStatus,
   gameCategory?: GameCategory,
   targetCountryData?: Country
 ): google.maps.MapOptions => {
-  return gameStatus === "PENDING"
-    ? initialMapProps
-    : gameStatus === "INIT"
-    ? {
+  const revealedMapOptions: google.maps.MapOptions = {
+    mapTypeId: "terrain",
+    mapTypeControl: true,
+    mapTypeControlOptions: {
+      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+      position: google.maps.ControlPosition.LEFT_CENTER,
+    },
+  };
+
+  switch (gameStatus) {
+    case "PENDING":
+      return initialMapProps;
+    case "INIT":
+      return {
         ...initialMapProps,
         ...getInitialMapPropsByGameCategory(gameCategory),
-      }
-    : gameStatus === "SUCCESS"
-    ? revealedMapOptions
-    : gameStatus === "FORFEIT" && !!targetCountryData
-    ? {
-        ...revealedMapOptions,
-        center: {
-          lat: targetCountryData.latlng[0],
-          lng: targetCountryData.latlng[1],
-        },
-        zoom: getMapZoomLevel(
-          targetCountryData.area,
-          targetCountryData.latlng[0]
-        ),
-      }
-    : {};
+      };
+    case "SUCCESS":
+      return revealedMapOptions;
+    case "FORFEIT":
+      return !!targetCountryData
+        ? {
+            ...revealedMapOptions,
+            center: {
+              lat: targetCountryData.latlng[0],
+              lng: targetCountryData.latlng[1],
+            },
+            zoom: getMapZoomLevel(
+              targetCountryData.area,
+              targetCountryData.latlng[0]
+            ),
+          }
+        : {};
+    default:
+      return {};
+  }
 };
 
 export const generateMarkerContent = (
