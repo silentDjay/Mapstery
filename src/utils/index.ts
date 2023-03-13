@@ -201,8 +201,8 @@ const revealedMapOptions: google.maps.MapOptions = {
   mapTypeId: "terrain",
   mapTypeControl: true,
   mapTypeControlOptions: {
-    style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-    position: google.maps.ControlPosition.LEFT_CENTER,
+    style: 1 as google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+    position: 4 as google.maps.ControlPosition.LEFT_CENTER,
   },
 };
 
