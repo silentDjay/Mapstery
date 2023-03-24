@@ -1,5 +1,6 @@
 import { countryData } from "../data/countryData";
 import {
+  Click,
   ClickStatus,
   Coordinates,
   Country,
@@ -240,14 +241,24 @@ export const getMapOptions = (
   }
 };
 
-export const generateMarkerContent = (
-  countryName: string,
-  index: number,
-  winner: boolean
-) => {
+export const getNumberOfClicksOnLand = (clicks: Click[]) => {
+  return clicks.filter((click) => !!click.countedClickNumber).length;
+};
+
+export const generateMarkerContent = (data: Click) => {
+  const { featureName, countedClickNumber, winner } = data;
+
   const element = document.createElement("div");
-  element.className = `click-marker ${winner ? "click-marker-success" : ""}`;
-  element.innerHTML = `<b>${index + 1}</b> | <b>${countryName}</b>`;
+  element.className = `click-marker ${
+    winner
+      ? "click-marker-success"
+      : !countedClickNumber
+      ? "click-marker-water"
+      : ""
+  }`;
+  element.innerHTML = `${
+    !!countedClickNumber ? `<b>${countedClickNumber}</b> | ` : ""
+  }<b>${featureName}</b>`;
 
   return element;
 };

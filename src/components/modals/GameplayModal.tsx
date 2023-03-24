@@ -66,7 +66,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
     return (
       <BaseModal
         isOpen={!!props.isOpen}
-        title="You clicked on unknown territory!"
+        title="You clicked on uncharted territory!"
       >
         <button
           style={{ fontSize: "125%", marginTop: "16px" }}

@@ -177,3 +177,11 @@ code {
 .click-marker-success::after {
   border-top-color: green;
 }
+
+.click-marker-water {
+  background-color: navy;
+}
+
+.click-marker-water::after {
+  border-top-color: navy;
+}

@@ -57,8 +57,9 @@ export type ClickStatus =
   | "EXPLORE";
 
 export interface Click {
-  countryName: string;
+  featureName: string;
   coordinates: google.maps.LatLng;
+  countedClickNumber?: number;
   winner?: boolean;
 }
 
@@ -93,9 +94,25 @@ export interface Country {
   car: { signs: string[]; side: "left" | "right" };
 }
 
-export interface ReverseGeocodedCountry {
+interface SubdivisionCode {
+  code: string;
+  level: string;
+  type: string;
+}
+
+export interface ReverseGeoclocatedCountry {
+  adminCode1: string;
+  adminName1: string;
+  codes: SubdivisionCode[];
   countryCode: string;
   countryName: string;
-  distance: string;
-  languages: string;
+  distance: number;
+}
+
+export interface ReverseGeoclocatedBodyOfWater {
+  ocean: {
+    distance: string;
+    geonameId: number;
+    name: string;
+  };
 }

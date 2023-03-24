@@ -17,9 +17,14 @@ import {
   ClickStatus,
   Click,
   Country,
-  ReverseGeocodedCountry,
+  ReverseGeoclocatedCountry,
+  ReverseGeoclocatedBodyOfWater,
 } from "./types";
-import { generateMarkerContent, getRandomCountryData } from "./utils";
+import {
+  generateMarkerContent,
+  getNumberOfClicksOnLand,
+  getRandomCountryData,
+} from "./utils";
 
 const tagManagerArgs = {
   gtmId: GOOGLE_TAG_ID,
@@ -59,30 +64,56 @@ export const App: React.FC = () => {
 
   const geolocateClickCoords = async (coordinates: google.maps.LatLng) => {
     try {
-      const clickedCountryData = await geonames.countryCode({
+      const clickedCountryData = await geonames.countrySubdivision({
         lat: coordinates.lat(),
         lng: coordinates.lng(),
-      }); // 'countrySubdivision' mostly works for US states (but not for NC or VA) - perhaps I can fix it, or there might be a different dataset I can use (or I can use google's reverse geolocation API for that game)
-      registerClick(clickedCountryData, coordinates);
+      });
+
+      // 15 is the status when no country is reverse geolocated
+      if (clickedCountryData?.status?.value === 15) {
+        geolocateBodyOfWater(coordinates);
+        return;
+      }
+
+      handleGeolocatedClickData(coordinates, clickedCountryData);
     } catch (err) {
       console.error(err);
     }
   };
 
-  const registerClick = (
-    countryData: ReverseGeocodedCountry,
-    coordinates: google.maps.LatLng
-  ) => {
-    const code = countryData?.countryCode;
-    const name = countryData?.countryName;
+  const geolocateBodyOfWater = async (coordinates: google.maps.LatLng) => {
+    try {
+      const clickedBodyOfWaterData = await geonames.ocean({
+        lat: coordinates.lat(),
+        lng: coordinates.lng(),
+      });
+      handleGeolocatedClickData(coordinates, undefined, clickedBodyOfWaterData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-    if (!code) {
+  const handleGeolocatedClickData = (
+    coordinates: google.maps.LatLng,
+    countryData?: ReverseGeoclocatedCountry,
+    bodyOfWaterData?: ReverseGeoclocatedBodyOfWater
+  ) => {
+    if (!!bodyOfWaterData) {
+      setClicks((currentClicks) => [
+        ...currentClicks,
+        { coordinates, featureName: bodyOfWaterData.ocean.name },
+      ]);
+      return;
+    }
+
+    if (!countryData) {
       setGameplayOverlayActive(true);
       setClickStatus("NO_DATA");
       return;
     }
 
-    setClickedCountryCode(code);
+    const { countryCode, countryName } = countryData;
+    setClickedCountryCode(countryCode);
 
     if (["SUCCESS", "FORFEIT"].includes(gameStatus)) {
       setGameplayOverlayActive(true);
@@ -90,16 +121,31 @@ export const App: React.FC = () => {
       return;
     }
 
-    if (code !== targetCountryData?.cca2) {
-      setClicks([...clicks, { countryName: name, coordinates }]);
+    if (countryCode !== targetCountryData?.cca2) {
+      setClicks((currentClicks) => [
+        ...currentClicks,
+        {
+          coordinates,
+          featureName: countryName,
+          countedClickNumber: getNumberOfClicksOnLand(currentClicks) + 1,
+        },
+      ]);
       return;
     }
 
-    if (code === targetCountryData?.cca2) {
+    if (countryCode === targetCountryData?.cca2) {
       setGameplayOverlayActive(true);
       setClickStatus("CORRECT");
       setGameStatus("SUCCESS");
-      setClicks([...clicks, { countryName: name, coordinates, winner: true }]);
+      setClicks((currentClicks) => [
+        ...currentClicks,
+        {
+          featureName: countryName,
+          coordinates,
+          countedClickNumber: getNumberOfClicksOnLand(currentClicks) + 1,
+          winner: true,
+        },
+      ]);
       return;
     }
 
@@ -169,7 +215,7 @@ export const App: React.FC = () => {
           onReset={resetGame}
           onRevealHint={() => setRevealedHintCount(revealedHintCount + 1)}
           revealedHintCount={revealedHintCount}
-          clickCount={clicks.length || 0}
+          clickCount={getNumberOfClicksOnLand(clicks)}
           clickStatus={clickStatus}
           clickedCountryCode={clickedCountryCode}
           targetCountryData={targetCountryData as Country}
@@ -212,16 +258,12 @@ export const App: React.FC = () => {
           gameCategory={gameCategory}
           targetCountryData={targetCountryData}
         >
-          {clicks.map((click, i) => (
+          {clicks.map((click, index) => (
             <ClickMarker
-              key={i}
+              key={index}
               position={click.coordinates}
-              title={click.countryName}
-              content={generateMarkerContent(
-                click.countryName,
-                i,
-                !!click.winner
-              )}
+              title={click.featureName}
+              content={generateMarkerContent(click)}
             />
           ))}
         </GameplayMap>

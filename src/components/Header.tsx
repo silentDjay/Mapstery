@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Click, Country } from "../types";
-import { getClickDistanceFromTarget } from "../utils";
+import { getClickDistanceFromTarget, getNumberOfClicksOnLand } from "../utils";
 
 interface HeaderProps {
   clicks: Click[];
@@ -14,9 +14,10 @@ export const Header: React.FC<HeaderProps> = ({
   targetCountryData,
   targetCountryFound,
 }) => {
-  const clickCount = clicks.length;
-  const lastClickData = clicks[clickCount - 1];
-  const penultimateClickData = clicks[clickCount - 2];
+  const totalClickCount = clicks.length;
+  const clickCountOnLand = getNumberOfClicksOnLand(clicks);
+  const lastClickData = clicks[totalClickCount - 1];
+  const penultimateClickData = clicks[totalClickCount - 2];
   const distanceFromTarget =
     !!targetCountryData &&
     !!lastClickData &&
@@ -75,7 +76,9 @@ export const Header: React.FC<HeaderProps> = ({
                 ? targetCountryData.name.common
                 : `You found ${
                     targetCountryData.name.common
-                  } in ${clickCount} ${clickCount === 1 ? "Try" : "Tries"}`}
+                  } in ${clickCountOnLand} ${
+                    clickCountOnLand === 1 ? "Try" : "Tries"
+                  }`}
             </b>
           </div>
           <img
