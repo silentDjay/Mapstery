@@ -11,8 +11,6 @@ import {
 export const getRandomCountryData = (category: GameCategory) => {
   const filteredCountryList = countryData.filter((country) => {
     switch (category) {
-      case "PLANET_EARTH":
-        return true;
       case "AFRICA":
         return country.subregion.includes("Africa");
       case "ANTARCTIC":
@@ -46,7 +44,9 @@ export const getRandomCountryData = (category: GameCategory) => {
         return country.population > 30000000;
       case "NON_POPULOUS_COUNTRIES":
         return country.population < 50000;
-      default:
+      case "MAPSTERY_QUEST":
+        return !getCampaignHistory().includes(country.cca2);
+      default: // "PLANET_EARTH"
         return true;
     }
   });
@@ -311,9 +311,12 @@ export const getShareText = (
   clickStatus: ClickStatus,
   targetCountryName: string,
   targetCountryFlagEmoji: string,
-  clickCount: number
+  clickCount: number,
+  campaignComplete: boolean
 ) =>
-  clickStatus === "CORRECT"
+  campaignComplete
+    ? `I found all campaignLength countries in the Mapstery Quest! Play Mapstery!`
+    : clickStatus === "CORRECT"
     ? `Rad! I found ${targetCountryName} ${targetCountryFlagEmoji} in ${clickCount} ${
         clickCount === 1 ? "try" : "tries"
       }. Play Mapstery!`
@@ -336,4 +339,35 @@ export const shareGameResult = async (shareText: string) => {
   } catch (e) {
     return console.info(e);
   }
+};
+
+const campaignLocalStorageKey = "mapsteryCampaign";
+export const campaignLength = countryData.length;
+
+export const handleCountryFoundInCampaign = (countryCode: string) => {
+  const foundCountriesList = localStorage.getItem(campaignLocalStorageKey);
+  if (!foundCountriesList) {
+    localStorage.setItem(
+      campaignLocalStorageKey,
+      JSON.stringify([countryCode])
+    );
+  } else {
+    const parsedFoundCountriesList = JSON.parse(foundCountriesList);
+    if (!parsedFoundCountriesList.includes(countryCode)) {
+      localStorage.setItem(
+        campaignLocalStorageKey,
+        JSON.stringify([...parsedFoundCountriesList, countryCode])
+      );
+    }
+  }
+};
+
+export const getCampaignHistory = (): string[] => {
+  return !!localStorage.getItem(campaignLocalStorageKey)
+    ? JSON.parse(localStorage.getItem(campaignLocalStorageKey) as string)
+    : [];
+};
+
+export const resetCampaignHistory = () => {
+  localStorage.removeItem(campaignLocalStorageKey);
 };

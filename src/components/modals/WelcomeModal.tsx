@@ -11,41 +11,32 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({
   isOpen,
   initializeGame,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<GameCategory>();
+  const [selectedCategory, setSelectedCategory] = useState<GameCategory>("PLANET_EARTH");
 
   useEffect(() => {
-    isOpen && setSelectedCategory(undefined);
+    isOpen && setSelectedCategory("PLANET_EARTH");
   }, [isOpen]);
 
   return (
     <BaseModal isOpen={!!isOpen} title={"MAPSTERY"}>
-      <button
-        style={{ fontSize: "1.25rem", marginBottom: "1rem" }}
-        onClick={() => initializeGame("PLANET_EARTH")}
-        className="pure-button pure-button-primary"
-      >
-        Play Countries of the World
-      </button>
       <div
         style={{
           fontSize: "1.25rem",
-          fontStyle: "italic",
           marginBottom: "1rem",
         }}
       >
-        or
+        Select a Game
       </div>
       <div className="modal-actions">
         <form className="pure-form">
           <select
+            defaultValue={"PLANET_EARTH"}
+            name="categorySelect"
             style={{ height: "unset" }}
             onChange={(e) =>
               setSelectedCategory(e.target.value as GameCategory)
             }
           >
-            <option disabled selected>
-              Select a Game
-            </option>
             {GameCategoryList.map((category) => (
               <option key={category.value} value={category.value}>
                 {category.displayValue}

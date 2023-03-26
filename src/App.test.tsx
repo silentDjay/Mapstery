@@ -16,8 +16,8 @@ test("initiate countries game ", () => {
   const categorySelect = screen.getByText("Select a Game");
   expect(categorySelect).toBeInTheDocument;
 
-  const countriesGameButton = screen.getByText("Play Countries of the World");
-  userEvent.click(countriesGameButton);
+  const initGameButton = screen.getByText("Play");
+  userEvent.click(initGameButton);
 
   const letsGoButton = screen.getByText("Let's Go!");
   expect(letsGoButton).toBeInTheDocument;

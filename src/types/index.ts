@@ -13,12 +13,14 @@ export type GameCategory =
   | "LARGE_COUNTRIES"
   | "SMALL_COUNTRIES"
   | "POPULOUS_COUNTRIES"
-  | "NON_POPULOUS_COUNTRIES";
+  | "NON_POPULOUS_COUNTRIES"
+  | "MAPSTERY_QUEST";
 
 export const GameCategoryList: {
-  value: Partial<GameCategory>;
+  value: GameCategory;
   displayValue: string;
 }[] = [
+  { value: "PLANET_EARTH", displayValue: "Countries of the World" },
   { value: "AFRICA", displayValue: "Africa" },
   { value: "ANTARCTIC", displayValue: "The Antarctic" },
   { value: "ASIA", displayValue: "Asia" },
@@ -44,6 +46,10 @@ export const GameCategoryList: {
   {
     value: "NON_POPULOUS_COUNTRIES",
     displayValue: "Countries with <50,000 Inhabitants",
+  },
+  {
+    value: "MAPSTERY_QUEST",
+    displayValue: "The Mapstery Quest",
   },
 ];
 

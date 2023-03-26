@@ -11,7 +11,12 @@ import {
   getShareText,
 } from "../../utils";
 import { ClickStatus, Country } from "../../types";
-import { shareGameResult } from "../../utils";
+import {
+  getCampaignHistory,
+  resetCampaignHistory,
+  shareGameResult,
+  campaignLength,
+} from "../../utils";
 
 interface GameplayModalProps extends BaseModalProps {
   clickCount: number;
@@ -19,6 +24,7 @@ interface GameplayModalProps extends BaseModalProps {
   clickedCountryCode: string;
   targetCountryData: Country;
   revealedHintCount: number;
+  campaignModeActive: boolean;
   onStartGame: () => void;
   onForfeit: () => void;
   onReplay: () => void;
@@ -32,6 +38,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
   clickedCountryCode,
   targetCountryData,
   revealedHintCount,
+  campaignModeActive,
   onStartGame,
   onForfeit,
   onReplay,
@@ -39,6 +46,10 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
   onReset,
   ...props
 }) => {
+  const campaignHistoryCount = getCampaignHistory().length;
+  const campaignCompleted =
+    campaignModeActive && campaignHistoryCount === campaignLength;
+
   if (!clickStatus)
     return (
       <BaseModal
@@ -52,6 +63,23 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
             src={targetCountryData.flags.svg}
           />
         </div>
+        {campaignModeActive && (
+          <div style={{ fontSize: "125%", marginTop: "16px" }}>
+            {!!campaignHistoryCount ? (
+              <div>
+                You've found {campaignHistoryCount}{" "}
+                {campaignHistoryCount > 1 ? "countries" : "country"} so far on
+                your Mapstery Quest. Just{" "}
+                {campaignLength - campaignHistoryCount} more to go!
+              </div>
+            ) : (
+              <div>
+                You're on a Mapstery Quest to find {campaignLength} countries!
+                Can you do it?
+              </div>
+            )}
+          </div>
+        )}
         <button
           style={{ fontSize: "125%", marginTop: "16px" }}
           onClick={onStartGame}
@@ -158,14 +186,22 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
           >
             Keep Exploring
           </button>
+          {!campaignCompleted && (
+            <button
+              onClick={onReplay}
+              className="pure-button pure-button-primary"
+            >
+              Play Again
+            </button>
+          )}
           <button
-            onClick={onReplay}
-            className="pure-button pure-button-primary"
+            onClick={() => {
+              if (campaignCompleted) resetCampaignHistory();
+              onReset();
+            }}
+            className="pure-button"
           >
-            Play Again
-          </button>
-          <button onClick={onReset} className="pure-button">
-            Change Game
+            New Game
           </button>
         </div>
       </BaseModal>
@@ -178,7 +214,14 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         targetCountryData.name?.common
       }`}
     >
-      <CountrySpecsList countryMetadata={targetCountryData} />
+      {campaignCompleted ? (
+        <div style={{ fontSize: "175%", margin: "1rem" }}>
+          You completed the Mapstery Quest! You found all {campaignLength}
+          countries! You're a Mapstery Master!
+        </div>
+      ) : (
+        <CountrySpecsList countryMetadata={targetCountryData} />
+      )}
       <div className="modal-actions">
         {!!navigator.share && !!clickStatus && (
           <button
@@ -188,7 +231,8 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
                   clickStatus,
                   targetCountryData.name?.common,
                   getFlagEmoji(targetCountryData.cca2),
-                  clickCount
+                  clickCount,
+                  campaignCompleted
                 )
               )
             }
@@ -203,11 +247,22 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         >
           Explore the Map
         </button>
-        <button onClick={onReplay} className="pure-button pure-button-primary">
-          Play Again
-        </button>
-        <button onClick={onReset} className="pure-button">
-          Change Game
+        {!campaignCompleted && (
+          <button
+            onClick={onReplay}
+            className="pure-button pure-button-primary"
+          >
+            Play Again
+          </button>
+        )}
+        <button
+          onClick={() => {
+            if (campaignCompleted) resetCampaignHistory();
+            onReset();
+          }}
+          className="pure-button"
+        >
+          New Game
         </button>
       </div>
     </BaseModal>

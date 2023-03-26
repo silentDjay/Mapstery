@@ -24,6 +24,10 @@ import {
   generateMarkerContent,
   getNumberOfClicksOnLand,
   getRandomCountryData,
+  handleCountryFoundInCampaign,
+  getCampaignHistory,
+  resetCampaignHistory,
+  campaignLength,
 } from "./utils";
 
 const tagManagerArgs = {
@@ -146,6 +150,7 @@ export const App: React.FC = () => {
           winner: true,
         },
       ]);
+      handleCountryFoundInCampaign(targetCountryData.cca2);
       return;
     }
 
@@ -219,6 +224,7 @@ export const App: React.FC = () => {
           clickStatus={clickStatus}
           clickedCountryCode={clickedCountryCode}
           targetCountryData={targetCountryData as Country}
+          campaignModeActive={gameCategory === "MAPSTERY_QUEST"}
         />
       )}
 
@@ -233,6 +239,17 @@ export const App: React.FC = () => {
               className="pure-button pure-button-primary"
             >
               Hint
+            </button>
+          ) : gameCategory === "MAPSTERY_QUEST" &&
+            getCampaignHistory().length === campaignLength ? (
+            <button
+              onClick={() => {
+                resetCampaignHistory();
+                resetGame();
+              }}
+              className="pure-button pure-button-primary"
+            >
+              New Game
             </button>
           ) : (
             <button
