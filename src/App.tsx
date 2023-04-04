@@ -91,6 +91,13 @@ export const App: React.FC = () => {
         lat: coordinates.lat(),
         lng: coordinates.lng(),
       });
+
+      // 15 is the status when no ocean is reverse geolocated
+      if (clickedBodyOfWaterData?.status?.value === 15) {
+        handleGeolocatedClickData(coordinates);
+        return;
+      }
+
       handleGeolocatedClickData(coordinates, undefined, clickedBodyOfWaterData);
     } catch (err) {
       console.error(err);
