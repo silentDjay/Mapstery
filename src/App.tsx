@@ -3,7 +3,12 @@ import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import Geonames from "geonames.js";
 import TagManager from "react-gtm-module";
 
-import { GEONAMES_USERNAME, GOOGLE_API_KEY, GOOGLE_TAG_ID } from "./config";
+import {
+  GEONAMES_USERNAME,
+  GEONAMES_TOKEN,
+  GOOGLE_API_KEY,
+  GOOGLE_TAG_ID,
+} from "./config";
 import {
   GameplayMap,
   ClickMarker,
@@ -46,6 +51,7 @@ const render = (status: Status) => {
 
 const geonames = Geonames({
   username: GEONAMES_USERNAME,
+  token: GEONAMES_TOKEN,
   lan: "en",
   encoding: "JSON",
 });
