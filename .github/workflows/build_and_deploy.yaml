@@ -25,6 +25,7 @@ jobs:
           VITE_GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           VITE_GOOGLE_TAG_ID: ${{ secrets.GOOGLE_TAG_ID }}
           VITE_GEONAMES_USERNAME: ${{ secrets.GEONAMES_USERNAME }}
+          VITE_GEONAMES_TOKEN: ${{ secrets.GEONAMES_TOKEN }}
       - uses: actions/upload-artifact@v3
         with:
           name: mapstery-production-build
