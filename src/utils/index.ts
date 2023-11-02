@@ -315,7 +315,7 @@ export const getShareText = (
   campaignComplete: boolean
 ) =>
   campaignComplete
-    ? `I found all campaignLength countries in the Mapstery Quest! Play Mapstery!`
+    ? `I found all ${campaignLength} countries in the Mapstery Quest! Play Mapstery!`
     : clickStatus === "CORRECT"
     ? `Rad! I found ${targetCountryName} ${targetCountryFlagEmoji} in ${clickCount} ${
         clickCount === 1 ? "try" : "tries"
