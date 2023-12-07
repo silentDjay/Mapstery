@@ -11,7 +11,8 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({
   isOpen,
   initializeGame,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<GameCategory>("PLANET_EARTH");
+  const [selectedCategory, setSelectedCategory] =
+    useState<GameCategory>("PLANET_EARTH");
 
   useEffect(() => {
     isOpen && setSelectedCategory("PLANET_EARTH");

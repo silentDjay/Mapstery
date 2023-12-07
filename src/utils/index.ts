@@ -253,8 +253,8 @@ export const generateMarkerContent = (data: Click) => {
     winner
       ? "click-marker-success"
       : !countedClickNumber
-      ? "click-marker-water"
-      : ""
+        ? "click-marker-water"
+        : ""
   }`;
   element.innerHTML = `${
     !!countedClickNumber ? `<b>${countedClickNumber}</b> | ` : ""
@@ -317,10 +317,10 @@ export const getShareText = (
   campaignComplete
     ? `I found all ${campaignLength} countries in the Mapstery Quest! Play Mapstery!`
     : clickStatus === "CORRECT"
-    ? `Rad! I found ${targetCountryName} ${targetCountryFlagEmoji} in ${clickCount} ${
-        clickCount === 1 ? "try" : "tries"
-      }. Play Mapstery!`
-    : `Welp. I couldn't find ${targetCountryName} ${targetCountryFlagEmoji}. Play Mapstery!`;
+      ? `Rad! I found ${targetCountryName} ${targetCountryFlagEmoji} in ${clickCount} ${
+          clickCount === 1 ? "try" : "tries"
+        }. Play Mapstery!`
+      : `Welp. I couldn't find ${targetCountryName} ${targetCountryFlagEmoji}. Play Mapstery!`;
 
 // credit to https://dev.to/jorik/country-code-to-flag-emoji-a21
 export const getFlagEmoji = (countryCode: string) => {

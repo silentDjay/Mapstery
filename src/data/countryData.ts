@@ -5901,7 +5901,7 @@ export const countryData: Country[] = [
     capital: ["City of San Marino"],
     subregion: "Southern Europe",
     languages: { ita: "Italian" },
-    latlng: [43.76666666, 12.41666666],
+    latlng: [43.937, 12.462],
     landlocked: true,
     borders: ["ITA"],
     area: 61.0,

@@ -210,9 +210,9 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
   return (
     <BaseModal
       isOpen={!!props.isOpen}
-      title={`${clickStatus === "CORRECT" ? `Nice! You found ` : ""}${
-        targetCountryData.name?.common
-      }`}
+      title={`${
+        clickStatus === "CORRECT" ? `Nice! You found ` : ""
+      }${targetCountryData.name?.common}`}
     >
       {campaignCompleted ? (
         <div style={{ fontSize: "175%", margin: "1rem" }}>
