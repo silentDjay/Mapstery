@@ -138,4 +138,5 @@ export interface AnalyticsEventData {
   overallClicks?: number;
   clickedFeature?: string | undefined;
   gameStatus?: "SEARCH" | "EXPLORE";
+  latLng?: [number, number];
 }

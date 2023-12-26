@@ -148,7 +148,7 @@ export const App: React.FC = () => {
         ...clickEventData,
         countedClicks: getNumberOfClicksOnLand(clicks),
         overallClicks: clicks.length,
-        clickedFeature: undefined,
+        latLng: [coordinates.lat(), coordinates.lng()],
       });
       return;
     }
