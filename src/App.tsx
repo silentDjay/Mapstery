@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import Geonames from "geonames.js";
 import TagManager from "react-gtm-module";
+import posthog from "posthog-js";
 
 import {
   GEONAMES_USERNAME,
   GEONAMES_TOKEN,
   GOOGLE_API_KEY,
   GOOGLE_TAG_ID,
+  POSTHOG_API_KEY,
 } from "./config";
 import {
   GameplayMap,
@@ -24,6 +26,7 @@ import {
   Country,
   ReverseGeoclocatedCountry,
   ReverseGeoclocatedBodyOfWater,
+  AnalyticsEventData,
 } from "./types";
 import {
   generateMarkerContent,
@@ -33,6 +36,7 @@ import {
   getCampaignHistory,
   resetCampaignHistory,
   campaignLength,
+  captureEvent,
 } from "./utils";
 
 const tagManagerArgs = {
@@ -40,6 +44,8 @@ const tagManagerArgs = {
 };
 
 TagManager.initialize(tagManagerArgs);
+
+posthog.init(POSTHOG_API_KEY, { api_host: "https://us.posthog.com" });
 
 const render = (status: Status) => {
   return (
@@ -115,17 +121,35 @@ export const App: React.FC = () => {
     countryData?: ReverseGeoclocatedCountry,
     bodyOfWaterData?: ReverseGeoclocatedBodyOfWater
   ) => {
+    const clickEventData: AnalyticsEventData = {
+      target: targetCountryData?.name.common,
+      gameStatus: "SEARCH",
+      gameCategory: gameCategory,
+    };
+
     if (!!bodyOfWaterData) {
       setClicks((currentClicks) => [
         ...currentClicks,
         { coordinates, featureName: bodyOfWaterData.ocean.name },
       ]);
+      captureEvent("MAP_CLICK", {
+        ...clickEventData,
+        countedClicks: getNumberOfClicksOnLand(clicks),
+        overallClicks: clicks.length + 1,
+        clickedFeature: bodyOfWaterData.ocean.name,
+      });
       return;
     }
 
     if (!countryData) {
       setGameplayOverlayActive(true);
       setClickStatus("NO_DATA");
+      captureEvent("MAP_CLICK", {
+        ...clickEventData,
+        countedClicks: getNumberOfClicksOnLand(clicks),
+        overallClicks: clicks.length,
+        clickedFeature: undefined,
+      });
       return;
     }
 
@@ -135,6 +159,11 @@ export const App: React.FC = () => {
     if (["SUCCESS", "FORFEIT"].includes(gameStatus)) {
       setGameplayOverlayActive(true);
       setClickStatus("EXPLORE");
+      captureEvent("MAP_CLICK", {
+        ...clickEventData,
+        clickedFeature: countryName,
+        gameStatus: "EXPLORE",
+      });
       return;
     }
 
@@ -147,6 +176,12 @@ export const App: React.FC = () => {
           countedClickNumber: getNumberOfClicksOnLand(currentClicks) + 1,
         },
       ]);
+      captureEvent("MAP_CLICK", {
+        ...clickEventData,
+        countedClicks: getNumberOfClicksOnLand(clicks) + 1,
+        overallClicks: clicks.length + 1,
+        clickedFeature: countryName,
+      });
       return;
     }
 
@@ -164,6 +199,12 @@ export const App: React.FC = () => {
         },
       ]);
       handleCountryFoundInCampaign(targetCountryData.cca2);
+      captureEvent("WIN", {
+        ...clickEventData,
+        countedClicks: getNumberOfClicksOnLand(clicks) + 1,
+        overallClicks: clicks.length + 1,
+        clickedFeature: countryName,
+      });
       return;
     }
 
@@ -182,6 +223,10 @@ export const App: React.FC = () => {
     setGameplayOverlayActive(true);
     setGameStatus("INIT");
     setTargetCountryData(getRandomCountryData(category));
+    captureEvent("REPLAY_GAME", {
+      gameCategory: category,
+      target: targetCountryData?.name.common,
+    });
   };
 
   const resetGame = () => {
@@ -208,6 +253,10 @@ export const App: React.FC = () => {
           setTargetCountryData(getRandomCountryData(category));
           setWelcomeOverlayActive(false);
           setGameplayOverlayActive(true);
+          captureEvent("START_GAME", {
+            gameCategory: category,
+            target: targetCountryData?.name.common,
+          });
         }}
       />
       {gameplayOverlayActive && !!gameCategory && (
@@ -224,6 +273,12 @@ export const App: React.FC = () => {
           onForfeit={() => {
             setGameplayOverlayActive(false);
             setGameStatus("FORFEIT");
+            captureEvent("FORFEIT", {
+              target: targetCountryData?.name.common,
+              countedClicks: getNumberOfClicksOnLand(clicks),
+              overallClicks: clicks.length,
+              gameCategory,
+            });
             setTimeout(() => {
               setGameplayOverlayActive(true);
               setClickStatus("GIVE_UP");
@@ -248,6 +303,10 @@ export const App: React.FC = () => {
               onClick={() => {
                 setGameplayOverlayActive(true);
                 setClickStatus("HINT");
+                captureEvent("HINT_REQUEST", {
+                  target: targetCountryData?.name.common,
+                  gameCategory,
+                });
               }}
               className="pure-button pure-button-primary"
             >

@@ -1,3 +1,5 @@
+import posthog from "posthog-js";
+
 import { countryData } from "../data/countryData";
 import {
   Click,
@@ -6,6 +8,8 @@ import {
   Country,
   GameStatus,
   GameCategory,
+  AnalyticsEventData,
+  AnalyticsEventType,
 } from "../types";
 
 export const getRandomCountryData = (category: GameCategory) => {
@@ -370,4 +374,11 @@ export const getCampaignHistory = (): string[] => {
 
 export const resetCampaignHistory = () => {
   localStorage.removeItem(campaignLocalStorageKey);
+};
+
+export const captureEvent = (
+  eventName: AnalyticsEventType,
+  data: AnalyticsEventData
+) => {
+  posthog.capture(eventName, data);
 };

@@ -122,3 +122,20 @@ export interface ReverseGeoclocatedBodyOfWater {
     name: string;
   };
 }
+
+export type AnalyticsEventType =
+  | "MAP_CLICK"
+  | "FORFEIT"
+  | "WIN"
+  | "START_GAME"
+  | "REPLAY_GAME"
+  | "HINT_REQUEST";
+
+export interface AnalyticsEventData {
+  gameCategory: GameCategory | undefined;
+  target: string | undefined;
+  countedClicks?: number;
+  overallClicks?: number;
+  clickedFeature?: string | undefined;
+  gameStatus?: "SEARCH" | "EXPLORE";
+}
