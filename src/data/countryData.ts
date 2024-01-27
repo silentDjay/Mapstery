@@ -4165,8 +4165,8 @@ export const countryData: Country[] = [
   },
   {
     flags: {
-      png: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_the_Taliban.svg/320px-Flag_of_the_Taliban.svg.png",
-      svg: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_the_Taliban.svg",
+      png: "https://flagcdn.com/w320/af.png",
+      svg: "https://flagcdn.com/af.svg",
     },
     name: {
       common: "Afghanistan",

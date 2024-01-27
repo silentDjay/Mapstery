@@ -11,6 +11,7 @@ Mapstery is inspired by my long history of spending hours on end staring at maps
 - [Google Maps JavaScript API]
 - [@googlemaps/react-wrapper]
 - [GeoNames `CountryCode` API] provides the [reverse geocoding] logic
+- [flagpedia.net] provides the flag images
 
 ## Development
 
@@ -54,6 +55,7 @@ Mapstery will run at `localhost:3000`. You're good to go!
 
 [Mozilla Public License] MPL 2.0
 
+[flagpedia.net]: https://flagpedia.net
 [geonames account]: https://www.geonames.org/login
 [geonames `countrycode` api]: https://www.geonames.org/export/web-services.html#countrycode
 [google maps api key]: https://developers.google.com/maps/documentation/javascript/get-api-key#create-api-keys
