@@ -45,7 +45,7 @@ export const getRandomCountryData = (category: GameCategory) => {
       case "SMALL_COUNTRIES":
         return country.area < 10000;
       case "POPULOUS_COUNTRIES":
-        return country.population > 30000000;
+        return country.population > 100000000;
       case "NON_POPULOUS_COUNTRIES":
         return country.population < 50000;
       case "MAPSTERY_QUEST":

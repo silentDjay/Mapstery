@@ -41,7 +41,7 @@ export const GameCategoryList: {
   },
   {
     value: "POPULOUS_COUNTRIES",
-    displayValue: "Countries with >30 Million Inhabitants",
+    displayValue: "Countries with >100 Million Inhabitants",
   },
   {
     value: "NON_POPULOUS_COUNTRIES",

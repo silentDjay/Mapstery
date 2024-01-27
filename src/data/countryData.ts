@@ -240,7 +240,7 @@ export const countryData: Country[] = [
       eng: { f: "American", m: "American" },
       fra: { f: "Américaine", m: "Américain" },
     },
-    population: 329484123,
+    population: 336003880,
     car: { signs: ["USA"], side: "right" },
   },
   {
@@ -480,7 +480,7 @@ export const countryData: Country[] = [
       eng: { f: "Brazilian", m: "Brazilian" },
       fra: { f: "Brésilienne", m: "Brésilien" },
     },
-    population: 212559409,
+    population: 217200021,
     car: { signs: ["BR"], side: "right" },
   },
   {
@@ -1228,7 +1228,7 @@ export const countryData: Country[] = [
       eng: { f: "Chinese", m: "Chinese" },
       fra: { f: "Chinoise", m: "Chinois" },
     },
-    population: 1402112000,
+    population: 1412600000,
     car: { signs: ["RC"], side: "right" },
   },
   {
@@ -1389,7 +1389,7 @@ export const countryData: Country[] = [
       eng: { f: "Russian", m: "Russian" },
       fra: { f: "Russe", m: "Russe" },
     },
-    population: 144104080,
+    population: 147190000,
     car: { signs: ["RUS"], side: "right" },
   },
   {
@@ -1418,7 +1418,7 @@ export const countryData: Country[] = [
       eng: { f: "Bangladeshi", m: "Bangladeshi" },
       fra: { f: "Bangladaise", m: "Bangladais" },
     },
-    population: 164689383,
+    population: 168220000,
     car: { signs: ["BD"], side: "left" },
   },
   {
@@ -2642,7 +2642,7 @@ export const countryData: Country[] = [
       eng: { f: "Nigerian", m: "Nigerian" },
       fra: { f: "Nigériane", m: "Nigérian" },
     },
-    population: 206139587,
+    population: 216746934,
     car: { signs: ["WAN"], side: "right" },
   },
   {
@@ -2762,7 +2762,7 @@ export const countryData: Country[] = [
       eng: { f: "Ethiopian", m: "Ethiopian" },
       fra: { f: "Éthiopienne", m: "Éthiopien" },
     },
-    population: 114963583,
+    population: 107334000,
     car: { signs: ["ETH"], side: "right" },
   },
   {
@@ -3015,7 +3015,7 @@ export const countryData: Country[] = [
       eng: { f: "Indian", m: "Indian" },
       fra: { f: "Indienne", m: "Indien" },
     },
-    population: 1380004385,
+    population: 1425775850,
     car: { signs: ["IND"], side: "left" },
   },
   {
@@ -5159,7 +5159,7 @@ export const countryData: Country[] = [
       eng: { f: "Pakistani", m: "Pakistani" },
       fra: { f: "Pakistanaise", m: "Pakistanais" },
     },
-    population: 220892331,
+    population: 229488994,
     car: { signs: ["PK"], side: "left" },
   },
   {
@@ -5289,7 +5289,7 @@ export const countryData: Country[] = [
       eng: { f: "Filipino", m: "Filipino" },
       fra: { f: "Philippine", m: "Philippin" },
     },
-    population: 109581085,
+    population: 112892781,
     car: { signs: ["RP"], side: "right" },
   },
   {
@@ -5601,7 +5601,7 @@ export const countryData: Country[] = [
       eng: { f: "Egyptian", m: "Egyptian" },
       fra: { f: "Égyptienne", m: "Égyptien" },
     },
-    population: 102334403,
+    population: 104462545,
     car: { signs: ["ET"], side: "right" },
   },
   {
@@ -6472,7 +6472,7 @@ export const countryData: Country[] = [
       eng: { f: "Vietnamese", m: "Vietnamese" },
       fra: { f: "Vietnamienne", m: "Vietnamien" },
     },
-    population: 97338583,
+    population: 100300000,
     car: { signs: ["VN"], side: "right" },
   },
   {
@@ -6838,7 +6838,7 @@ export const countryData: Country[] = [
       eng: { f: "Japanese", m: "Japanese" },
       fra: { f: "Japonaise", m: "Japonais" },
     },
-    population: 125836021,
+    population: 124240000,
     car: { signs: ["J"], side: "left" },
   },
   {
@@ -7565,7 +7565,7 @@ export const countryData: Country[] = [
       eng: { f: "Indonesian", m: "Indonesian" },
       fra: { f: "Indonésienne", m: "Indonésien" },
     },
-    population: 273523621,
+    population: 278696200,
     car: { signs: ["RI"], side: "left" },
   },
   {
@@ -7667,7 +7667,7 @@ export const countryData: Country[] = [
       eng: { f: "Mexican", m: "Mexican" },
       fra: { f: "Mexicaine", m: "Mexicain" },
     },
-    population: 128932753,
+    population: 128271248,
     car: { signs: ["MEX"], side: "right" },
   },
   {
