@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import Geonames from "geonames.js";
-import TagManager from "react-gtm-module";
 import posthog from "posthog-js";
 
 import {
   GEONAMES_USERNAME,
   GEONAMES_TOKEN,
   GOOGLE_API_KEY,
-  GOOGLE_TAG_ID,
   POSTHOG_API_KEY,
 } from "./config";
 import {
@@ -38,12 +36,6 @@ import {
   campaignLength,
   captureEvent,
 } from "./utils";
-
-const tagManagerArgs = {
-  gtmId: GOOGLE_TAG_ID,
-};
-
-TagManager.initialize(tagManagerArgs);
 
 posthog.init(POSTHOG_API_KEY, { api_host: "https://us.posthog.com" });
 
