@@ -242,12 +242,13 @@ export const App: React.FC = () => {
         isOpen={!!welcomeOverlayActive}
         initializeGame={(category) => {
           setGameCategory(category);
-          setTargetCountryData(getRandomCountryData(category));
+          const targetCountry = getRandomCountryData(category);
+          setTargetCountryData(targetCountry);
           setWelcomeOverlayActive(false);
           setGameplayOverlayActive(true);
           captureEvent("START_GAME", {
             gameCategory: category,
-            target: targetCountryData?.name.common,
+            target: targetCountry?.name.common,
           });
         }}
       />
