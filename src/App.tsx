@@ -116,7 +116,7 @@ export const App: React.FC = () => {
     const clickEventData: AnalyticsEventData = {
       target: targetCountryData?.name.common,
       gameStatus: "SEARCH",
-      gameCategory: gameCategory,
+      gameCategory,
     };
 
     if (!!bodyOfWaterData) {
@@ -217,7 +217,6 @@ export const App: React.FC = () => {
     setTargetCountryData(getRandomCountryData(category));
     captureEvent("REPLAY_GAME", {
       gameCategory: category,
-      target: targetCountryData?.name.common,
     });
   };
 
@@ -242,14 +241,9 @@ export const App: React.FC = () => {
         isOpen={!!welcomeOverlayActive}
         initializeGame={(category) => {
           setGameCategory(category);
-          const targetCountry = getRandomCountryData(category);
-          setTargetCountryData(targetCountry);
+          setTargetCountryData(getRandomCountryData(category));
           setWelcomeOverlayActive(false);
           setGameplayOverlayActive(true);
-          captureEvent("START_GAME", {
-            gameCategory: category,
-            target: targetCountry?.name.common,
-          });
         }}
       />
       {gameplayOverlayActive && !!gameCategory && (
@@ -262,6 +256,10 @@ export const App: React.FC = () => {
             setGameStatus("INIT");
             setGameplayOverlayActive(false);
             setGameUnderway(true);
+            captureEvent("START_GAME", {
+              gameCategory,
+              target: targetCountryData?.name.common,
+            });
           }}
           onForfeit={() => {
             setGameplayOverlayActive(false);

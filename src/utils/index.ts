@@ -380,5 +380,6 @@ export const captureEvent = (
   eventName: AnalyticsEventType,
   data: AnalyticsEventData
 ) => {
+  // console.info(eventName, data);
   posthog.capture(eventName, data);
 };

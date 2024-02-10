@@ -133,7 +133,7 @@ export type AnalyticsEventType =
 
 export interface AnalyticsEventData {
   gameCategory: GameCategory | undefined;
-  target: string | undefined;
+  target?: string | undefined;
   countedClicks?: number;
   overallClicks?: number;
   clickedFeature?: string | undefined;
