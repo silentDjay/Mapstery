@@ -8,8 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: lts/hydrogen
       - name: "Install Dependencies"
@@ -26,7 +26,7 @@ jobs:
           VITE_GEONAMES_USERNAME: ${{ secrets.GEONAMES_USERNAME }}
           VITE_GEONAMES_TOKEN: ${{ secrets.GEONAMES_TOKEN }}
           VITE_POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: mapstery-production-build
           path: ./dist
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: mapstery-production-build
           path: ./dist
