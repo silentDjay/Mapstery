@@ -12,8 +12,12 @@ import {
   AnalyticsEventType,
 } from "../types";
 
-export const getRandomCountryData = (category: GameCategory) => {
+export const getRandomCountryData = (
+  category: GameCategory,
+  previousTargetCountry?: string
+) => {
   const filteredCountryList = countryData.filter((country) => {
+    if (country.cca2 === previousTargetCountry) return false;
     switch (category) {
       case "AFRICA":
         return country.subregion.includes("Africa");

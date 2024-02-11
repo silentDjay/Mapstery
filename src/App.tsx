@@ -60,11 +60,21 @@ export const App: React.FC = () => {
   const [gameplayOverlayActive, setGameplayOverlayActive] = useState(false);
   const [clickStatus, setClickStatus] = useState<ClickStatus | null>(null);
   const [targetCountryData, setTargetCountryData] = useState<Country>();
+  const [previousTargetCountry, setPreviousTargetCountry] = useState<string>();
   const [clickedCountryCode, setClickedCountryCode] = useState("");
   const [gameUnderway, setGameUnderway] = useState(false);
   const [gameStatus, setGameStatus] = useState<GameStatus>("PENDING");
   const [clicks, setClicks] = useState<Click[]>([]);
   const [revealedHintCount, setRevealedHintCount] = useState(1);
+
+  const handleSetNewTargetCountry = (category: GameCategory) => {
+    const randomCountryData = getRandomCountryData(
+      category,
+      previousTargetCountry
+    );
+    setPreviousTargetCountry(randomCountryData?.cca2);
+    setTargetCountryData(randomCountryData);
+  };
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     geolocateClickCoords(e.latLng!);
@@ -214,7 +224,7 @@ export const App: React.FC = () => {
     endGame();
     setGameplayOverlayActive(true);
     setGameStatus("INIT");
-    setTargetCountryData(getRandomCountryData(category));
+    handleSetNewTargetCountry(category);
     captureEvent("REPLAY_GAME", {
       gameCategory: category,
     });
@@ -241,7 +251,7 @@ export const App: React.FC = () => {
         isOpen={!!welcomeOverlayActive}
         initializeGame={(category) => {
           setGameCategory(category);
-          setTargetCountryData(getRandomCountryData(category));
+          handleSetNewTargetCountry(category);
           setWelcomeOverlayActive(false);
           setGameplayOverlayActive(true);
         }}
