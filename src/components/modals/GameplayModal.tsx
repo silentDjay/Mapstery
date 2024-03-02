@@ -13,6 +13,7 @@ import {
 import { ClickStatus, Country } from "../../types";
 import {
   getCampaignHistory,
+  getRelativeCountrySize,
   resetCampaignHistory,
   shareGameResult,
   campaignLength,
@@ -112,34 +113,34 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         isOpen={!!props.isOpen}
         title={`About ${targetCountryData.name.common}`}
       >
-        {revealedHintCount < 5 && (
-          <button
-            style={{ fontSize: "125%" }}
-            onClick={onRevealHint}
-            className="pure-button pure-button-primary"
-          >
-            Show Another Hint
-          </button>
-        )}
+        <button
+          style={{ fontSize: "125%" }}
+          onClick={onRevealHint}
+          className="pure-button pure-button-primary"
+          disabled={revealedHintCount === 5}
+        >
+          Show Another Hint
+        </button>
         <div className="country-spec-list">
           <div>
-            &#10147;{" "}
-            {targetCountryData.landlocked ? "landlocked" : "not landlocked"}
+            &#10147; has an area of{" "}
+            <CountryArea area={targetCountryData.area} />
+            <span> ({getRelativeCountrySize(targetCountryData.area)})</span>
           </div>
           {revealedHintCount > 1 && (
-            <div>
-              &#10147; has an area of{" "}
-              <CountryArea area={targetCountryData.area} />
-            </div>
-          )}
-          {revealedHintCount > 2 && (
             <div>
               &#10147; in the {getCountryHemispheres(targetCountryData.latlng)}{" "}
               Hemispheres
             </div>
           )}
-          {revealedHintCount > 3 && (
+          {revealedHintCount > 2 && (
             <div>&#10147; located in {targetCountryData.subregion}</div>
+          )}
+          {revealedHintCount > 3 && (
+            <div>
+              &#10147;{" "}
+              {targetCountryData.landlocked ? "landlocked" : "not landlocked"}
+            </div>
           )}
           {revealedHintCount > 4 && (
             <div>

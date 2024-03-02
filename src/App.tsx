@@ -130,16 +130,16 @@ export const App: React.FC = () => {
     };
 
     if (!!bodyOfWaterData) {
-      setClicks((currentClicks) => [
-        ...currentClicks,
-        { coordinates, featureName: bodyOfWaterData.ocean.name },
-      ]);
       captureEvent("MAP_CLICK", {
         ...clickEventData,
         countedClicks: getNumberOfClicksOnLand(clicks),
         overallClicks: clicks.length + 1,
         clickedFeature: bodyOfWaterData.ocean.name,
       });
+      setClicks((currentClicks) => [
+        ...currentClicks,
+        { coordinates, featureName: bodyOfWaterData.ocean.name },
+      ]);
       return;
     }
 
@@ -159,17 +159,23 @@ export const App: React.FC = () => {
     setClickedCountryCode(countryCode);
 
     if (["SUCCESS", "FORFEIT"].includes(gameStatus)) {
-      setGameplayOverlayActive(true);
-      setClickStatus("EXPLORE");
       captureEvent("MAP_CLICK", {
         ...clickEventData,
         clickedFeature: countryName,
         gameStatus: "EXPLORE",
       });
+      setGameplayOverlayActive(true);
+      setClickStatus("EXPLORE");
       return;
     }
 
     if (countryCode !== targetCountryData?.cca2) {
+      captureEvent("MAP_CLICK", {
+        ...clickEventData,
+        countedClicks: getNumberOfClicksOnLand(clicks) + 1,
+        overallClicks: clicks.length + 1,
+        clickedFeature: countryName,
+      });
       setClicks((currentClicks) => [
         ...currentClicks,
         {
@@ -178,16 +184,17 @@ export const App: React.FC = () => {
           countedClickNumber: getNumberOfClicksOnLand(currentClicks) + 1,
         },
       ]);
-      captureEvent("MAP_CLICK", {
-        ...clickEventData,
-        countedClicks: getNumberOfClicksOnLand(clicks) + 1,
-        overallClicks: clicks.length + 1,
-        clickedFeature: countryName,
-      });
       return;
     }
 
     if (countryCode === targetCountryData?.cca2) {
+      captureEvent("WIN", {
+        ...clickEventData,
+        countedClicks: getNumberOfClicksOnLand(clicks) + 1,
+        overallClicks: clicks.length + 1,
+        clickedFeature: countryName,
+        mapsteryQuestProgress: getCampaignHistory().length + 1,
+      });
       setGameplayOverlayActive(true);
       setClickStatus("CORRECT");
       setGameStatus("SUCCESS");
@@ -200,13 +207,8 @@ export const App: React.FC = () => {
           winner: true,
         },
       ]);
-      handleCountryFoundInCampaign(targetCountryData.cca2);
-      captureEvent("WIN", {
-        ...clickEventData,
-        countedClicks: getNumberOfClicksOnLand(clicks) + 1,
-        overallClicks: clicks.length + 1,
-        clickedFeature: countryName,
-      });
+      if (gameCategory === "MAPSTERY_QUEST")
+        handleCountryFoundInCampaign(targetCountryData.cca2);
       return;
     }
 
@@ -283,7 +285,7 @@ export const App: React.FC = () => {
             setTimeout(() => {
               setGameplayOverlayActive(true);
               setClickStatus("GIVE_UP");
-            }, 2000);
+            }, 1000);
           }}
           onReplay={() => replayGame(gameCategory)}
           onReset={resetGame}

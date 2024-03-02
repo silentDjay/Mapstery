@@ -338,6 +338,18 @@ export const getFlagEmoji = (countryCode: string) => {
   return String.fromCodePoint(...codePoints);
 };
 
+export const getRelativeCountrySize = (area: number) => {
+  return area > 1500000
+    ? "Huge"
+    : area > 250000
+      ? "Large"
+      : area > 10000
+        ? "Medium"
+        : area > 1000
+          ? "Small"
+          : "Tiny";
+};
+
 export const shareGameResult = async (shareText: string) => {
   try {
     await navigator.share({

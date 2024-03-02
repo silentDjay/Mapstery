@@ -12,6 +12,10 @@ body {
   border: solid 1px white;
 }
 
+.pure-button:disabled {
+  opacity: 0.7;
+}
+
 .pure-button:hover {
   border: solid 1px transparent;
 }
@@ -56,29 +60,29 @@ body {
 }
 
 .backdrop {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
   position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
   right: 0;
-  z-index: 12;
+  z-index: 3;
   text-align: center;
-  padding: 0 4px;
+  padding: 10px 4px 15px;
+  overflow: scroll;
 }
 
 .modal-title {
   font-size: 70px;
   font-style: italic;
-  margin-top: 0.5rem;
+  margin-top: 0;
   margin-bottom: 1rem;
 }
 
 @media (max-width: 600px) {
   .modal-title {
     font-size: 2.5rem;
-    margin-top: 0.5rem;
   }
 }
 
