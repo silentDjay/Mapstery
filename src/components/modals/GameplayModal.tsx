@@ -6,7 +6,6 @@ import { CountryArea } from "../CountryArea";
 import {
   getCountryDataFromCca2Code,
   getBorderCountryList,
-  getCountryHemispheres,
   getFlagEmoji,
   getShareText,
 } from "../../utils";
@@ -117,32 +116,44 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
           style={{ fontSize: "125%" }}
           onClick={onRevealHint}
           className="pure-button pure-button-primary"
-          disabled={revealedHintCount === 5}
+          disabled={revealedHintCount === 6}
         >
           Show Another Hint
         </button>
         <div className="country-spec-list">
           <div>
-            &#10147; has an area of{" "}
-            <CountryArea area={targetCountryData.area} />
-            <span> ({getRelativeCountrySize(targetCountryData.area)})</span>
+            &#10147;{" "}
+            {`${
+              targetCountryData.latlng[0] > 0 ? "North" : "South"
+            } of the Equator`}
           </div>
           {revealedHintCount > 1 && (
-            <div>
-              &#10147; in the {getCountryHemispheres(targetCountryData.latlng)}{" "}
-              Hemispheres
-            </div>
+            <>
+              <div>
+                &#10147;{" "}
+                {`${
+                  targetCountryData.latlng[1] > 0 ? "East" : "West"
+                } of the Prime Meridian`}
+              </div>
+            </>
           )}
           {revealedHintCount > 2 && (
             <div>&#10147; located in {targetCountryData.subregion}</div>
           )}
           {revealedHintCount > 3 && (
             <div>
-              &#10147;{" "}
-              {targetCountryData.landlocked ? "landlocked" : "not landlocked"}
+              &#10147; has an area of{" "}
+              <CountryArea area={targetCountryData.area} />
+              <span> ({getRelativeCountrySize(targetCountryData.area)})</span>
             </div>
           )}
           {revealedHintCount > 4 && (
+            <div>
+              &#10147;{" "}
+              {targetCountryData.landlocked ? "landlocked" : "has a coastline"}
+            </div>
+          )}
+          {revealedHintCount > 5 && (
             <div>
               &#10147;{" "}
               {!!targetCountryData.borders.length

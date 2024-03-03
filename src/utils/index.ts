@@ -309,12 +309,6 @@ export const getClickDistanceFromTarget = (
   return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
 };
 
-export const getCountryHemispheres = (latlng: Coordinates) => {
-  return `${latlng[0] > 0 ? "Northern" : "Southern"} and ${
-    latlng[1] > 0 ? "Eastern" : "Western"
-  }`;
-};
-
 export const getShareText = (
   clickStatus: ClickStatus,
   targetCountryName: string,
