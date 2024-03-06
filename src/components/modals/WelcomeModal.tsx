@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import { BaseModal, BaseModalProps } from "./BaseModal";
 import { GameCategory, GameCategoryList } from "../../types";
@@ -52,6 +53,9 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({
         >
           Play
         </button>
+      </div>
+      <div className="stats-link">
+        See <Link to="/stats">Gameplay Statistics</Link>
       </div>
     </BaseModal>
   );
