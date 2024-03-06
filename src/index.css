@@ -28,6 +28,16 @@ body {
   opacity: 80%;
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 600px) {
+    .home-menu {
+      justify-content: center;
+    }
+
+    .header-title {
+      display: none;
+    }
+  }
 }
 
 .header-title {
@@ -36,15 +46,14 @@ body {
   letter-spacing: 2px;
   padding: 0.5rem;
   font-style: italic;
-}
 
-@media (max-width: 600px) {
-  .home-menu {
-    justify-content: center;
+  .arrowhead {
+    font-weight: 400;
+    font-style: normal;
   }
 
-  .header-title {
-    display: none;
+  .addendum {
+    font-style: normal;
   }
 }
 
@@ -58,6 +67,24 @@ body {
 
 .header-gameplay-info .flag {
   max-height: 20px;
+}
+
+.stats-menu {
+  font-size: 1.2rem;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-link {
+  padding: 0.5rem;
+  color: #163832;
+  font-weight: bold;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .backdrop {
@@ -184,4 +211,74 @@ body {
 
 .click-marker-water::after {
   border-top-color: navy;
+}
+
+.stats-link {
+  font-size: 1.25rem;
+  margin: 1rem;
+
+  a {
+    color: white;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.stats-page {
+  padding-top: 35px;
+  color: white;
+  background: 100% url("./images/overlay-map.png");
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 3rem;
+  padding: 3rem;
+
+  @media (max-width: 1450px) {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem;
+    padding: 2rem;
+  }
+
+  @media (max-width: 1040px) {
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+.map-chart-wrapper {
+  @media (min-width: 1040px) {
+    grid-column: span 2;
+  }
+}
+
+.chart-container {
+  border-radius: 1rem;
+  text-align: center;
+  height: 450px;
+
+  @media (max-width: 800px) {
+    max-height: 350px;
+  }
+
+  &.map-chart-container {
+    @media (max-width: 600px) {
+      max-height: 250px;
+    }
+
+    @media (max-width: 450px) {
+      max-height: 200px;
+    }
+  }
+}
+
+.chart-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
 }
