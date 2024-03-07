@@ -246,7 +246,8 @@ export const PlayGame: React.FC = () => {
         <Header
           clicks={clicks}
           targetCountryData={targetCountryData}
-          targetCountryFound={gameStatus === "SUCCESS"}
+          gameCategory={gameCategory as GameCategory}
+          gameStatus={gameStatus}
         />
       )}
       <WelcomeModal

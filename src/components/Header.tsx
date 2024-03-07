@@ -1,18 +1,26 @@
 import React from "react";
 
-import { Click, Country } from "../types";
+import {
+  Click,
+  Country,
+  GameCategory,
+  GameCategoryList,
+  GameStatus,
+} from "../types";
 import { getClickDistanceFromTarget, getNumberOfClicksOnLand } from "../utils";
 
 interface HeaderProps {
   clicks: Click[];
   targetCountryData: Country;
-  targetCountryFound: boolean;
+  gameCategory: GameCategory;
+  gameStatus: GameStatus;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   clicks,
   targetCountryData,
-  targetCountryFound,
+  gameCategory,
+  gameStatus,
 }) => {
   const totalClickCount = clicks.length;
   const clickCountOnLand = getNumberOfClicksOnLand(clicks);
@@ -42,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({
       <span className="header-title">MAPSTERY</span>
       {!!targetCountryData && (
         <div className="header-gameplay-info">
-          {clicks?.length !== 0 && !targetCountryFound && !!lastClickData && (
+          {clicks?.length !== 0 && gameStatus === "INIT" && !!lastClickData ? (
             <div style={{ display: "flex" }}>
               <div>
                 <b>
@@ -69,16 +77,27 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
               <div style={{ margin: "0 0.5rem" }}>|</div>
             </div>
+          ) : (
+            <div style={{ marginRight: "0.1rem" }}>
+              <b>
+                {
+                  GameCategoryList.find(
+                    (category) => category.value === gameCategory
+                  )?.displayValue
+                }
+              </b>{" "}
+              &#10147;
+            </div>
           )}
           <div style={{ marginRight: "0.5rem" }}>
             <b>
-              {!targetCountryFound
-                ? targetCountryData.name.common
-                : `You found ${
+              {gameStatus === "SUCCESS"
+                ? `You found ${
                     targetCountryData.name.common
                   } in ${clickCountOnLand} ${
                     clickCountOnLand === 1 ? "Try" : "Tries"
-                  }`}
+                  }`
+                : targetCountryData.name.common}
             </b>
           </div>
           <img

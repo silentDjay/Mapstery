@@ -12,7 +12,6 @@ import {
 import { ClickStatus, Country } from "../../types";
 import {
   getCampaignHistory,
-  getRelativeCountrySize,
   resetCampaignHistory,
   shareGameResult,
   campaignLength,
@@ -144,7 +143,6 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
             <div>
               &#10147; has an area of{" "}
               <CountryArea area={targetCountryData.area} />
-              <span> ({getRelativeCountrySize(targetCountryData.area)})</span>
             </div>
           )}
           {revealedHintCount > 4 && (

@@ -12,6 +12,23 @@ import {
   AnalyticsEventType,
 } from "../types";
 
+const hugeCountryThreshold = 1500000;
+const largeCountryThreshold = 250000;
+const smallCountryThreshold = 25000;
+const tinyCountryThreshold = 1000;
+
+export const getRelativeCountrySize = (area: number) => {
+  return area > hugeCountryThreshold
+    ? "Huge"
+    : area > largeCountryThreshold
+      ? "Large"
+      : area > smallCountryThreshold
+        ? "Medium"
+        : area > tinyCountryThreshold
+          ? "Small"
+          : "Tiny";
+};
+
 export const getRandomCountryData = (
   category: GameCategory,
   previousTargetCountry?: string
@@ -45,9 +62,9 @@ export const getRandomCountryData = (
       case "LANDLOCKED_COUNTRIES":
         return country.landlocked;
       case "LARGE_COUNTRIES":
-        return country.area > 250000;
+        return country.area > largeCountryThreshold;
       case "SMALL_COUNTRIES":
-        return country.area < 10000;
+        return country.area < smallCountryThreshold;
       case "POPULOUS_COUNTRIES":
         return country.population > 100000000;
       case "NON_POPULOUS_COUNTRIES":
@@ -330,18 +347,6 @@ export const getFlagEmoji = (countryCode: string) => {
     .split("")
     .map((char) => 127397 + char.charCodeAt(0));
   return String.fromCodePoint(...codePoints);
-};
-
-export const getRelativeCountrySize = (area: number) => {
-  return area > 1500000
-    ? "Huge"
-    : area > 250000
-      ? "Large"
-      : area > 10000
-        ? "Medium"
-        : area > 1000
-          ? "Small"
-          : "Tiny";
 };
 
 export const shareGameResult = async (shareText: string) => {

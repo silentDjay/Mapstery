@@ -1,7 +1,7 @@
 import React from "react";
 
 import { CountryArea } from "./CountryArea";
-import { getBorderCountryList } from "../utils";
+import { getBorderCountryList, getRelativeCountrySize } from "../utils";
 import { Country } from "../types";
 
 export const CountrySpec: React.FC<{

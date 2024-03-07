@@ -1,6 +1,6 @@
 import React from "react";
 
-import { convertKmtoMi } from "../utils";
+import { convertKmtoMi, getRelativeCountrySize } from "../utils";
 
 export const CountryArea: React.FC<{ area: number }> = ({ area }) => (
   <>
@@ -8,5 +8,6 @@ export const CountryArea: React.FC<{ area: number }> = ({ area }) => (
     <sup style={{ fontSize: "0.7em" }}>2</sup> /{" "}
     {Intl.NumberFormat().format(convertKmtoMi(area))} mi
     <sup style={{ fontSize: "0.7em" }}>2</sup>
+    <span> ({getRelativeCountrySize(area)})</span>
   </>
 );
