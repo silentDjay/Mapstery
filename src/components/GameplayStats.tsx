@@ -14,7 +14,7 @@ const gameplayCharts: ChartProps[] = [
     worldMap: true,
   },
   {
-    label: <span>Games Won &#10147; Target Country</span>,
+    label: <span>Most Frequently Found &#10147; Country</span>,
     id: "dL_AgjfdWYXRJOYJvgvP5-eLEHWsgA",
   },
   {
@@ -26,11 +26,11 @@ const gameplayCharts: ChartProps[] = [
     id: "idoI9-65Du4mGv7geDcUHneUIgigxQ",
   },
   {
-    label: <span>Games Forfeited &#10147; Target Country</span>,
+    label: <span>Games Forfeited &#10147; Country</span>,
     id: "V1iav5rn8z5SS2BmfA0Aby0gjHTw_A",
   },
   {
-    label: <span>Clicks &#10147; Geographic Feature</span>,
+    label: <span>Most Clicked &#10147; Geographic Feature</span>,
     id: "-B0St7MawU2Z0npNmVfnsiNLPiv4sA",
   },
 ];
