@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 interface ChartProps {
@@ -35,23 +35,38 @@ const gameplayCharts: ChartProps[] = [
   },
 ];
 
-const ChartWrapper: React.FC<ChartProps> = ({ label, id, worldMap }) => (
-  <div className={worldMap ? "map-chart-wrapper" : ""}>
-    <div className="chart-title">{label}</div>
-    <div className={`chart-container ${worldMap ? "map-chart-container" : ""}`}>
-      <iframe
-        style={{
-          border: "darkgreen 3px solid",
-          borderRadius: "10px",
-          ...(worldMap && { maxWidth: "950px" }),
-        }}
-        width="100%"
-        height="100%"
-        src={`https://us.posthog.com/embedded/${id}?noHeader=true?refresh=true`}
-      ></iframe>
+const ChartWrapper: React.FC<ChartProps> = ({ label, id, worldMap }) => {
+  const [chartLoaded, setChartLoaded] = useState(false);
+
+  return (
+    <div className={worldMap ? "map-chart-wrapper" : ""}>
+      <div className="chart-title">{label}</div>
+      <div
+        className={`chart-container ${worldMap ? "map-chart-container" : ""}`}
+      >
+        <div
+          style={{
+            display: `${chartLoaded ? "none" : "flex"}`,
+          }}
+          className="loading-container"
+        >
+          <div className="chart-loading-spinner">&#10147;</div>
+        </div>
+        <iframe
+          style={{
+            border: "darkgreen 3px solid",
+            borderRadius: "10px",
+            ...(worldMap && { maxWidth: "950px" }),
+          }}
+          width="100%"
+          height="100%"
+          onLoad={() => setChartLoaded(true)}
+          src={`https://us.posthog.com/embedded/${id}?noHeader&refresh=true`}
+        />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const GameplayStats: React.FC = () => (
   <div className="stats-page">
@@ -66,7 +81,7 @@ export const GameplayStats: React.FC = () => (
     </div>
     <div className="chart-grid">
       {gameplayCharts.map(({ label, id, worldMap }) => (
-        <ChartWrapper label={label} id={id} key={id} worldMap={worldMap} />
+        <ChartWrapper label={label} id={id} worldMap={worldMap} key={id} />
       ))}
     </div>
   </div>

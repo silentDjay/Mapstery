@@ -229,7 +229,7 @@ body {
 .stats-page {
   padding-top: 35px;
   color: white;
-  background: 100% url("./images/overlay-map.png");
+  background: 100% url("./images/overlay-map.webp");
 }
 
 .chart-grid {
@@ -258,6 +258,7 @@ body {
 }
 
 .chart-container {
+  position: relative;
   border-radius: 1rem;
   text-align: center;
   height: 450px;
@@ -281,4 +282,34 @@ body {
   text-align: center;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+}
+
+.loading-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.chart-loading-spinner {
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  color: white;
+  font-size: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
