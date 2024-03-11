@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { LoadingSpinner } from "./LoadingSpinner";
+
 interface ChartProps {
   label: JSX.Element;
   id: string;
@@ -48,9 +50,9 @@ const ChartWrapper: React.FC<ChartProps> = ({ label, id, worldMap }) => {
           style={{
             display: `${chartLoaded ? "none" : "flex"}`,
           }}
-          className="loading-container"
+          className="chart-loading-container"
         >
-          <div className="chart-loading-spinner">&#10147;</div>
+          <LoadingSpinner />
         </div>
         <iframe
           style={{

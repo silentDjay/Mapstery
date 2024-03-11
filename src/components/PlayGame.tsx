@@ -15,6 +15,7 @@ import {
   GameplayModal,
   WelcomeModal,
   Header,
+  LoadingSpinner,
 } from ".";
 import {
   GameStatus,
@@ -40,10 +41,11 @@ import {
 posthog.init(POSTHOG_API_KEY, { api_host: "https://us.posthog.com" });
 
 const render = (status: Status) => {
+  if (status === Status.FAILURE) return <h1>Whoopsie. Try Again.</h1>;
   return (
-    <h1 className="header-title" style={{ textAlign: "center" }}>
-      {status === "LOADING" ? "Loading Game" : "Whoopsie. Try Again."}
-    </h1>
+    <div className="map-loading-container">
+      <LoadingSpinner color="black" />
+    </div>
   );
 };
 
