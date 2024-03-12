@@ -29,11 +29,11 @@ export const getRelativeCountrySize = (area: number) => {
           : "Tiny";
 };
 
-export const getRandomCountryData = (
+export const getFilteredCountryList = (
   category: GameCategory,
   previousTargetCountry?: string
-) => {
-  const filteredCountryList = countryData.filter((country) => {
+) =>
+  countryData.filter((country) => {
     if (country.cca2 === previousTargetCountry) return false;
     switch (category) {
       case "AFRICA":
@@ -75,6 +75,15 @@ export const getRandomCountryData = (
         return true;
     }
   });
+
+export const getRandomCountryData = (
+  category: GameCategory,
+  previousTargetCountry?: string
+) => {
+  const filteredCountryList = getFilteredCountryList(
+    category,
+    previousTargetCountry
+  );
 
   // console.info(
   //   filteredCountryList.length,

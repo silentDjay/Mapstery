@@ -321,6 +321,7 @@ export const PlayGame: React.FC = () => {
           ) : gameCategory === "MAPSTERY_QUEST" &&
             getCampaignHistory().length === campaignLength ? (
             <button
+              data-testid="new-game-button"
               onClick={() => {
                 resetCampaignHistory();
                 resetGame();
@@ -331,6 +332,7 @@ export const PlayGame: React.FC = () => {
             </button>
           ) : (
             <button
+              data-testid="play-again-button"
               onClick={() => replayGame(gameCategory)}
               className="pure-button pure-button-primary"
             >

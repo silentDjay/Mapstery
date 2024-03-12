@@ -119,7 +119,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         >
           Show Another Hint
         </button>
-        <div className="country-spec-list">
+        <div data-testid="hint-list" className="country-spec-list">
           <div>
             &#10147;{" "}
             {`${
@@ -198,6 +198,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
           </button>
           {!campaignCompleted && (
             <button
+              data-testid="play-again-button"
               onClick={onReplay}
               className="pure-button pure-button-primary"
             >
@@ -205,6 +206,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
             </button>
           )}
           <button
+            data-testid="new-game-button"
             onClick={() => {
               if (campaignCompleted) resetCampaignHistory();
               onReset();
@@ -252,6 +254,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
           </button>
         )}
         <button
+          data-testid="explore-map-button"
           onClick={props.onClose}
           className="pure-button button-secondary"
         >
@@ -259,6 +262,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         </button>
         {!campaignCompleted && (
           <button
+            data-testid="play-again-button"
             onClick={onReplay}
             className="pure-button pure-button-primary"
           >
@@ -266,6 +270,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
           </button>
         )}
         <button
+          data-testid="new-game-button"
           onClick={() => {
             if (campaignCompleted) resetCampaignHistory();
             onReset();
