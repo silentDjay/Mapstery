@@ -16,24 +16,33 @@ const gameplayCharts: ChartProps[] = [
     worldMap: true,
   },
   {
-    label: <span>Most Frequently Found &#10147; Country</span>,
+    label: <span>Games Won &#10147; Country</span>,
     id: "dL_AgjfdWYXRJOYJvgvP5-eLEHWsgA",
-  },
-  {
-    label: <span>Games Won &#10147; Category</span>,
-    id: "aPB6gfyEnAlcx83QsBlvBQpwIhw2SA",
-  },
-  {
-    label: <span>Games Won &#10147; Number of Clicks</span>,
-    id: "idoI9-65Du4mGv7geDcUHneUIgigxQ",
   },
   {
     label: <span>Games Forfeited &#10147; Country</span>,
     id: "V1iav5rn8z5SS2BmfA0Aby0gjHTw_A",
   },
   {
+    label: <span>Games Started &#10147; Category</span>,
+    id: "ikKibFYyXESGkhxAe-Kj7srThTJnGQ",
+  },
+  {
+    label: <span>Games Won &#10147; Category</span>,
+    id: "aPB6gfyEnAlcx83QsBlvBQpwIhw2SA",
+  },
+  {
     label: <span>Most Clicked &#10147; Geographic Feature</span>,
     id: "-B0St7MawU2Z0npNmVfnsiNLPiv4sA",
+  },
+  {
+    label: <span>Average Clicks &#10147; Win</span>,
+    id: "idoI9-65Du4mGv7geDcUHneUIgigxQ",
+  },
+  {
+    label: <span>Average Clicks Per Win &#10147; Location of User</span>,
+    id: "kz1JhoC7FhxY5uMiZxv8IWZ8ruUQLw",
+    worldMap: true,
   },
 ];
 
@@ -73,10 +82,7 @@ const ChartWrapper: React.FC<ChartProps> = ({ label, id, worldMap }) => {
 export const GameplayStats: React.FC = () => (
   <div className="stats-page">
     <div className="stats-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-      <span className="header-title">
-        MAPSTERY <span className="arrowhead">&#10147;</span>{" "}
-        <span className="addendum">Last 30 Days</span>
-      </span>
+      <span className="header-title">MAPSTERY</span>
       <Link className="header-link" to="/">
         Play Game
       </Link>

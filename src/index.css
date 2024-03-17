@@ -46,15 +46,6 @@ body {
   letter-spacing: 2px;
   padding: 0.5rem;
   font-style: italic;
-
-  .arrowhead {
-    font-weight: 400;
-    font-style: normal;
-  }
-
-  .addendum {
-    font-style: normal;
-  }
 }
 
 .header-gameplay-info {
