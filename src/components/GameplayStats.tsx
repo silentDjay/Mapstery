@@ -16,12 +16,8 @@ const gameplayCharts: ChartProps[] = [
     worldMap: true,
   },
   {
-    label: <span>Games Won &#10147; Country</span>,
-    id: "dL_AgjfdWYXRJOYJvgvP5-eLEHWsgA",
-  },
-  {
-    label: <span>Games Forfeited &#10147; Country</span>,
-    id: "V1iav5rn8z5SS2BmfA0Aby0gjHTw_A",
+    label: <span>Most Clicked &#10147; Geographic Feature</span>,
+    id: "-B0St7MawU2Z0npNmVfnsiNLPiv4sA",
   },
   {
     label: <span>Games Started &#10147; Category</span>,
@@ -32,8 +28,20 @@ const gameplayCharts: ChartProps[] = [
     id: "aPB6gfyEnAlcx83QsBlvBQpwIhw2SA",
   },
   {
-    label: <span>Most Clicked &#10147; Geographic Feature</span>,
-    id: "-B0St7MawU2Z0npNmVfnsiNLPiv4sA",
+    label: <span>Games Forefeited &#10147; Category</span>,
+    id: "v7xaigS6md5_pgQth-t9BczHRJC0qg",
+  },
+  {
+    label: <span>Games Won &#10147; Country</span>,
+    id: "dL_AgjfdWYXRJOYJvgvP5-eLEHWsgA",
+  },
+  {
+    label: <span>Games Forfeited &#10147; Country</span>,
+    id: "V1iav5rn8z5SS2BmfA0Aby0gjHTw_A",
+  },
+  {
+    label: <span>Average Clicks Per Win &#10147; Country</span>,
+    id: "YQoPd65_tzsP-mC-DLr3BszvMnEhgg",
   },
   {
     label: <span>Average Clicks &#10147; Win</span>,
