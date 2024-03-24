@@ -29,12 +29,68 @@ export const getRelativeCountrySize = (area: number) => {
           : "Tiny";
 };
 
+const campaignLocalStorageKey = "mapsteryCampaign";
+export const campaignLength = countryData.length;
+
+export const isCampaignCompleted = () => {
+  return getCountriesFoundList("MAPSTERY_QUEST").length === campaignLength;
+};
+
+export const addCountryToLocalStorageList = (
+  countryCode: string,
+  category: GameCategory
+) => {
+  const localStorageKey =
+    category === "MAPSTERY_QUEST" ? campaignLocalStorageKey : category;
+  const countriesList = localStorage.getItem(localStorageKey);
+  if (!countriesList) {
+    localStorage.setItem(localStorageKey, JSON.stringify([countryCode]));
+  } else {
+    const parsedCountriesList = JSON.parse(countriesList);
+    if (!parsedCountriesList.includes(countryCode)) {
+      localStorage.setItem(
+        localStorageKey,
+        JSON.stringify([...parsedCountriesList, countryCode])
+      );
+    }
+  }
+};
+
+export const getCountriesFoundList = (category: GameCategory): string[] => {
+  const localStorageKey =
+    category === "MAPSTERY_QUEST" ? campaignLocalStorageKey : category;
+
+  return !!localStorage.getItem(localStorageKey)
+    ? JSON.parse(localStorage.getItem(localStorageKey) as string)
+    : [];
+};
+
+export const removeCountriesFoundList = (category: GameCategory) => {
+  const localStorageKey =
+    category === "MAPSTERY_QUEST" ? campaignLocalStorageKey : category;
+
+  localStorage.removeItem(localStorageKey);
+};
+
 export const getFilteredCountryList = (
   category: GameCategory,
   previousTargetCountry?: string
-) =>
-  countryData.filter((country) => {
-    if (country.cca2 === previousTargetCountry) return false;
+) => {
+  const countriesFoundInCurrentGame = getCountriesFoundList(category);
+
+  return countryData.filter((country) => {
+    const isPreviousTarget = country.cca2 === previousTargetCountry;
+    const countryAlreadyFound = countriesFoundInCurrentGame.includes(
+      country.cca2
+    );
+
+    if (
+      countriesFoundInCurrentGame.length === 1
+        ? countryAlreadyFound
+        : isPreviousTarget || countryAlreadyFound
+    )
+      return false;
+
     switch (category) {
       case "AFRICA":
         return country.subregion.includes("Africa");
@@ -70,11 +126,12 @@ export const getFilteredCountryList = (
       case "NON_POPULOUS_COUNTRIES":
         return country.population < 50000;
       case "MAPSTERY_QUEST":
-        return !getCampaignHistory().includes(country.cca2);
+        return !getCountriesFoundList("MAPSTERY_QUEST").includes(country.cca2);
       default: // "PLANET_EARTH"
         return true;
     }
   });
+};
 
 export const getRandomCountryData = (
   category: GameCategory,
@@ -367,37 +424,6 @@ export const shareGameResult = async (shareText: string) => {
   } catch (e) {
     return console.info(e);
   }
-};
-
-const campaignLocalStorageKey = "mapsteryCampaign";
-export const campaignLength = countryData.length;
-
-export const handleCountryFoundInCampaign = (countryCode: string) => {
-  const foundCountriesList = localStorage.getItem(campaignLocalStorageKey);
-  if (!foundCountriesList) {
-    localStorage.setItem(
-      campaignLocalStorageKey,
-      JSON.stringify([countryCode])
-    );
-  } else {
-    const parsedFoundCountriesList = JSON.parse(foundCountriesList);
-    if (!parsedFoundCountriesList.includes(countryCode)) {
-      localStorage.setItem(
-        campaignLocalStorageKey,
-        JSON.stringify([...parsedFoundCountriesList, countryCode])
-      );
-    }
-  }
-};
-
-export const getCampaignHistory = (): string[] => {
-  return !!localStorage.getItem(campaignLocalStorageKey)
-    ? JSON.parse(localStorage.getItem(campaignLocalStorageKey) as string)
-    : [];
-};
-
-export const resetCampaignHistory = () => {
-  localStorage.removeItem(campaignLocalStorageKey);
 };
 
 export const captureEvent = (

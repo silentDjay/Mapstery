@@ -139,5 +139,5 @@ export interface AnalyticsEventData {
   clickedFeature?: string | undefined;
   gameStatus?: "SEARCH" | "EXPLORE";
   latLng?: [number, number];
-  mapsteryQuestProgress?: number;
+  gameCompleted?: boolean;
 }

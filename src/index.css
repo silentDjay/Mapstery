@@ -252,13 +252,17 @@ body {
   position: relative;
   border-radius: 1rem;
   text-align: center;
-  height: 450px;
+  height: 510px;
 
   @media (max-width: 800px) {
-    max-height: 350px;
+    max-height: 400px;
   }
 
   &.map-chart-container {
+    @media (max-width: 800px) {
+      max-height: 350px;
+    }
+
     @media (max-width: 600px) {
       max-height: 250px;
     }

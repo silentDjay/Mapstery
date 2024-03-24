@@ -81,7 +81,7 @@ test("forfeit a game", async () => {
   await waitFor(() => screen.getByTestId("explore-map-button"));
 
   const exploreMap = screen.getByTestId("explore-map-button");
-  const playAgain = screen.getAllByTestId("play-again-button");
+  const playAgain = screen.getAllByTestId("keep-playing-button");
   const newGame = screen.getByTestId("new-game-button");
 
   expect(exploreMap).toBeVisible;

@@ -8,11 +8,17 @@ import {
   getBorderCountryList,
   getFlagEmoji,
   getShareText,
+  isCampaignCompleted,
 } from "../../utils";
-import { ClickStatus, Country } from "../../types";
 import {
-  getCampaignHistory,
-  resetCampaignHistory,
+  ClickStatus,
+  Country,
+  GameCategory,
+  GameCategoryList,
+} from "../../types";
+import {
+  getCountriesFoundList,
+  getFilteredCountryList,
   shareGameResult,
   campaignLength,
 } from "../../utils";
@@ -23,7 +29,7 @@ interface GameplayModalProps extends BaseModalProps {
   clickedCountryCode: string;
   targetCountryData: Country;
   revealedHintCount: number;
-  campaignModeActive: boolean;
+  gameCategory: GameCategory;
   onStartGame: () => void;
   onForfeit: () => void;
   onReplay: () => void;
@@ -37,7 +43,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
   clickedCountryCode,
   targetCountryData,
   revealedHintCount,
-  campaignModeActive,
+  gameCategory,
   onStartGame,
   onForfeit,
   onReplay,
@@ -45,9 +51,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
   onReset,
   ...props
 }) => {
-  const campaignHistoryCount = getCampaignHistory().length;
-  const campaignCompleted =
-    campaignModeActive && campaignHistoryCount === campaignLength;
+  const campaignHistoryCount = getCountriesFoundList("MAPSTERY_QUEST").length;
 
   if (!clickStatus)
     return (
@@ -62,7 +66,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
             src={targetCountryData.flags.svg}
           />
         </div>
-        {campaignModeActive && (
+        {gameCategory === "MAPSTERY_QUEST" && (
           <div style={{ fontSize: "125%", marginTop: "16px" }}>
             {!!campaignHistoryCount ? (
               <div>
@@ -196,21 +200,18 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
           >
             Keep Exploring
           </button>
-          {!campaignCompleted && (
+          {getFilteredCountryList(gameCategory).length > 0 && (
             <button
-              data-testid="play-again-button"
+              data-testid="keep-playing-button"
               onClick={onReplay}
               className="pure-button pure-button-primary"
             >
-              Play Again
+              Keep Playing
             </button>
           )}
           <button
             data-testid="new-game-button"
-            onClick={() => {
-              if (campaignCompleted) resetCampaignHistory();
-              onReset();
-            }}
+            onClick={onReset}
             className="pure-button"
           >
             New Game
@@ -226,14 +227,24 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         clickStatus === "CORRECT" ? `Nice! You found ` : ""
       }${targetCountryData.name?.common}`}
     >
-      {campaignCompleted ? (
-        <div style={{ fontSize: "175%", margin: "1rem" }}>
-          You completed the Mapstery Quest! You found all {campaignLength}
-          countries! You're a Mapstery Master!
-        </div>
-      ) : (
-        <CountrySpecsList countryMetadata={targetCountryData} />
-      )}
+      <CountrySpecsList countryMetadata={targetCountryData} />
+      {getFilteredCountryList(gameCategory).length === 0 &&
+        (gameCategory === "MAPSTERY_QUEST" ? (
+          <div style={{ fontSize: "175%", margin: "1rem" }}>
+            You completed the Mapstery Quest! You found all {campaignLength}
+            countries! You're a Mapstery Master!
+          </div>
+        ) : (
+          <div style={{ fontSize: "175%", margin: "1rem" }}>
+            You found all the countries in{" "}
+            {
+              GameCategoryList.find(
+                (category) => category.value === gameCategory
+              )?.displayValue
+            }
+            ! You're a Mapstery Master!
+          </div>
+        ))}
       <div className="modal-actions">
         {!!navigator.share && !!clickStatus && (
           <button
@@ -244,7 +255,7 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
                   targetCountryData.name?.common,
                   getFlagEmoji(targetCountryData.cca2),
                   clickCount,
-                  campaignCompleted
+                  isCampaignCompleted()
                 )
               )
             }
@@ -260,21 +271,18 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
         >
           Explore the Map
         </button>
-        {!campaignCompleted && (
+        {getFilteredCountryList(gameCategory).length > 0 && (
           <button
-            data-testid="play-again-button"
+            data-testid="keep-playing-button"
             onClick={onReplay}
             className="pure-button pure-button-primary"
           >
-            Play Again
+            Keep Playing
           </button>
         )}
         <button
           data-testid="new-game-button"
-          onClick={() => {
-            if (campaignCompleted) resetCampaignHistory();
-            onReset();
-          }}
+          onClick={onReset}
           className="pure-button"
         >
           New Game

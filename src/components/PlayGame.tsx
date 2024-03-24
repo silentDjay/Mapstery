@@ -31,11 +31,12 @@ import {
   generateMarkerContent,
   getNumberOfClicksOnLand,
   getRandomCountryData,
-  handleCountryFoundInCampaign,
-  getCampaignHistory,
-  resetCampaignHistory,
-  campaignLength,
+  addCountryToLocalStorageList,
+  getCountriesFoundList,
+  removeCountriesFoundList,
+  getFilteredCountryList,
   captureEvent,
+  isCampaignCompleted,
 } from "../utils";
 
 posthog.init(POSTHOG_API_KEY, { api_host: "https://us.posthog.com" });
@@ -195,7 +196,9 @@ export const PlayGame: React.FC = () => {
         countedClicks: getNumberOfClicksOnLand(clicks) + 1,
         overallClicks: clicks.length + 1,
         clickedFeature: countryName,
-        mapsteryQuestProgress: getCampaignHistory().length + 1,
+        gameCompleted:
+          getCountriesFoundList(clickEventData.gameCategory as GameCategory)
+            .length === 1,
       });
       setGameplayOverlayActive(true);
       setClickStatus("CORRECT");
@@ -209,8 +212,10 @@ export const PlayGame: React.FC = () => {
           winner: true,
         },
       ]);
-      if (gameCategory === "MAPSTERY_QUEST")
-        handleCountryFoundInCampaign(targetCountryData.cca2);
+      addCountryToLocalStorageList(
+        targetCountryData.cca2,
+        gameCategory as GameCategory
+      );
       return;
     }
 
@@ -256,6 +261,11 @@ export const PlayGame: React.FC = () => {
         isOpen={!!welcomeOverlayActive}
         initializeGame={(category) => {
           setGameCategory(category);
+          if (category === "MAPSTERY_QUEST" && isCampaignCompleted()) {
+            removeCountriesFoundList("MAPSTERY_QUEST");
+          } else if (category !== "MAPSTERY_QUEST") {
+            removeCountriesFoundList(category);
+          }
           handleSetNewTargetCountry(category);
           setWelcomeOverlayActive(false);
           setGameplayOverlayActive(true);
@@ -298,7 +308,7 @@ export const PlayGame: React.FC = () => {
           clickStatus={clickStatus}
           clickedCountryCode={clickedCountryCode}
           targetCountryData={targetCountryData as Country}
-          campaignModeActive={gameCategory === "MAPSTERY_QUEST"}
+          gameCategory={gameCategory}
         />
       )}
 
@@ -318,25 +328,21 @@ export const PlayGame: React.FC = () => {
             >
               Hint
             </button>
-          ) : gameCategory === "MAPSTERY_QUEST" &&
-            getCampaignHistory().length === campaignLength ? (
+          ) : getFilteredCountryList(gameCategory).length > 0 ? (
             <button
-              data-testid="new-game-button"
-              onClick={() => {
-                resetCampaignHistory();
-                resetGame();
-              }}
-              className="pure-button pure-button-primary"
-            >
-              New Game
-            </button>
-          ) : (
-            <button
-              data-testid="play-again-button"
+              data-testid="keep-playing-button"
               onClick={() => replayGame(gameCategory)}
               className="pure-button pure-button-primary"
             >
-              Play Again
+              Keep Playing
+            </button>
+          ) : (
+            <button
+              data-testid="new-game-button"
+              onClick={resetGame}
+              className="pure-button pure-button-primary"
+            >
+              New Game
             </button>
           )}
         </div>
