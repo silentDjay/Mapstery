@@ -191,18 +191,22 @@ export const PlayGame: React.FC = () => {
     }
 
     if (countryCode === targetCountryData?.cca2) {
+      addCountryToLocalStorageList(
+        targetCountryData.cca2,
+        gameCategory as GameCategory
+      );
+      setGameplayOverlayActive(true);
+      setClickStatus("CORRECT");
+      setGameStatus("SUCCESS");
       captureEvent("WIN", {
         ...clickEventData,
         countedClicks: getNumberOfClicksOnLand(clicks) + 1,
         overallClicks: clicks.length + 1,
         clickedFeature: countryName,
         gameCompleted:
-          getCountriesFoundList(clickEventData.gameCategory as GameCategory)
-            .length === 1,
+          getFilteredCountryList(clickEventData.gameCategory as GameCategory)
+            .length === 0,
       });
-      setGameplayOverlayActive(true);
-      setClickStatus("CORRECT");
-      setGameStatus("SUCCESS");
       setClicks((currentClicks) => [
         ...currentClicks,
         {
@@ -212,10 +216,6 @@ export const PlayGame: React.FC = () => {
           winner: true,
         },
       ]);
-      addCountryToLocalStorageList(
-        targetCountryData.cca2,
-        gameCategory as GameCategory
-      );
       return;
     }
 
