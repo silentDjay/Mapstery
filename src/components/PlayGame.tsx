@@ -32,7 +32,6 @@ import {
   getNumberOfClicksOnLand,
   getRandomCountryData,
   addCountryToLocalStorageList,
-  getCountriesFoundList,
   removeCountriesFoundList,
   getFilteredCountryList,
   captureEvent,
