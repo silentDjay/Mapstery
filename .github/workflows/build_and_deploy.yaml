@@ -26,7 +26,7 @@ jobs:
           VITE_GEONAMES_USERNAME: ${{ secrets.GEONAMES_USERNAME }}
           VITE_GEONAMES_TOKEN: ${{ secrets.GEONAMES_TOKEN }}
           VITE_POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
-      - uses: PaloAltoNetworks/upload-secure-artifact@main
+      - uses: actions/upload-artifact@v4
         with:
           name: mapstery-production-build
           path: ./dist
