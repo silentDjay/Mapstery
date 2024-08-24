@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: lts/hydrogen
       - name: "Install Dependencies"
-        run: npm ci
+        run: npm ci --no-audit --no-fund
       - name: "Run Tests"
         run: npm test
         env:
@@ -38,7 +38,7 @@ jobs:
         with:
           name: mapstery-production-build
           path: ./dist
-      - uses: peaceiris/actions-gh-pages@v3
+      - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GH_PAGES_DEPLOYMENT }}
           publish_dir: ./dist
