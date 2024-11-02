@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export const ClickMarker: React.FC<
   google.maps.marker.AdvancedMarkerViewOptions
 > = (markerProps) => {
   const [marker, setMarker] =
-    React.useState<google.maps.marker.AdvancedMarkerViewOptions>();
+    useState<google.maps.marker.AdvancedMarkerViewOptions>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     // remove marker from map on unmount
     return () => {
       if (marker) {
@@ -15,7 +15,7 @@ export const ClickMarker: React.FC<
     };
   }, [marker]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!marker) {
       setMarker(new google.maps.marker.AdvancedMarkerView(markerProps));
     }

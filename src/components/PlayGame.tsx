@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import Geonames from "geonames.js";
 import posthog from "posthog-js";
@@ -36,6 +36,7 @@ import {
   getFilteredCountryList,
   captureEvent,
   isCampaignCompleted,
+  getClickDistanceFromTarget,
 } from "../utils";
 
 posthog.init(POSTHOG_API_KEY, { api_host: "https://us.posthog.com" });
@@ -68,6 +69,26 @@ export const PlayGame: React.FC = () => {
   const [gameStatus, setGameStatus] = useState<GameStatus>("PENDING");
   const [clicks, setClicks] = useState<Click[]>([]);
   const [revealedHintCount, setRevealedHintCount] = useState(1);
+  const [latestClickDistance, setLatestClickDistance] = useState<number>();
+  const [latestClickCoords, setLatestClickCoords] =
+    useState<google.maps.LatLng>();
+
+  useEffect(() => {
+    const totalClicks = clicks?.length;
+
+    const lastClickData = clicks[totalClicks - 1];
+
+    if (!!lastClickData && !!targetCountryData) {
+      setLatestClickDistance(
+        getClickDistanceFromTarget(
+          targetCountryData.latlng,
+          lastClickData.coordinates
+        )
+      );
+
+      setLatestClickCoords(lastClickData.coordinates);
+    }
+  }, [clicks]);
 
   const handleSetNewTargetCountry = (category: GameCategory) => {
     const randomCountryData = getRandomCountryData(
@@ -359,6 +380,8 @@ export const PlayGame: React.FC = () => {
           gameStatus={gameStatus}
           gameCategory={gameCategory}
           targetCountryData={targetCountryData}
+          distanceFromTarget={latestClickDistance}
+          latestClickCoordinates={latestClickCoords}
         >
           {clicks.map((click, index) => (
             <ClickMarker
