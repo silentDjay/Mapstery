@@ -74,9 +74,7 @@ export const PlayGame: React.FC = () => {
     useState<google.maps.LatLng>();
 
   useEffect(() => {
-    const totalClicks = clicks?.length;
-
-    const lastClickData = clicks[totalClicks - 1];
+    const lastClickData = clicks[clicks.length - 1];
 
     if (!!lastClickData && !!targetCountryData) {
       setLatestClickDistance(
@@ -275,6 +273,7 @@ export const PlayGame: React.FC = () => {
           targetCountryData={targetCountryData}
           gameCategory={gameCategory as GameCategory}
           gameStatus={gameStatus}
+          distanceFromTarget={latestClickDistance}
         />
       )}
       <WelcomeModal

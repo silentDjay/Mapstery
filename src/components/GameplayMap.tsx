@@ -83,7 +83,7 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
       const maxRadius = distanceFromTarget * 1000; // meters
 
       const growthRate = 22000 / (map.getZoom() || 1); // Amount to increase the radius per interval (in meters)
-      const intervalRate = 5; // milliseconds
+      const intervalRate = 5;
 
       const timeRequiredToFillCircle = (maxRadius / growthRate) * intervalRate;
 

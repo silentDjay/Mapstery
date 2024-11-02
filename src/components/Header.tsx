@@ -14,6 +14,7 @@ interface HeaderProps {
   targetCountryData: Country;
   gameCategory: GameCategory;
   gameStatus: GameStatus;
+  distanceFromTarget?: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -21,18 +22,12 @@ export const Header: React.FC<HeaderProps> = ({
   targetCountryData,
   gameCategory,
   gameStatus,
+  distanceFromTarget,
 }) => {
   const totalClickCount = clicks.length;
   const clickCountOnLand = getNumberOfClicksOnLand(clicks);
   const lastClickData = clicks[totalClickCount - 1];
   const penultimateClickData = clicks[totalClickCount - 2];
-  const distanceFromTarget =
-    !!targetCountryData &&
-    !!lastClickData &&
-    getClickDistanceFromTarget(
-      targetCountryData.latlng,
-      lastClickData.coordinates
-    );
   const previousClickDistance =
     !!targetCountryData &&
     !!penultimateClickData &&
@@ -50,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({
       <span className="header-title">MAPSTERY</span>
       {!!targetCountryData && (
         <div className="header-gameplay-info">
-          {clicks?.length !== 0 && gameStatus === "INIT" && !!lastClickData ? (
+          {gameStatus === "INIT" && !!lastClickData ? (
             <div style={{ display: "flex" }}>
               <div>
                 <b>
