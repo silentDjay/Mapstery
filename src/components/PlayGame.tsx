@@ -370,7 +370,7 @@ export const PlayGame: React.FC = () => {
       <Wrapper
         apiKey={GOOGLE_API_KEY as string}
         render={render}
-        libraries={["marker"]}
+        libraries={["marker", "geometry"]}
         version="beta"
       >
         <GameplayMap

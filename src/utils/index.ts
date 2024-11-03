@@ -433,3 +433,39 @@ export const captureEvent = (
   // console.info(eventName, data);
   posthog.capture(eventName, data);
 };
+
+export const generateCirclePoints = (
+  center: google.maps.LatLng,
+  radius: number
+): google.maps.LatLng[] => {
+  const numPoints = 100;
+  const points: google.maps.LatLng[] = [];
+  const angleStep = 360 / numPoints;
+
+  for (let i = 0; i < numPoints; i++) {
+    const angle = i * angleStep;
+    const point = google.maps.geometry.spherical.computeOffset(
+      center,
+      radius,
+      angle
+    );
+    points.push(point);
+  }
+  // Close the circle by adding the first point again at the end
+  points.push(points[0]);
+  return points;
+};
+
+export const dottedLineSegment = (
+  opacity: number
+): google.maps.IconSequence => {
+  return {
+    icon: {
+      path: "M 0,-1 0,1", // line (SVG path)
+      scale: 3,
+      strokeOpacity: opacity,
+    },
+    offset: "0",
+    repeat: "30px", // Distance between dots
+  };
+};

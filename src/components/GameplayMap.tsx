@@ -6,7 +6,12 @@ import React, {
   useState,
 } from "react";
 
-import { getMapOptions, initialMapProps } from "../utils";
+import {
+  getMapOptions,
+  initialMapProps,
+  generateCirclePoints,
+  dottedLineSegment,
+} from "../utils";
 import { GameStatus, Country, GameCategory } from "../types";
 
 interface GameplayMapProps extends google.maps.MapOptions {
@@ -65,42 +70,61 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
   }, [map, targetCountryData, gameStatus]);
 
   useEffect(() => {
-    if (!!map && !!distanceFromTarget && !!latestClickCoordinates) {
+    if (
+      !!map &&
+      !!distanceFromTarget &&
+      !!latestClickCoordinates &&
+      gameStatus === "INIT"
+    ) {
       const initialRadius = 0;
 
-      const clickDistanceIndicator = new google.maps.Circle({
-        center: latestClickCoordinates,
-        radius: initialRadius, // meters
+      // Create the circle approximation with a polyline
+      const circlePolyline = new google.maps.Polyline({
+        path: generateCirclePoints(latestClickCoordinates, initialRadius),
         map: map,
         strokeColor: "yellow",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: "yellow",
-        fillOpacity: 0.1,
+        strokeOpacity: 0, // Invisible stroke, only show dots
+        icons: [dottedLineSegment(1)],
       });
 
-      let currentRadius = initialRadius;
       const maxRadius = distanceFromTarget * 1000; // meters
 
       const growthRate = 22000 / (map.getZoom() || 1); // Amount to increase the radius per interval (in meters)
-      const intervalRate = 5;
+      const expandCircleIntervalRate = 5;
 
-      const timeRequiredToFillCircle = (maxRadius / growthRate) * intervalRate;
-
-      const intervalId = setInterval(() => {
+      let currentRadius = initialRadius;
+      // animate an expanding circle from the clicked point
+      const expandCircleInterval = setInterval(() => {
         if (currentRadius < maxRadius) {
           currentRadius += growthRate;
-          clickDistanceIndicator.setRadius(currentRadius);
+          circlePolyline.setOptions({
+            path: generateCirclePoints(latestClickCoordinates, currentRadius),
+          });
         } else {
-          clearInterval(intervalId); // Stop expanding when max radius is reached
+          clearInterval(expandCircleInterval); // Stop expanding when max radius is reached
         }
-      }, intervalRate); // Adjust interval duration for speed (in milliseconds)
+      }, expandCircleIntervalRate);
 
+      const timeRequiredToFillCircle =
+        (maxRadius / growthRate) * expandCircleIntervalRate;
+
+      // animate a blinking line when the full radius is reached
       setTimeout(() => {
-        clickDistanceIndicator.setMap(null);
-      }, 500 + timeRequiredToFillCircle); // delete the circle shortly after expanding to the full radius
+        let isVisible = true;
+        setInterval(() => {
+          isVisible = !isVisible;
+          circlePolyline.setOptions({
+            icons: [dottedLineSegment(isVisible ? 1 : 0)],
+          });
+        }, 250); // blinking speed
+      }, timeRequiredToFillCircle);
+
+      // remove the circle
+      setTimeout(() => {
+        circlePolyline.setMap(null);
+      }, 2000 + timeRequiredToFillCircle);
     }
-  }, [map, distanceFromTarget, latestClickCoordinates]);
+  }, [map, distanceFromTarget, latestClickCoordinates, gameStatus]);
 
   return (
     <>
