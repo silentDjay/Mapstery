@@ -245,6 +245,8 @@ export const PlayGame: React.FC = () => {
     setRevealedHintCount(1);
     setClickStatus(null);
     setClicks([]);
+    setLatestClickCoords(undefined);
+    setLatestClickDistance(undefined);
   };
 
   const replayGame = (category: GameCategory) => {
@@ -263,6 +265,8 @@ export const PlayGame: React.FC = () => {
     setWelcomeOverlayActive(true);
     setGameplayOverlayActive(false);
     setTargetCountryData(undefined);
+    setLatestClickCoords(undefined);
+    setLatestClickDistance(undefined);
   };
 
   return (
