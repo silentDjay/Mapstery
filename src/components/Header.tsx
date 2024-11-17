@@ -7,7 +7,11 @@ import {
   GameCategoryList,
   GameStatus,
 } from "../types";
-import { getClickDistanceFromTarget, getNumberOfClicksOnLand } from "../utils";
+import {
+  getClickDistanceFromTarget,
+  getGameProgress,
+  getNumberOfClicksOnLand,
+} from "../utils";
 
 interface HeaderProps {
   clicks: Click[];
@@ -79,7 +83,8 @@ export const Header: React.FC<HeaderProps> = ({
                   GameCategoryList.find(
                     (category) => category.value === gameCategory
                   )?.displayValue
-                }
+                }{" "}
+                <span>{getGameProgress(gameCategory)}</span>
               </b>{" "}
               &#10147;
             </div>

@@ -9,14 +9,12 @@ import {
   GOOGLE_API_KEY,
   POSTHOG_API_KEY,
 } from "../config";
-import {
-  GameplayMap,
-  ClickMarker,
-  GameplayModal,
-  WelcomeModal,
-  Header,
-  LoadingSpinner,
-} from ".";
+import { GameplayMap } from "./GameplayMap";
+import { ClickMarker } from "./ClickMarker";
+import { Header } from "./Header";
+import { LoadingSpinner } from "./LoadingSpinner";
+import { GameplayModal, WelcomeModal } from "./modals";
+import { NewGameButton, NextCountryButton } from "./buttons";
 import {
   GameStatus,
   GameCategory,
@@ -352,21 +350,9 @@ export const PlayGame: React.FC = () => {
               Hint
             </button>
           ) : getFilteredCountryList(gameCategory).length > 0 ? (
-            <button
-              data-testid="keep-playing-button"
-              onClick={() => replayGame(gameCategory)}
-              className="pure-button pure-button-primary"
-            >
-              Keep Playing
-            </button>
+            <NextCountryButton onClick={() => replayGame(gameCategory)} />
           ) : (
-            <button
-              data-testid="new-game-button"
-              onClick={resetGame}
-              className="pure-button pure-button-primary"
-            >
-              New Game
-            </button>
+            <NewGameButton onClick={resetGame} />
           )}
         </div>
       )}

@@ -90,6 +90,10 @@ body {
   text-align: center;
   padding: 40px 4px 15px;
   overflow: scroll;
+
+  @media (max-width: 600px) {
+    padding-top: 15px;
+  }
 }
 
 .modal-title {
@@ -112,6 +116,10 @@ body {
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
+
+  @media (max-width: 600px) {
+    gap: 1rem;
+  }
 }
 
 .button-secondary {
@@ -138,7 +146,8 @@ body {
 }
 
 @media (max-width: 600px) {
-  .country-spec-list {
+  .country-spec-list,
+  .current-game-progress {
     font-size: 1.25rem;
   }
 }

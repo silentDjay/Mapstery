@@ -3,6 +3,7 @@ import React from "react";
 import { BaseModal, BaseModalProps } from "./BaseModal";
 import { CountrySpecsList } from "../CountrySpecsList";
 import { CountryArea } from "../CountryArea";
+import { NewGameButton, NextCountryButton } from "../buttons";
 import {
   getCountryDataFromCca2Code,
   getBorderCountryList,
@@ -19,6 +20,7 @@ import {
 import {
   getCountriesFoundList,
   getFilteredCountryList,
+  getGameProgress,
   shareGameResult,
   campaignLength,
 } from "../../utils";
@@ -66,21 +68,12 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
             src={targetCountryData.flags.svg}
           />
         </div>
-        {gameCategory === "MAPSTERY_QUEST" && (
+        {gameCategory === "MAPSTERY_QUEST" && !campaignHistoryCount && (
           <div style={{ fontSize: "125%", marginTop: "16px" }}>
-            {!!campaignHistoryCount ? (
-              <div>
-                You've found {campaignHistoryCount}{" "}
-                {campaignHistoryCount > 1 ? "countries" : "country"} so far on
-                your Mapstery Quest. Just{" "}
-                {campaignLength - campaignHistoryCount} more to go!
-              </div>
-            ) : (
-              <div>
-                You're on a Mapstery Quest to find {campaignLength} countries!
-                Can you do it?
-              </div>
-            )}
+            <div>
+              You're on a Mapstery Quest to find every country in the world! Can
+              you do it?
+            </div>
           </div>
         )}
         <button
@@ -193,6 +186,10 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
             getCountryDataFromCca2Code(clickedCountryCode) as Country
           }
         />
+        <hr style={{ maxWidth: "400px" }} />
+        <div style={{ fontSize: "175%", margin: "1rem", marginTop: ".5rem" }}>
+          <CurrentGameProgress gameCategory={gameCategory} />
+        </div>
         <div className="modal-actions">
           <button
             onClick={props.onClose}
@@ -201,21 +198,9 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
             Keep Exploring
           </button>
           {getFilteredCountryList(gameCategory).length > 0 && (
-            <button
-              data-testid="keep-playing-button"
-              onClick={onReplay}
-              className="pure-button pure-button-primary"
-            >
-              Keep Playing
-            </button>
+            <NextCountryButton onClick={onReplay} />
           )}
-          <button
-            data-testid="new-game-button"
-            onClick={onReset}
-            className="pure-button"
-          >
-            New Game
-          </button>
+          <NewGameButton onClick={onReset} />
         </div>
       </BaseModal>
     );
@@ -228,23 +213,29 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
       }${targetCountryData.name?.common}`}
     >
       <CountrySpecsList countryMetadata={targetCountryData} />
-      {getFilteredCountryList(gameCategory).length === 0 &&
-        (gameCategory === "MAPSTERY_QUEST" ? (
-          <div style={{ fontSize: "175%", margin: "1rem" }}>
-            You completed the Mapstery Quest! You found all {campaignLength}
-            countries! You're a Mapstery Master!
-          </div>
+      <hr style={{ maxWidth: "400px" }} />
+      <div style={{ fontSize: "175%", margin: "1rem", marginTop: ".5rem" }}>
+        {getFilteredCountryList(gameCategory).length === 0 ? (
+          gameCategory === "MAPSTERY_QUEST" ? (
+            <>
+              You completed the Mapstery Quest! You found all {campaignLength}
+              countries! You're a Mapstery Master!
+            </>
+          ) : (
+            <>
+              You found all the countries in{" "}
+              {
+                GameCategoryList.find(
+                  (category) => category.value === gameCategory
+                )?.displayValue
+              }
+              ! You're a Mapstery Master!
+            </>
+          )
         ) : (
-          <div style={{ fontSize: "175%", margin: "1rem" }}>
-            You found all the countries in{" "}
-            {
-              GameCategoryList.find(
-                (category) => category.value === gameCategory
-              )?.displayValue
-            }
-            ! You're a Mapstery Master!
-          </div>
-        ))}
+          <CurrentGameProgress gameCategory={gameCategory} />
+        )}
+      </div>
       <div className="modal-actions">
         {!!navigator.share && !!clickStatus && (
           <button
@@ -272,22 +263,22 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
           Explore the Map
         </button>
         {getFilteredCountryList(gameCategory).length > 0 && (
-          <button
-            data-testid="keep-playing-button"
-            onClick={onReplay}
-            className="pure-button pure-button-primary"
-          >
-            Keep Playing
-          </button>
+          <NextCountryButton onClick={onReplay} />
         )}
-        <button
-          data-testid="new-game-button"
-          onClick={onReset}
-          className="pure-button"
-        >
-          New Game
-        </button>
+        <NewGameButton onClick={onReset} />
       </div>
     </BaseModal>
   );
 };
+
+export const CurrentGameProgress: React.FC<{
+  gameCategory: GameCategory;
+}> = ({ gameCategory }) => (
+  <div className="current-game-progress">
+    {
+      GameCategoryList.find((category) => category.value === gameCategory)
+        ?.displayValue
+    }{" "}
+    &#10147; {getGameProgress(gameCategory, "of")} countries found
+  </div>
+);

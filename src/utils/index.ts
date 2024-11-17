@@ -74,22 +74,25 @@ export const removeCountriesFoundList = (category: GameCategory) => {
 
 export const getFilteredCountryList = (
   category: GameCategory,
-  previousTargetCountry?: string
-) => {
-  const countriesFoundInCurrentGame = getCountriesFoundList(category);
+  previousTargetCountry?: string,
+  ignoreRepeatedCountries: boolean = false
+) =>
+  countryData.filter((country) => {
+    if (!ignoreRepeatedCountries) {
+      const countriesFoundInCurrentGame = getCountriesFoundList(category);
 
-  return countryData.filter((country) => {
-    const isPreviousTarget = country.cca2 === previousTargetCountry;
-    const countryAlreadyFound = countriesFoundInCurrentGame.includes(
-      country.cca2
-    );
+      const isPreviousTarget = country.cca2 === previousTargetCountry;
+      const countryAlreadyFound = countriesFoundInCurrentGame.includes(
+        country.cca2
+      );
 
-    if (
-      countriesFoundInCurrentGame.length === 1
-        ? countryAlreadyFound
-        : isPreviousTarget || countryAlreadyFound
-    )
-      return false;
+      if (
+        countriesFoundInCurrentGame.length === 1
+          ? countryAlreadyFound
+          : isPreviousTarget || countryAlreadyFound
+      )
+        return false;
+    }
 
     switch (category) {
       case "AFRICA":
@@ -131,7 +134,6 @@ export const getFilteredCountryList = (
         return true;
     }
   });
-};
 
 export const getRandomCountryData = (
   category: GameCategory,
@@ -195,7 +197,7 @@ export const getMapZoomLevel = (
       zoomLevel = 12;
   }
 
-  // countries in the northern hemisphere above the artic circle appear relatively large
+  // countries in the northern hemisphere above the arctic circle appear relatively large
   zoomLevel -= countryLatitude > 70 ? 2 : 0;
 
   return zoomLevel;
@@ -354,7 +356,7 @@ export const generateMarkerContent = (data: Click) => {
   return element;
 };
 
-export const convertKmtoMi = (km: number) => {
+export const convertKmToMi = (km: number) => {
   return Math.round(km * 0.621371);
 };
 
@@ -469,3 +471,11 @@ export const dottedLineSegment = (
     repeat: "30px", // Distance between dots
   };
 };
+
+export const getGameProgress = (
+  gameCategory: GameCategory,
+  delimiter: string = "/"
+) =>
+  `${getCountriesFoundList(gameCategory).length} ${delimiter} ${
+    getFilteredCountryList(gameCategory, undefined, true).length
+  }`;

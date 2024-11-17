@@ -4,7 +4,6 @@
     "lib": ["dom", "dom.iterable", "ESNext"],
     "types": ["vite/client", "vitest/globals"],
     "allowJs": false,
-    // skipLibCheck: true is necessary due to https://github.com/testing-library/jest-dom/issues/427
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
