@@ -28,7 +28,7 @@ const gameplayCharts: ChartProps[] = [
     id: "aPB6gfyEnAlcx83QsBlvBQpwIhw2SA",
   },
   {
-    label: <span>Countries Found &#10147; Country</span>,
+    label: <span>Most Often Found &#10147; Country</span>,
     id: "dL_AgjfdWYXRJOYJvgvP5-eLEHWsgA",
   },
   {
@@ -40,15 +40,17 @@ const gameplayCharts: ChartProps[] = [
     id: "V1iav5rn8z5SS2BmfA0Aby0gjHTw_A",
   },
   {
-    label: <span>Average Clicks Per Win &#10147; Country</span>,
+    label: <span>Average Clicks To Find &#10147; Country</span>,
     id: "YQoPd65_tzsP-mC-DLr3BszvMnEhgg",
   },
   {
-    label: <span>Average Clicks Per Win &#10147; Global</span>,
+    label: <span>Average Clicks To Find Country &#10147; Global</span>,
     id: "idoI9-65Du4mGv7geDcUHneUIgigxQ",
   },
   {
-    label: <span>Average Clicks Per Win &#10147; Location of User</span>,
+    label: (
+      <span>Average Clicks To Find Country &#10147; Location of User</span>
+    ),
     id: "kz1JhoC7FhxY5uMiZxv8IWZ8ruUQLw",
     worldMap: true,
   },
