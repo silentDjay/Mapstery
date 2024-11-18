@@ -21,8 +21,8 @@ import {
   ClickStatus,
   Click,
   Country,
-  ReverseGeoclocatedCountry,
-  ReverseGeoclocatedBodyOfWater,
+  ReverseGeolocatedCountry,
+  ReverseGeolocatedBodyOfWater,
   AnalyticsEventData,
 } from "../types";
 import {
@@ -139,8 +139,8 @@ export const PlayGame: React.FC = () => {
 
   const handleGeolocatedClickData = (
     coordinates: google.maps.LatLng,
-    countryData?: ReverseGeoclocatedCountry,
-    bodyOfWaterData?: ReverseGeoclocatedBodyOfWater
+    countryData?: ReverseGeolocatedCountry,
+    bodyOfWaterData?: ReverseGeolocatedBodyOfWater
   ) => {
     const clickEventData: AnalyticsEventData = {
       target: targetCountryData?.name.common,

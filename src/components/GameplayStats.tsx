@@ -11,7 +11,7 @@ interface ChartProps {
 
 const gameplayCharts: ChartProps[] = [
   {
-    label: <span>Games Won &#10147; Location of User</span>,
+    label: <span>Countries Found &#10147; Location of User</span>,
     id: "NqmL5Snwmw4LZzZZvrLM4YurDoZFxg",
     worldMap: true,
   },
@@ -20,23 +20,23 @@ const gameplayCharts: ChartProps[] = [
     id: "-B0St7MawU2Z0npNmVfnsiNLPiv4sA",
   },
   {
-    label: <span>Games Started &#10147; Category</span>,
-    id: "ikKibFYyXESGkhxAe-Kj7srThTJnGQ",
+    label: <span>Games Completed &#10147; Category</span>,
+    id: "TUY4ht7fDUgSFfTjrLImKloCONcLng",
   },
   {
-    label: <span>Games Won &#10147; Category</span>,
+    label: <span>Countries Found &#10147; Category</span>,
     id: "aPB6gfyEnAlcx83QsBlvBQpwIhw2SA",
   },
   {
-    label: <span>Games Forefeited &#10147; Category</span>,
-    id: "v7xaigS6md5_pgQth-t9BczHRJC0qg",
-  },
-  {
-    label: <span>Games Won &#10147; Country</span>,
+    label: <span>Countries Found &#10147; Country</span>,
     id: "dL_AgjfdWYXRJOYJvgvP5-eLEHWsgA",
   },
   {
-    label: <span>Games Forfeited &#10147; Country</span>,
+    label: <span>Forfeits &#10147; Category</span>,
+    id: "v7xaigS6md5_pgQth-t9BczHRJC0qg",
+  },
+  {
+    label: <span>Forfeits &#10147; Country</span>,
     id: "V1iav5rn8z5SS2BmfA0Aby0gjHTw_A",
   },
   {
@@ -44,7 +44,7 @@ const gameplayCharts: ChartProps[] = [
     id: "YQoPd65_tzsP-mC-DLr3BszvMnEhgg",
   },
   {
-    label: <span>Average Clicks &#10147; Win</span>,
+    label: <span>Average Clicks Per Win &#10147; Global</span>,
     id: "idoI9-65Du4mGv7geDcUHneUIgigxQ",
   },
   {

@@ -106,7 +106,7 @@ interface SubdivisionCode {
   type: string;
 }
 
-export interface ReverseGeoclocatedCountry {
+export interface ReverseGeolocatedCountry {
   adminCode1: string;
   adminName1: string;
   codes: SubdivisionCode[];
@@ -115,7 +115,7 @@ export interface ReverseGeoclocatedCountry {
   distance: number;
 }
 
-export interface ReverseGeoclocatedBodyOfWater {
+export interface ReverseGeolocatedBodyOfWater {
   ocean: {
     distance: string;
     geonameId: number;
