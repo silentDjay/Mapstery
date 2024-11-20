@@ -11,6 +11,7 @@ import {
   initialMapProps,
   generateCirclePoints,
   dottedLineSegment,
+  getInitialMapPropsByGameCategory,
 } from "../utils";
 import { GameStatus, Country, GameCategory } from "../types";
 
@@ -67,7 +68,63 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
       map.setOptions(
         getMapOptions(gameStatus, gameCategory, targetCountryData)
       );
-  }, [map, targetCountryData, gameStatus]);
+
+    if (gameStatus === "INIT") {
+      const initialCenterCoordinates =
+        getInitialMapPropsByGameCategory(gameCategory).center;
+
+      const initialLatitude = initialCenterCoordinates.lat;
+      const initialLongitude = initialCenterCoordinates.lng;
+
+      const initialLatLngAnimationPolylineProps = {
+        path: [initialCenterCoordinates, initialCenterCoordinates],
+        map: map,
+        strokeOpacity: 1, // the icon doesn't show up if this is 0 :shrug:
+        icons: [
+          {
+            icon: {
+              path: "M15.0,95.0 L55.0,-45.0 L95.0,95.0 L55.0,55.0 Z", // arrowhead character (&#10147;) SVG path approximation)
+              fillColor: "white",
+              fillOpacity: 100,
+              scale: 0.25,
+            },
+          },
+        ],
+      };
+
+      const latitudeAnimation = new google.maps.Polyline(
+        initialLatLngAnimationPolylineProps
+      );
+
+      const longitudeAnimation = new google.maps.Polyline(
+        initialLatLngAnimationPolylineProps
+      );
+
+      let currentLatitude = initialLatitude;
+      let currentLongitude = initialLongitude;
+
+      const animateInitGameLine = setInterval(() => {
+        if (currentLatitude < 90 && currentLongitude < 180) {
+          currentLatitude += 0.5;
+          currentLongitude += 1;
+
+          longitudeAnimation.setPath([
+            initialCenterCoordinates,
+            { lat: initialLatitude, lng: currentLongitude },
+          ]);
+
+          latitudeAnimation.setPath([
+            initialCenterCoordinates,
+            { lat: currentLatitude, lng: initialLongitude },
+          ]);
+        } else {
+          clearInterval(animateInitGameLine);
+          longitudeAnimation.setMap(null);
+          latitudeAnimation.setMap(null);
+        }
+      }, 50);
+    }
+  }, [map, targetCountryData, gameStatus, gameCategory]);
 
   useEffect(() => {
     if (

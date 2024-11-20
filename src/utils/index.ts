@@ -216,7 +216,7 @@ export const initialMapProps: google.maps.MapOptions = {
   minZoom: 2,
 };
 
-const getInitialMapPropsByGameCategory = (
+export const getInitialMapPropsByGameCategory = (
   category: GameCategory | undefined
 ) => {
   switch (category) {
