@@ -64,7 +64,9 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
   }, [map, onClick]);
 
   useEffect(() => {
-    if (!!map && !!targetCountryData)
+    if (!map) return;
+
+    if (!!targetCountryData)
       map.setOptions(
         getMapOptions(gameStatus, gameCategory, targetCountryData)
       );
@@ -79,7 +81,7 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
       const initialLatLngAnimationPolylineProps = {
         path: [initialCenterCoordinates, initialCenterCoordinates],
         map: map,
-        strokeOpacity: 1, // the icon doesn't show up if this is 0 :shrug:
+        strokeOpacity: 0.0001, // the icon doesn't show up if this is 0 :shrug:
         icons: [
           {
             icon: {
@@ -92,37 +94,89 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
         ],
       };
 
-      const latitudeAnimation = new google.maps.Polyline(
+      const northwardLine = new google.maps.Polyline(
         initialLatLngAnimationPolylineProps
       );
 
-      const longitudeAnimation = new google.maps.Polyline(
+      const eastwardLine = new google.maps.Polyline(
         initialLatLngAnimationPolylineProps
       );
 
-      let currentLatitude = initialLatitude;
-      let currentLongitude = initialLongitude;
+      const southwardLine = new google.maps.Polyline(
+        initialLatLngAnimationPolylineProps
+      );
 
-      const animateInitGameLine = setInterval(() => {
-        if (currentLatitude < 90 && currentLongitude < 180) {
-          currentLatitude += 0.5;
-          currentLongitude += 1;
+      const westwardLine = new google.maps.Polyline(
+        initialLatLngAnimationPolylineProps
+      );
 
-          longitudeAnimation.setPath([
+      let dueNorthLatitude = initialLatitude;
+      let dueEastLongitude = initialLongitude;
+      let dueSouthLatitude = initialLatitude;
+      let dueWestLongitude = initialLongitude;
+
+      const mapBoundaries = map.getBounds();
+
+      const northBoundary = mapBoundaries?.getNorthEast().lat() || 90;
+      const eastBoundary = mapBoundaries?.getNorthEast().lng() || 180;
+      const southBoundary = mapBoundaries?.getSouthWest().lat() || -90;
+      const westBoundary = mapBoundaries?.getSouthWest().lng() || -180;
+
+      const dueNorthAnimation = setInterval(() => {
+        if (dueNorthLatitude < northBoundary) {
+          dueNorthLatitude += 0.5;
+
+          northwardLine.setPath([
             initialCenterCoordinates,
-            { lat: initialLatitude, lng: currentLongitude },
-          ]);
-
-          latitudeAnimation.setPath([
-            initialCenterCoordinates,
-            { lat: currentLatitude, lng: initialLongitude },
+            { lat: dueNorthLatitude, lng: initialLongitude },
           ]);
         } else {
-          clearInterval(animateInitGameLine);
-          longitudeAnimation.setMap(null);
-          latitudeAnimation.setMap(null);
+          clearInterval(dueNorthAnimation);
+          northwardLine.setMap(null);
         }
-      }, 50);
+      }, 25);
+
+      const dueEastAnimation = setInterval(() => {
+        if (dueEastLongitude < eastBoundary) {
+          dueEastLongitude += 1;
+
+          eastwardLine.setPath([
+            initialCenterCoordinates,
+            { lat: initialLatitude, lng: dueEastLongitude },
+          ]);
+        } else {
+          clearInterval(dueEastAnimation);
+          eastwardLine.setMap(null);
+        }
+      }, 25);
+
+      const dueSouthAnimation = setInterval(() => {
+        if (dueSouthLatitude > southBoundary) {
+          dueSouthLatitude -= 0.5;
+
+          southwardLine.setPath([
+            initialCenterCoordinates,
+            { lat: dueSouthLatitude, lng: initialLongitude },
+          ]);
+        } else {
+          clearInterval(dueSouthAnimation);
+          southwardLine.setMap(null);
+        }
+      }, 25);
+
+      const dueWestAnimation = setInterval(() => {
+        if (dueWestLongitude > westBoundary) {
+          dueWestLongitude -= 1;
+
+          westwardLine.setPath([
+            initialCenterCoordinates,
+            { lat: initialLatitude, lng: dueWestLongitude },
+          ]);
+        } else {
+          clearInterval(dueWestAnimation);
+          westwardLine.setMap(null);
+        }
+      }, 25);
     }
   }, [map, targetCountryData, gameStatus, gameCategory]);
 
