@@ -31,7 +31,7 @@ VITE_GEONAMES_USERNAME=[your_username]
 
 ### Run Mapstery
 
-Mapstery requires [Node.js Hydrogen `(18.x)`]. If you use [Node Version Manager], you can ensure you're using the correct version with
+If you use [Node Version Manager], you can ensure you're using a compatible version of Node and NPM with
 
 ```bash
 nvm use
@@ -63,7 +63,6 @@ Mapstery will run at `localhost:3000`. You're good to go!
 [@googlemaps/react-wrapper]: https://www.npmjs.com/package/@googlemaps/react-wrapper
 [mozilla public license]: https://www.mozilla.org/en-US/MPL/2.0/
 [node version manager]: https://github.com/nvm-sh/nvm
-[node.js hydrogen `(18.x)`]: https://github.com/nodejs/Release#nodejs-release-working-group
 [play mapstery here]: https://mapstery.world
 [react]: https://reactjs.org/
 [reverse geocoding]: https://en.wikipedia.org/wiki/Reverse_geocoding
