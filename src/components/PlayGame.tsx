@@ -250,7 +250,7 @@ export const PlayGame: React.FC = () => {
   const replayGame = (category: GameCategory) => {
     endGame();
     setGameplayOverlayActive(true);
-    setGameStatus("INIT");
+    setGameStatus("PENDING");
     handleSetNewTargetCountry(category);
     captureEvent("REPLAY_GAME", {
       gameCategory: category,
