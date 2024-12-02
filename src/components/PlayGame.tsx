@@ -36,6 +36,7 @@ import {
   isCampaignCompleted,
   getClickDistanceFromTarget,
 } from "../utils";
+import { useGetAverageClicksToFindCountry } from "../hooks/useGetAverageClicksToFindCountry";
 
 posthog.init(POSTHOG_API_KEY, { api_host: "https://us.posthog.com" });
 
@@ -70,6 +71,8 @@ export const PlayGame: React.FC = () => {
   const [latestClickDistance, setLatestClickDistance] = useState<number>();
   const [latestClickCoords, setLatestClickCoords] =
     useState<google.maps.LatLng>();
+  const { averageClicks, loading: averageClicksLoading } =
+    useGetAverageClicksToFindCountry(targetCountryData?.name.common);
 
   useEffect(() => {
     const lastClickData = clicks[clicks.length - 1];
@@ -330,6 +333,8 @@ export const PlayGame: React.FC = () => {
           clickedCountryCode={clickedCountryCode}
           targetCountryData={targetCountryData as Country}
           gameCategory={gameCategory}
+          avgClicksToFindTargetCountry={averageClicks}
+          avgClicksLoading={averageClicksLoading}
         />
       )}
 

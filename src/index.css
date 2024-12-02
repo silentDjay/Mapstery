@@ -136,6 +136,20 @@ body {
   max-height: 500px;
 }
 
+.rotating-arrow {
+  display: inline-block;
+  animation: spin-arrow 2s linear infinite;
+}
+
+@keyframes spin-arrow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .country-spec-list {
   font-size: 1.75rem;
   margin: 1rem;

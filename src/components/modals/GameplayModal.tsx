@@ -32,6 +32,8 @@ interface GameplayModalProps extends BaseModalProps {
   targetCountryData: Country;
   revealedHintCount: number;
   gameCategory: GameCategory;
+  avgClicksToFindTargetCountry?: number;
+  avgClicksLoading: boolean;
   onStartGame: () => void;
   onForfeit: () => void;
   onReplay: () => void;
@@ -46,6 +48,8 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
   targetCountryData,
   revealedHintCount,
   gameCategory,
+  avgClicksToFindTargetCountry,
+  avgClicksLoading,
   onStartGame,
   onForfeit,
   onReplay,
@@ -67,6 +71,15 @@ export const GameplayModal: React.FC<GameplayModalProps> = ({
             alt={`flag of ${targetCountryData.name.common}`}
             src={targetCountryData.flags.svg}
           />
+        </div>
+        <div style={{ fontSize: "125%", marginTop: "8px" }}>
+          On average, Mapstery players find {targetCountryData.name.common} in{" "}
+          {avgClicksLoading ? (
+            <span className="rotating-arrow">&#10147;</span>
+          ) : (
+            avgClicksToFindTargetCountry
+          )}{" "}
+          clicks.
         </div>
         {gameCategory === "MAPSTERY_QUEST" && !campaignHistoryCount && (
           <div style={{ fontSize: "125%", marginTop: "16px" }}>
