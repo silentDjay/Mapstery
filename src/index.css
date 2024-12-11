@@ -343,3 +343,27 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.animated-zoom-out-warning {
+  background-color: #ffbf00;
+  animation: changeBackground 1s infinite;
+  position: absolute;
+  color: white;
+  text-align: center;
+  padding-top: 20%;
+  font-family: "Dosis";
+  font-weight: bold;
+  font-size: 45px;
+}
+
+@keyframes changeBackground {
+  0% {
+    opacity: 70%;
+  }
+  50% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 70%;
+  }
+}

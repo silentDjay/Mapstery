@@ -182,6 +182,76 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
   useEffect(() => {
     if (
       !!map &&
+      !!latestClickCoordinates &&
+      !!targetCountryData &&
+      gameStatus === "INIT"
+    ) {
+      const createZoomOutWarning = (
+        map: google.maps.Map
+      ): google.maps.OverlayView => {
+        const overlay = new google.maps.OverlayView();
+
+        let div: HTMLElement | null = null;
+
+        overlay.onAdd = () => {
+          div = document.createElement("div");
+          div.className = "animated-zoom-out-warning";
+          div.textContent = "Zoom Out!";
+
+          const panes = overlay.getPanes();
+          panes?.overlayLayer.appendChild(div);
+        };
+
+        overlay.draw = () => {
+          if (!div) return;
+
+          const projection = overlay.getProjection();
+          const bounds = map.getBounds();
+          if (!projection || !bounds) return;
+
+          const sw = projection.fromLatLngToDivPixel(bounds.getSouthWest());
+          const ne = projection.fromLatLngToDivPixel(bounds.getNorthEast());
+
+          if (!sw || !ne) return;
+
+          div.style.left = `${sw.x}px`;
+          div.style.top = `${ne.y}px`;
+          div.style.width = `${ne.x - sw.x}px`;
+          div.style.height = `${sw.y - ne.y}px`;
+        };
+
+        overlay.onRemove = () => {
+          if (div) {
+            div.parentNode?.removeChild(div);
+            div = null;
+          }
+        };
+
+        overlay.setMap(map);
+
+        return overlay;
+      };
+
+      const isTargetCountryVisible = map.getBounds()?.contains(
+        new google.maps.LatLng({
+          lat: targetCountryData.latlng[0],
+          lng: targetCountryData.latlng[1],
+        })
+      );
+
+      if (!isTargetCountryVisible) {
+        const zoomOutWarning = createZoomOutWarning(map);
+
+        setTimeout(() => {
+          zoomOutWarning.onRemove();
+        }, 2500);
+      }
+    }
+  }, [map, targetCountryData, gameStatus, latestClickCoordinates]);
+
+  useEffect(() => {
+    if (
+      !!map &&
       !!distanceFromTarget &&
       !!latestClickCoordinates &&
       gameStatus === "INIT"
