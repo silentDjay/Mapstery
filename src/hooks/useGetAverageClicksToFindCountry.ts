@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { POSTHOG_QUERY_API_KEY } from "../config";
+import { POSTHOG_PROJECT_ID, POSTHOG_QUERY_API_KEY } from "../config";
 
 export const useGetAverageClicksToFindCountry = (country?: string) => {
   const [averageClicks, setAverageClicks] = useState<number | undefined>();
   const [loading, setLoading] = useState(true);
 
-  const url = "https://us.posthog.com/api/projects/47514/query/";
+  const url = `https://us.posthog.com/api/projects/${POSTHOG_PROJECT_ID}/query/`;
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${POSTHOG_QUERY_API_KEY}`,

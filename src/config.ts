@@ -4,3 +4,5 @@ export const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 export const POSTHOG_API_KEY = import.meta.env.VITE_POSTHOG_API_KEY || "";
 export const POSTHOG_QUERY_API_KEY =
   import.meta.env.VITE_POSTHOG_QUERY_API_KEY || "";
+export const POSTHOG_PROJECT_ID = import.meta.env.VITE_POSTHOG_PROJECT_ID || "";
+export const POSTHOG_URL = "https://us.posthog.com/";
