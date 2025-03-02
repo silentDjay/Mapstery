@@ -183,9 +183,60 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
     if (
       !!map &&
       !!latestClickCoordinates &&
+      !!distanceFromTarget &&
       !!targetCountryData &&
       gameStatus === "INIT"
     ) {
+      const createClickDistanceAnimation = (map: google.maps.Map) => {
+        const initialRadius = 0;
+
+        // Create the circle approximation with a polyline
+        const circlePolyline = new google.maps.Polyline({
+          path: generateCirclePoints(latestClickCoordinates, initialRadius),
+          map: map,
+          strokeColor: "yellow",
+          strokeOpacity: 0, // Invisible stroke, only show dots
+          icons: [dottedLineSegment(1)],
+        });
+
+        const maxRadius = distanceFromTarget * 1000; // meters
+
+        const growthRate = 22000 / (map.getZoom() || 1); // Amount to increase the radius per interval (in meters)
+        const expandCircleIntervalRate = 5;
+
+        let currentRadius = initialRadius;
+        // animate an expanding circle from the clicked point
+        const expandCircleInterval = setInterval(() => {
+          if (currentRadius < maxRadius) {
+            currentRadius += growthRate;
+            circlePolyline.setOptions({
+              path: generateCirclePoints(latestClickCoordinates, currentRadius),
+            });
+          } else {
+            clearInterval(expandCircleInterval); // Stop expanding when max radius is reached
+          }
+        }, expandCircleIntervalRate);
+
+        const timeRequiredToFillCircle =
+          (maxRadius / growthRate) * expandCircleIntervalRate;
+
+        // animate a blinking line when the full radius is reached
+        setTimeout(() => {
+          let isVisible = true;
+          setInterval(() => {
+            isVisible = !isVisible;
+            circlePolyline.setOptions({
+              icons: [dottedLineSegment(isVisible ? 1 : 0)],
+            });
+          }, 250); // blinking speed
+        }, timeRequiredToFillCircle);
+
+        // remove the circle
+        setTimeout(() => {
+          circlePolyline.setMap(null);
+        }, 2000 + timeRequiredToFillCircle);
+      };
+
       const createZoomOutWarning = (
         map: google.maps.Map
       ): google.maps.OverlayView => {
@@ -239,7 +290,9 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
         })
       );
 
-      if (!isTargetCountryVisible) {
+      if (isTargetCountryVisible) {
+        createClickDistanceAnimation(map);
+      } else {
         const zoomOutWarning = createZoomOutWarning(map);
 
         setTimeout(() => {
@@ -247,64 +300,13 @@ export const GameplayMap: React.FC<GameplayMapProps> = ({
         }, 2500);
       }
     }
-  }, [map, targetCountryData, gameStatus, latestClickCoordinates]);
-
-  useEffect(() => {
-    if (
-      !!map &&
-      !!distanceFromTarget &&
-      !!latestClickCoordinates &&
-      gameStatus === "INIT"
-    ) {
-      const initialRadius = 0;
-
-      // Create the circle approximation with a polyline
-      const circlePolyline = new google.maps.Polyline({
-        path: generateCirclePoints(latestClickCoordinates, initialRadius),
-        map: map,
-        strokeColor: "yellow",
-        strokeOpacity: 0, // Invisible stroke, only show dots
-        icons: [dottedLineSegment(1)],
-      });
-
-      const maxRadius = distanceFromTarget * 1000; // meters
-
-      const growthRate = 22000 / (map.getZoom() || 1); // Amount to increase the radius per interval (in meters)
-      const expandCircleIntervalRate = 5;
-
-      let currentRadius = initialRadius;
-      // animate an expanding circle from the clicked point
-      const expandCircleInterval = setInterval(() => {
-        if (currentRadius < maxRadius) {
-          currentRadius += growthRate;
-          circlePolyline.setOptions({
-            path: generateCirclePoints(latestClickCoordinates, currentRadius),
-          });
-        } else {
-          clearInterval(expandCircleInterval); // Stop expanding when max radius is reached
-        }
-      }, expandCircleIntervalRate);
-
-      const timeRequiredToFillCircle =
-        (maxRadius / growthRate) * expandCircleIntervalRate;
-
-      // animate a blinking line when the full radius is reached
-      setTimeout(() => {
-        let isVisible = true;
-        setInterval(() => {
-          isVisible = !isVisible;
-          circlePolyline.setOptions({
-            icons: [dottedLineSegment(isVisible ? 1 : 0)],
-          });
-        }, 250); // blinking speed
-      }, timeRequiredToFillCircle);
-
-      // remove the circle
-      setTimeout(() => {
-        circlePolyline.setMap(null);
-      }, 2000 + timeRequiredToFillCircle);
-    }
-  }, [map, distanceFromTarget, latestClickCoordinates, gameStatus]);
+  }, [
+    map,
+    targetCountryData,
+    gameStatus,
+    distanceFromTarget,
+    latestClickCoordinates,
+  ]);
 
   return (
     <>
