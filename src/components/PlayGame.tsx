@@ -29,6 +29,7 @@ import {
   generateMarkerContent,
   getNumberOfClicksOnLand,
   getRandomCountryData,
+  getNextCountryData,
   addCountryToLocalStorageList,
   removeCountriesFoundList,
   getFilteredCountryList,
@@ -90,12 +91,13 @@ export const PlayGame: React.FC = () => {
   }, [clicks]);
 
   const handleSetNewTargetCountry = (category: GameCategory) => {
-    const randomCountryData = getRandomCountryData(
-      category,
-      previousTargetCountry
-    );
-    setPreviousTargetCountry(randomCountryData?.cca2);
-    setTargetCountryData(randomCountryData);
+    const targetCountryData =
+      category === "LARGEST_TO_SMALLEST_AREA" ||
+      category === "LARGEST_TO_SMALLEST_POPULATION"
+        ? getNextCountryData(category, previousTargetCountry)
+        : getRandomCountryData(category, previousTargetCountry);
+    setPreviousTargetCountry(targetCountryData?.cca2);
+    setTargetCountryData(targetCountryData);
   };
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {

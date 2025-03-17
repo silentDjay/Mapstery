@@ -8,8 +8,10 @@ import {
   Country,
   GameStatus,
   GameCategory,
+  GameCategoryWithRandomOrder,
   AnalyticsEventData,
   AnalyticsEventType,
+  GameCategoryWithSortedOrder,
 } from "../types";
 
 const hugeCountryThreshold = 1500000;
@@ -128,15 +130,27 @@ export const getFilteredCountryList = (
         return country.population > 100000000;
       case "NON_POPULOUS_COUNTRIES":
         return country.population < 50000;
+      case "ARABIC_OFFICIAL_LANGUAGE":
+        return Object.values(country.languages).includes("Arabic");
+      case "ENGLISH_OFFICIAL_LANGUAGE":
+        return Object.values(country.languages).includes("English");
+      case "FRENCH_OFFICIAL_LANGUAGE":
+        return Object.values(country.languages).includes("French");
+      case "PORTUGUESE_OFFICIAL_LANGUAGE":
+        return Object.values(country.languages).includes("Portuguese");
+      case "RUSSIAN_OFFICIAL_LANGUAGE":
+        return Object.values(country.languages).includes("Russian");
+      case "SPANISH_OFFICIAL_LANGUAGE":
+        return Object.values(country.languages).includes("Spanish");
       case "MAPSTERY_QUEST":
         return !getCountriesFoundList("MAPSTERY_QUEST").includes(country.cca2);
-      default: // "PLANET_EARTH"
+      default:
         return true;
     }
   });
 
 export const getRandomCountryData = (
-  category: GameCategory,
+  category: GameCategoryWithRandomOrder,
   previousTargetCountry?: string
 ) => {
   const filteredCountryList = getFilteredCountryList(
@@ -154,6 +168,20 @@ export const getRandomCountryData = (
 
   const randCountryNum = Math.floor(Math.random() * filteredCountryList.length);
   return filteredCountryList[randCountryNum];
+};
+
+export const getNextCountryData = (
+  category: GameCategoryWithSortedOrder,
+  previousTargetCountry?: string
+) => {
+  const filteredCountryList = getFilteredCountryList(
+    category,
+    previousTargetCountry
+  );
+
+  return category === "LARGEST_TO_SMALLEST_AREA"
+    ? filteredCountryList.sort((a, b) => b.area - a.area)[0]
+    : filteredCountryList.sort((a, b) => b.population - a.population)[0];
 };
 
 export const getCountryDataFromCca2Code = (code: string) =>

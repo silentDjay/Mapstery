@@ -1,4 +1,4 @@
-export type GameCategory =
+export type GameCategoryWithRandomOrder =
   | "PLANET_EARTH"
   | "AFRICA"
   | "ANTARCTIC"
@@ -14,10 +14,24 @@ export type GameCategory =
   | "SMALL_COUNTRIES"
   | "POPULOUS_COUNTRIES"
   | "NON_POPULOUS_COUNTRIES"
-  | "MAPSTERY_QUEST";
+  | "MAPSTERY_QUEST"
+  | "ENGLISH_OFFICIAL_LANGUAGE"
+  | "FRENCH_OFFICIAL_LANGUAGE"
+  | "SPANISH_OFFICIAL_LANGUAGE"
+  | "PORTUGUESE_OFFICIAL_LANGUAGE"
+  | "RUSSIAN_OFFICIAL_LANGUAGE"
+  | "ARABIC_OFFICIAL_LANGUAGE";
 
-export const GameCategoryList: {
-  value: GameCategory;
+export type GameCategoryWithSortedOrder =
+  | "LARGEST_TO_SMALLEST_AREA"
+  | "LARGEST_TO_SMALLEST_POPULATION";
+
+export type GameCategory =
+  | GameCategoryWithRandomOrder
+  | GameCategoryWithSortedOrder;
+
+export const RandomOrderGameCategoryList: {
+  value: GameCategoryWithRandomOrder;
   displayValue: string;
 }[] = [
   { value: "PLANET_EARTH", displayValue: "Countries of the World" },
@@ -51,7 +65,50 @@ export const GameCategoryList: {
     value: "MAPSTERY_QUEST",
     displayValue: "The Mapstery Quest",
   },
+  {
+    value: "ENGLISH_OFFICIAL_LANGUAGE",
+    displayValue: "English-Speaking Countries",
+  },
+  {
+    value: "FRENCH_OFFICIAL_LANGUAGE",
+    displayValue: "French-Speaking Countries",
+  },
+  {
+    value: "SPANISH_OFFICIAL_LANGUAGE",
+    displayValue: "Spanish-Speaking Countries",
+  },
+  {
+    value: "PORTUGUESE_OFFICIAL_LANGUAGE",
+    displayValue: "Portuguese-Speaking Countries",
+  },
+  {
+    value: "RUSSIAN_OFFICIAL_LANGUAGE",
+    displayValue: "Russian-Speaking Countries",
+  },
+  {
+    value: "ARABIC_OFFICIAL_LANGUAGE",
+    displayValue: "Arabic-Speaking Countries",
+  },
 ];
+
+export const SortedOrderGameCategoryList: {
+  value: GameCategoryWithSortedOrder;
+  displayValue: string;
+}[] = [
+  {
+    value: "LARGEST_TO_SMALLEST_AREA",
+    displayValue: "Largest to Smallest (Area)",
+  },
+  {
+    value: "LARGEST_TO_SMALLEST_POPULATION",
+    displayValue: "Largest to Smallest (Population)",
+  },
+];
+
+export const GameCategoryList: {
+  value: GameCategory;
+  displayValue: string;
+}[] = [...RandomOrderGameCategoryList, ...SortedOrderGameCategoryList];
 
 export type GameStatus = "PENDING" | "INIT" | "SUCCESS" | "FORFEIT";
 
