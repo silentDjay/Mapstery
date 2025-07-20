@@ -1522,7 +1522,7 @@ export const countryData: Country[] = [
     cca2: "CW",
     cca3: "CUW",
     currencies: {
-      ANG: { name: "Netherlands Antillean guilder", symbol: "ƒ" },
+      XCG: { name: "Caribbean guilder", symbol: "Cg" },
     },
     capital: ["Willemstad"],
     subregion: "The Caribbean",
@@ -1840,7 +1840,7 @@ export const countryData: Country[] = [
     cca2: "SX",
     cca3: "SXM",
     currencies: {
-      ANG: { name: "Netherlands Antillean guilder", symbol: "ƒ" },
+      XCG: { name: "Caribbean guilder", symbol: "Cg" },
     },
     capital: ["Philipsburg"],
     subregion: "The Caribbean",
