@@ -22,12 +22,18 @@ test("Get random target country logic does not exclude any countries", () => {
 
       previousCountryCode = targetCountryCode;
       selectedTargetCountries.add(targetCountryCode);
-    }
 
+      // exit the test instance once the expected result has been achieved
+      if (selectedTargetCountries.size === filteredCountryList.length) {
+        break;
+      }
+    }
     expect(selectedTargetCountries.size).toEqual(filteredCountryList.length);
 
     selectedTargetCountries.clear();
   });
+
+  return;
 });
 
 test("Get random target country logic does not repeat countries", () => {
