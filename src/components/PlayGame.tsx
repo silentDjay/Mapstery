@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import Geonames from "geonames.js";
+
 import posthog from "posthog-js";
 
-import {
-  GEONAMES_USERNAME,
-  GEONAMES_TOKEN,
-  GOOGLE_API_KEY,
-  POSTHOG_API_KEY,
-} from "../config";
+import { GOOGLE_API_KEY, POSTHOG_API_KEY } from "../config";
 import { GameplayMap } from "./GameplayMap";
 import { ClickMarker } from "./ClickMarker";
 import { Header } from "./Header";
@@ -36,6 +31,7 @@ import {
   captureEvent,
   isCampaignCompleted,
   getClickDistanceFromTarget,
+  reverseGeolocateCoordinates,
 } from "../utils";
 import { useGetAverageClicksToFindCountry } from "../hooks/useGetAverageClicksToFindCountry";
 
@@ -49,13 +45,6 @@ const render = (status: Status) => {
     </div>
   );
 };
-
-const geonames = Geonames({
-  username: GEONAMES_USERNAME,
-  token: GEONAMES_TOKEN,
-  lan: "en",
-  encoding: "JSON",
-});
 
 export const PlayGame: React.FC = () => {
   const [welcomeOverlayActive, setWelcomeOverlayActive] = useState(true);
@@ -106,10 +95,11 @@ export const PlayGame: React.FC = () => {
 
   const geolocateClickCoords = async (coordinates: google.maps.LatLng) => {
     try {
-      const clickedCountryData = await geonames.countrySubdivision({
-        lat: coordinates.lat(),
-        lng: coordinates.lng(),
-      });
+      const clickedCountryData = await reverseGeolocateCoordinates(
+        "countrySubdivisionJSON",
+        coordinates.lat(),
+        coordinates.lng()
+      );
 
       // 15 is the status when no country is reverse geolocated
       if (clickedCountryData?.status?.value === 15) {
@@ -125,10 +115,11 @@ export const PlayGame: React.FC = () => {
 
   const geolocateBodyOfWater = async (coordinates: google.maps.LatLng) => {
     try {
-      const clickedBodyOfWaterData = await geonames.ocean({
-        lat: coordinates.lat(),
-        lng: coordinates.lng(),
-      });
+      const clickedBodyOfWaterData = await reverseGeolocateCoordinates(
+        "oceanJSON",
+        coordinates.lat(),
+        coordinates.lng()
+      );
 
       // 15 is the status when no ocean is reverse geolocated
       if (clickedBodyOfWaterData?.status?.value === 15) {

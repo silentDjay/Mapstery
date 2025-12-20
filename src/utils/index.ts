@@ -14,6 +14,8 @@ import {
   GameCategoryWithSortedOrder,
 } from "../types";
 
+import { GEONAMES_USERNAME, GEONAMES_TOKEN } from "../config";
+
 const hugeCountryThreshold = 1500000;
 const largeCountryThreshold = 250000;
 const smallCountryThreshold = 25000;
@@ -384,8 +386,8 @@ export const generateMarkerContent = (data: Click) => {
   return element;
 };
 
-export const convertKmToMi = (km: number) => {
-  return Math.round(km * 0.621371);
+export const convertSquareKmToSquareMi = (km: number) => {
+  return Math.round(km * 0.386102);
 };
 
 export const getBorderCountryList = (codes: string[]) => {
@@ -507,3 +509,16 @@ export const getGameProgress = (
   `${getCountriesFoundList(gameCategory).length} ${delimiter} ${
     getFilteredCountryList(gameCategory, undefined, true).length
   }`;
+
+export const reverseGeolocateCoordinates = async (
+  endpoint: string,
+  lat: number,
+  lng: number
+) => {
+  const url = `https://secure.geonames.org/${endpoint}?username=${GEONAMES_USERNAME}&lang=en&lat=${lat}&lng=${lng}&token=${GEONAMES_TOKEN}`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Geonames API request failed: ${response.statusText}`);
+  }
+  return response.json();
+};
